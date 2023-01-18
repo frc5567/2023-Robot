@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.phoenix.*;
+import com.ctre.phoenix.sensors.Pigeon2;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -21,7 +23,11 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private Drivetrain m_vroomVroom;
-  private int autonCounter = 0;
+  private PilotController m_pilotControl;
+
+  com.ctre.phoenix.sensors.PigeonIMU ahrs;
+  com.ctre.phoenix.sensors.Pigeon2 test;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -35,6 +41,13 @@ public class Robot extends TimedRobot {
     String drivetrainName = "VroomVroom";
     m_vroomVroom = new Drivetrain(drivetrainName);
     m_vroomVroom.initDrivetrain();
+    m_pilotControl = new PilotController();
+
+    test = new Pigeon2(12);
+
+    double curPitch = test.getPitch();
+    double yawPitchRoll[] = new double[3];
+    ErrorCode failed = test.getYawPitchRoll(yawPitchRoll);
   }
 
   /**
@@ -45,7 +58,11 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    double[] driverImput = m_pilotControl.getDriverImput();
+    m_vroomVroom.arcadeDrive(driverImput[0], driverImput[1]);
+
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -67,13 +84,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    
-    // move forward 
-    double slowSpeed = 0.4;
-    m_vroomVroom.drivetrainMover(slowSpeed);
-
-  
-
 
   }
 
