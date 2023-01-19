@@ -36,10 +36,10 @@ public class Drivetrain {
      */
     public Drivetrain(String dName) {
         m_drivetrainName = dName;
-        m_leftLeader = new WPI_TalonSRX(0);
-        m_rightLeader = new WPI_TalonSRX (1);
-        m_leftFollower = new WPI_VictorSPX(0);
-        m_rightFollower = new WPI_VictorSPX(1);
+        m_leftLeader = new WPI_TalonSRX(RobotMap.DrivetrainConstants.LEFT_LEADER_CAN_ID);
+        m_rightLeader = new WPI_TalonSRX (RobotMap.DrivetrainConstants.RIGHT_LEADER_CAN_ID);
+        m_leftFollower = new WPI_VictorSPX(RobotMap.DrivetrainConstants.LEFT_FOLLOWER_CAN_ID);
+        m_rightFollower = new WPI_VictorSPX(RobotMap.DrivetrainConstants.RIGHT_FOLLOWER_CAN_ID);
         m_leftSide = new MotorControllerGroup(m_leftLeader, m_leftFollower);
         m_rightSide = new MotorControllerGroup(m_rightLeader,m_rightFollower);
 
@@ -62,7 +62,6 @@ public class Drivetrain {
     }
 
     /**
-     * 
      * Method that makes the drivetrain move forward/backwards and turn.
      * @param speed Value between -1 and 1 for robot speed.
      * @param turn Value between -1 and 1 for turning
@@ -72,9 +71,25 @@ public class Drivetrain {
         m_drivetrain.arcadeDrive(speed, turn);
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
-
-
     }
 
+    /**
+     * Decides what direction to drive and with how much power based on the pitch while on the charging station.
+     * @param currentPitch the angle of pitch that the robot is currently experiencing
+     * @return true if level, false if not
+     */
+    public boolean autoLevel(double currentPitch) {
+        boolean level = false;
+        if (Math.abs(currentPitch) < RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) {
+            level = true;
+            arcadeDrive(0, 0);
+        }
+        else {
+            //TODO: verify angle direction from IMU -- assuming front of bot up is positive
+            double speed = Math.copySign(RobotMap.DrivetrainConstants.LEVEL_DRIVE_SPEED, currentPitch);
+            arcadeDrive(speed, 0);
+        }
+        return level;
+    }
 
 }
