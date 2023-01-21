@@ -3,6 +3,11 @@ package frc.robot;
 public class RobotMap {
 
     /**
+     * CAN ID for the pigeon2.
+     */
+    public static final int PIGEON_CAN_ID = 21;
+
+    /**
      * All drivetrain constants
      */
     public static class DrivetrainConstants {
