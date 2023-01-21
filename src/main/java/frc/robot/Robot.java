@@ -79,6 +79,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    m_vroomVroom.brakeMode();
+
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
@@ -92,7 +94,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    m_vroomVroom.brakeMode();
+  }
 
   /** This function is called periodically during operator control. */
   @Override
@@ -100,7 +104,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_vroomVroom.coastMode();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
