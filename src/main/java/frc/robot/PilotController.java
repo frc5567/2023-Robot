@@ -11,16 +11,16 @@ public class PilotController {
     }
 
     /**
-     * Takes the driver imput from the controller.
+     * Takes the driver input from the controller.
      * @return speed (0) and turn (1) values in an array
      */
-    public double[] getDriverImput() {
-        double[] driverImput = new double[2];
+    public double[] getDriverInput() {
+        double[] driverInput = new double[2];
 
-        driverImput[RobotMap.PilotControllerConstants.DRIVER_INPUT_SPEED] = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
+        driverInput[RobotMap.PilotControllerConstants.DRIVER_INPUT_SPEED] = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
         //Adjusting for a deadband to compensate for controller stick drift.
-        driverImput[RobotMap.PilotControllerConstants.DRIVER_INPUT_TURN] = adjustForDeadband(m_controller.getLeftX());
-        return driverImput;
+        driverInput[RobotMap.PilotControllerConstants.DRIVER_INPUT_TURN] = adjustForDeadband(m_controller.getLeftX());
+        return driverInput;
     }
 
     /**

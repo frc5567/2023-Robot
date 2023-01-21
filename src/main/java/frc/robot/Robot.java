@@ -55,9 +55,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    double[] driverImput = m_pilotControl.getDriverImput();
-    if (driverImput[0] != 0 || driverImput[1] != 0) {
-      m_vroomVroom.arcadeDrive(driverImput[0], driverImput[1]);
+    double[] driverInput = m_pilotControl.getDriverInput();
+    if (driverInput[0] != 0 || driverInput[1] != 0) {
+      m_vroomVroom.arcadeDrive(driverInput[0], driverInput[1]);
     }
     else if (m_pilotControl.isAutoLeveling()) {
 
