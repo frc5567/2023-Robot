@@ -86,8 +86,7 @@ public class Drivetrain {
             arcadeDrive(0, 0);
         }
         else {
-            //TODO: verify angle direction from IMU -- assuming front of bot up is positive
-            double speed = Math.copySign(RobotMap.DrivetrainConstants.LEVEL_DRIVE_SPEED, currentPitch);
+            double speed = Math.copySign(RobotMap.DrivetrainConstants.LEVEL_DRIVE_SPEED, (-currentPitch));
             arcadeDrive(speed, 0);
         }
         return level;
