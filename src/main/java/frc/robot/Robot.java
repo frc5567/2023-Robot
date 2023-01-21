@@ -55,18 +55,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    double[] driverImput = m_pilotControl.getDriverImput();
-    m_vroomVroom.arcadeDrive(driverImput[0], driverImput[1]);
-
-    if (m_pilotControl.isAutoLeveling()) {
+    double[] driverInput = m_pilotControl.getDriverInput();
+    if (driverInput[0] != 0 || driverInput[1] != 0) {
+      m_vroomVroom.arcadeDrive(driverInput[0], driverInput[1]);
+    }
+    else if (m_pilotControl.isAutoLeveling()) {
 
       double curPitch = m_pigeon.getPitch();
 
       System.out.println("Current pitch: [" + curPitch + "]");
       m_vroomVroom.autoLevel(curPitch);
+      String isBotLevel = m_vroomVroom.isLevel(curPitch);
+      System.out.println("The bot " + isBotLevel);
     }
     else {
-      m_vroomVroom.arcadeDrive(0, 1);
+      m_vroomVroom.arcadeDrive(0, 0);
     }
   }
 
