@@ -24,6 +24,15 @@ public class PilotController {
     }
 
     /**
+     * Return input from the controller for auto leveling.
+     */
+    public boolean isAutoLeveling() {
+        boolean autoLeveling = m_controller.getAButton();
+
+        return autoLeveling;
+    }
+
+    /**
      * Deadband method for stick.
      * @param stickInput takes a value from -1 to 1.
      * @return input value adjusted for deadband. It is a double with a value between -1 and 1.

@@ -79,6 +79,7 @@ public class Drivetrain {
      * @return true if level, false if not
      */
     public boolean autoLevel(double currentPitch) {
+        
         boolean level = false;
         if (Math.abs(currentPitch) < RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) {
             level = true;

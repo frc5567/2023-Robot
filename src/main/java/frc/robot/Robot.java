@@ -25,8 +25,7 @@ public class Robot extends TimedRobot {
   private Drivetrain m_vroomVroom;
   private PilotController m_pilotControl;
 
-  com.ctre.phoenix.sensors.PigeonIMU ahrs;
-  com.ctre.phoenix.sensors.Pigeon2 test;
+  com.ctre.phoenix.sensors.Pigeon2 m_pigeon;
 
 
   /**
@@ -43,11 +42,8 @@ public class Robot extends TimedRobot {
     m_vroomVroom.initDrivetrain();
     m_pilotControl = new PilotController();
 
-    test = new Pigeon2(12);
+    m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
 
-    double curPitch = test.getPitch();
-    double yawPitchRoll[] = new double[3];
-    ErrorCode failed = test.getYawPitchRoll(yawPitchRoll);
   }
 
   /**
@@ -62,6 +58,13 @@ public class Robot extends TimedRobot {
     double[] driverImput = m_pilotControl.getDriverImput();
     m_vroomVroom.arcadeDrive(driverImput[0], driverImput[1]);
 
+    if (m_pilotControl.isAutoLeveling()) {
+
+      double curPitch = m_pigeon.getPitch();
+
+      System.out.println("Current pitch: [" + curPitch + "]");
+      m_vroomVroom.autoLevel(curPitch);
+    }
   }
 
   /**
