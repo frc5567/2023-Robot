@@ -65,6 +65,8 @@ public class Robot extends TimedRobot {
 
       System.out.println("Current pitch: [" + curPitch + "]");
       m_vroomVroom.autoLevel(curPitch);
+      String isBotLevel = m_vroomVroom.isLevel(curPitch);
+      System.out.println("The bot " + isBotLevel);
     }
     else {
       m_vroomVroom.arcadeDrive(0, 0);

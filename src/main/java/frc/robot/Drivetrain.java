@@ -107,6 +107,20 @@ public class Drivetrain {
     }
 
     /**
+     * String method to check whether thes bot is level at a given time.
+     * @param currentPitch the angle of pitch that the robot is currently experiencing
+     * @return String ending for a leveled bot, if level, otherwise String ending for not leveled bot
+     */
+    public String isLevel(double currentPitch) {
+        if (Math.abs(currentPitch) < RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE){
+            return "is level.";
+        }
+        else {
+            return "is not level.";
+        }
+    }
+
+    /**
      * Applies brake mode on drive train motor controllers. 
      */
     public void brakeMode() {
