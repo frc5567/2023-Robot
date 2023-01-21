@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -91,6 +92,16 @@ public class Drivetrain {
             arcadeDrive(speed, 0);
         }
         return level;
+    }
+
+    /**
+     * Applies brake mode on drive train motor controllers. 
+     */
+    public void brakeMode() {
+        m_leftLeader.setNeutralMode(NeutralMode.Brake);
+        m_rightLeader.setNeutralMode(NeutralMode.Brake);
+        m_leftFollower.setNeutralMode(NeutralMode.Brake);
+        m_rightFollower.setNeutralMode(NeutralMode.Brake);
     }
 
 }
