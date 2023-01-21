@@ -82,13 +82,25 @@ public class Drivetrain {
     public boolean autoLevel(double currentPitch) {
         
         boolean level = false;
-        if (Math.abs(currentPitch) < RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) {
+        //level bot set to no speed
+        if (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) {
             level = true;
             arcadeDrive(0, 0);
         }
+        //crawl speed for bot angle within 4 - 2 degrees
+        else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.UPPER_LOW_RANGE_ANGLE)) {
+            double speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (-currentPitch));
+            arcadeDrive(speed, 0);
+        }
+        //mid speed for bot angle within 8 - 4 degrees
+        else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.UPPER_LOW_RANGE_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.UPPER_MID_RANGE_ANGLE)) {
+            double speed = Math.copySign(RobotMap.DrivetrainConstants.MID_LEVEL_DRIVE_SPEED, (-currentPitch));
+            arcadeDrive(speed, 0);
+        }
+        //high speed for bot angle within anywhere above 8 degrees
         else {
             //speed is negated: in Pigeon, actual robot ends are opposite, pitch now reflects that
-            double speed = Math.copySign(RobotMap.DrivetrainConstants.LEVEL_DRIVE_SPEED, (-currentPitch));
+            double speed = Math.copySign(RobotMap.DrivetrainConstants.HIGH_LEVEL_DRIVE_SPEED, (-currentPitch));
             arcadeDrive(speed, 0);
         }
         return level;
