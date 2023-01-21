@@ -86,6 +86,7 @@ public class Drivetrain {
             arcadeDrive(0, 0);
         }
         else {
+            //speed is negated: in Pigeon, actual robot ends are opposite, pitch now reflects that
             double speed = Math.copySign(RobotMap.DrivetrainConstants.LEVEL_DRIVE_SPEED, (-currentPitch));
             arcadeDrive(speed, 0);
         }
