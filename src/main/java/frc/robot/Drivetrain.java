@@ -86,8 +86,8 @@ public class Drivetrain {
             arcadeDrive(0, 0);
         }
         else {
-            //TODO: verify angle direction from IMU -- assuming front of bot up is positive
-            double speed = Math.copySign(RobotMap.DrivetrainConstants.LEVEL_DRIVE_SPEED, currentPitch);
+            //speed is negated: in Pigeon, actual robot ends are opposite, pitch now reflects that
+            double speed = Math.copySign(RobotMap.DrivetrainConstants.LEVEL_DRIVE_SPEED, (-currentPitch));
             arcadeDrive(speed, 0);
         }
         return level;
