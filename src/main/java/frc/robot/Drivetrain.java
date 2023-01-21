@@ -104,4 +104,14 @@ public class Drivetrain {
         m_rightFollower.setNeutralMode(NeutralMode.Brake);
     }
 
+    /**
+     * Applies coast mode on drive train motor controllers. 
+     */
+    public void coastMode() {
+        m_leftLeader.setNeutralMode(NeutralMode.Coast);
+        m_rightLeader.setNeutralMode(NeutralMode.Coast);
+        m_leftFollower.setNeutralMode(NeutralMode.Coast);
+        m_rightFollower.setNeutralMode(NeutralMode.Coast);
+    }
+
 }

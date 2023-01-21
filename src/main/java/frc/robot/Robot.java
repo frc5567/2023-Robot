@@ -104,7 +104,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_vroomVroom.coastMode();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
