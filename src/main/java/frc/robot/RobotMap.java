@@ -42,13 +42,13 @@ public class RobotMap {
          */
         public static final double MAX_ANGLE = 17.0;
         /**
-         * Upper end angle for robot speed when charge station between 8 and 4 deg.
+         * Upper end angle for robot speed when charge station between 12 and 6 deg.
          */
-        public static final double UPPER_MID_RANGE_ANGLE = 8.0;
+        public static final double UPPER_MID_RANGE_ANGLE = 12.0;
         /**
-         * Upper end angle for robot speed when charge station between 4 and 2 deg.
+         * Upper end angle for robot speed when charge station between 6 and 2 deg.
          */
-        public static final double UPPER_LOW_RANGE_ANGLE = 4.0;
+        public static final double UPPER_LOW_RANGE_ANGLE = 6.0;
 
         /**
          * Auto leveling crawl drive speed

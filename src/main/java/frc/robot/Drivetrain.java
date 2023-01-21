@@ -87,17 +87,17 @@ public class Drivetrain {
             level = true;
             arcadeDrive(0, 0);
         }
-        //crawl speed for bot angle within 4 - 2 degrees
+        //crawl speed for bot angle within 6 - 2 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.UPPER_LOW_RANGE_ANGLE)) {
             double speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (-currentPitch));
             arcadeDrive(speed, 0);
         }
-        //mid speed for bot angle within 8 - 4 degrees
+        //mid speed for bot angle within 12 - 6 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.UPPER_LOW_RANGE_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.UPPER_MID_RANGE_ANGLE)) {
             double speed = Math.copySign(RobotMap.DrivetrainConstants.MID_LEVEL_DRIVE_SPEED, (-currentPitch));
             arcadeDrive(speed, 0);
         }
-        //high speed for bot angle within 15 - 8 degrees
+        //high speed for bot angle within 17 - 12 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.UPPER_MID_RANGE_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_ANGLE)){
             //speed is negated: in Pigeon, actual robot ends are opposite, pitch now reflects that
             double speed = Math.copySign(RobotMap.DrivetrainConstants.HIGH_LEVEL_DRIVE_SPEED, (-currentPitch));
