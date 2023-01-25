@@ -60,32 +60,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    double[] driverInput = m_pilotControl.getDriverInput();
-    if (driverInput[0] != 0 || driverInput[1] != 0) {
-      m_vroomVroom.arcadeDrive(driverInput[0], driverInput[1]);
-    }
-    else if (m_pilotControl.isAutoLeveling()) {
-
-      double curPitch = m_pigeon.getPitch();
-
-      System.out.println("Current pitch: [" + curPitch + "]");
-      m_vroomVroom.autoLevel(curPitch);
-
-      //updated boolean for checking whether pitch is within "level" range, if/else statement for outputting into the console
-      boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
-      if (isBotLevel == true) {
-        System.out.println("The bot is level.");
-      }
-      else {
-        System.out.println("The bot is not level.");
-      }
-
-      //publisher widget method to push boolean value of current pitch and "level" status
-      m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
-    }
-    else {
-      m_vroomVroom.arcadeDrive(0, 0);
-    }
+    
   }
 
   /**
@@ -121,7 +96,34 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    double[] driverInput = m_pilotControl.getDriverInput();
+    if (driverInput[0] != 0 || driverInput[1] != 0) {
+      m_vroomVroom.arcadeDrive(driverInput[0], driverInput[1]);
+    }
+    else if (m_pilotControl.isAutoLeveling()) {
+
+      double curPitch = m_pigeon.getPitch();
+
+      System.out.println("Current pitch: [" + curPitch + "]");
+      m_vroomVroom.autoLevel(curPitch);
+
+      //updated boolean for checking whether pitch is within "level" range, if/else statement for outputting into the console
+      boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
+      if (isBotLevel == true) {
+        System.out.println("The bot is level.");
+      }
+      else {
+        System.out.println("The bot is not level.");
+      }
+
+      //publisher widget method to push boolean value of current pitch and "level" status
+      m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
+    }
+    else {
+      m_vroomVroom.arcadeDrive(0, 0);
+    }
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
