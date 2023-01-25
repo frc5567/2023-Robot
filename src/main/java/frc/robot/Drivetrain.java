@@ -107,16 +107,16 @@ public class Drivetrain {
     }
 
     /**
-     * String method to check whether thes bot is level at a given time.
+     * Boolean method to check whether thes bot is level at a given time.
      * @param currentPitch the angle of pitch that the robot is currently experiencing
-     * @return String ending for a leveled bot, if level, otherwise String ending for not leveled bot
+     * @return true if bot is within "level" range, false otherwise
      */
-    public String isLevel(double currentPitch) {
+    public boolean isLevel(double currentPitch) {
         if (Math.abs(currentPitch) < RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE){
-            return "is level.";
+            return true;
         }
         else {
-            return "is not level.";
+            return false;
         }
     }
 

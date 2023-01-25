@@ -24,6 +24,7 @@ public class Robot extends TimedRobot {
 
   private Drivetrain m_vroomVroom;
   private PilotController m_pilotControl;
+  private RobotShuffleboard m_shuffleName;
 
   com.ctre.phoenix.sensors.Pigeon2 m_pigeon;
 
@@ -41,6 +42,10 @@ public class Robot extends TimedRobot {
     m_vroomVroom = new Drivetrain(drivetrainName);
     m_vroomVroom.initDrivetrain();
     m_pilotControl = new PilotController();
+
+    m_shuffleName.init();
+    String shuffleBoardName = "Shuffleboard";
+    m_shuffleName = new RobotShuffleboard(shuffleBoardName);
 
     m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
 
@@ -65,8 +70,18 @@ public class Robot extends TimedRobot {
 
       System.out.println("Current pitch: [" + curPitch + "]");
       m_vroomVroom.autoLevel(curPitch);
-      String isBotLevel = m_vroomVroom.isLevel(curPitch);
-      System.out.println("The bot " + isBotLevel);
+
+      //updated boolean for checking whether pitch is within "level" range, if/else statement for outputting into the console
+      boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
+      if (isBotLevel == true) {
+        System.out.println("The bot is level.");
+      }
+      else {
+        System.out.println("The bot is not level.");
+      }
+
+      //publisher widget method to push boolean value of current pitch and "level" status
+      m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
     }
     else {
       m_vroomVroom.arcadeDrive(0, 0);
