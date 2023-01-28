@@ -3,7 +3,6 @@ package frc.robot;
 public class Auton {
 
     //member variables to hold controls and robot parts passed in
-    private Drivetrain m_drivetrain;
     private RobotShuffleboard m_robotShuffleboard;
     //integer and String, respectively, to store what step (by number, 1-? steps) and what path we are on (0 or 1 object)
     private int m_step;
@@ -16,12 +15,10 @@ public class Auton {
 
     /**
      * Constructor method of the Auton class with passed in robot classes
-     * @param drivetrain passes in the drivetrain to actually control robot motion
      * @param shuffleboard passes in the shuffleboard communcations and allows updating of that console during Auton
      */
-    public Auton(Drivetrain drivetrain, RobotShuffleboard shuffleboard) {
+    public Auton( RobotShuffleboard shuffleboard) {
         //configure member variables to starting instances of robot systems
-        m_drivetrain = drivetrain;
         m_robotShuffleboard = shuffleboard;
         //sets auton initial step to step 1
         m_step = 1;
@@ -33,7 +30,6 @@ public class Auton {
      */
     public void init() {
         //initializes elements of robot for the Auton specifically
-        m_drivetrain.initDrivetrain();
         m_currentAutonPath = m_robotShuffleboard.getAutonPath();
         m_step = 1;
         selectPath();
@@ -76,8 +72,8 @@ public class Auton {
      * Method that contains entirety of Auton code and what to do in steps, updates steps to shuffleboard and bot
      * Returns nothing, takes no parameters.
      */
-    public ArcDriveInput periodic(DriveEncoderPos drivePos) {
-        ArcDriveInput driveInput = new ArcDriveInput(0, 0);
+    public DriveInput periodic(DriveEncoderPos drivePos) {
+        DriveInput driveInput = new DriveInput(0, 0, Gear.kLowGear);
         //TODO: add step stuff
         if (m_autonStartOut){
             System.out.println("AUTON STARTED");

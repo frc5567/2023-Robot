@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 
+
+
 /**
  * 
  * 
@@ -36,36 +38,6 @@ public class Drivetrain {
 
     // Pneumatic Controller for Gear box
     private DoubleSolenoid m_solenoid;
-
-
-    /**
-     * Gear the drivetrain is currently in. Gear Unknown is the intial value before we init it. 
-     */
-    public enum Gear {
-        kLowGear ("Low Gear"),
-
-        kHighGear ("High Gear"),
-
-        kUnknown ("Unknown");
-
-        private String GearName;
-
-       /**
-        * This is the constructor for the enum Gear, setting the intial state. 
-        */
-        Gear (String GearName){
-            this.GearName = GearName;
-        }
-
-        /**
-         * Returns gearname as a string.
-         * @return GearName
-         */
-
-        public String toString(){
-            return this.GearName;
-        }
-    }
 
 
 
@@ -117,6 +89,19 @@ public class Drivetrain {
         m_drivetrain.arcadeDrive(speed, turn);
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
+    }
+
+    /**
+     * Method that makes the drivetrain move forward/backwards and turn.
+     * @param driveInput 
+     */
+    public void arcadeDrive(DriveInput driveInput) {
+
+        m_drivetrain.arcadeDrive(driveInput.m_speed, driveInput.m_turnSpeed);
+        m_leftFollower.follow(m_leftLeader);
+        m_rightFollower.follow(m_rightLeader);
+        //this. means the instance of the class that you are currently in (Drivetrain)
+        this.shiftGear(driveInput.m_gear);
     }
 
     /**
@@ -206,11 +191,25 @@ public class Drivetrain {
         }
     }
 
+    /**
+     * Gets encoder positions of the drivetrain
+     * @return DriveEncoderPos 
+     */
     public DriveEncoderPos getEncoderPositions() {
         double leftPos = m_leftLeader.getSelectedSensorPosition();
         double rightPos = m_rightLeader.getSelectedSensorPosition();
         DriveEncoderPos drivePositions = new DriveEncoderPos(leftPos, rightPos);
         return drivePositions;
+
+    }
+
+    /**
+     * Zeros out the encoder positions of the drivetrain
+     * TODO: add constants to robot map
+     */
+    public void zeroEncoders() {
+        m_leftLeader.getSensorCollection().setQuadraturePosition(0, 30);
+        m_rightLeader.getSensorCollection().setQuadraturePosition(0, 30);
 
     }
 
