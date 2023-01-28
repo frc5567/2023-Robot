@@ -76,7 +76,8 @@ public class Auton {
      * Method that contains entirety of Auton code and what to do in steps, updates steps to shuffleboard and bot
      * Returns nothing, takes no parameters.
      */
-    public void periodic() {
+    public ArcDriveInput periodic(DriveEncoderPos drivePos) {
+        ArcDriveInput driveInput = new ArcDriveInput(0, 0);
         //TODO: add step stuff
         if (m_autonStartOut){
             System.out.println("AUTON STARTED");
@@ -91,10 +92,18 @@ public class Auton {
             }
             //FOR THE STEPS, WE WANT TO: 1. move forward out of the community, 2. move backward enough to start 3. auto level function
             else if (m_step == 1) {
-                m_step += 1;
+                if (drivePos.m_leftLeaderPos >= 4096 && drivePos.m_rightLeaderPos >= 4096) {
+                    //speed and turn are already set to 0 in driveInput
+                    m_step += 1;
+                }
+                driveInput.m_speed = 0.4;
+                driveInput.m_turnSpeed = 0;
             }
         }
         
         //TODO: create pathing for 1 object auton
+
+        //return statment
+        return driveInput;
     }
 }

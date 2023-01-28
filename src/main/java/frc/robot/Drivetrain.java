@@ -206,4 +206,12 @@ public class Drivetrain {
         }
     }
 
+    public DriveEncoderPos getEncoderPositions() {
+        double leftPos = m_leftLeader.getSelectedSensorPosition();
+        double rightPos = m_rightLeader.getSelectedSensorPosition();
+        DriveEncoderPos drivePositions = new DriveEncoderPos(leftPos, rightPos);
+        return drivePositions;
+
+    }
+
 }

@@ -93,8 +93,11 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be TRUE)
     m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
+
+    DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
     //run periodic method of Auton class
-    m_auton.periodic();
+    ArcDriveInput driveInput = m_auton.periodic(drivePos);
+    m_vroomVroom.arcadeDrive(driveInput.m_speed, driveInput.m_turnSpeed);
   }
 
   /** This function is called once when teleop is enabled. */
@@ -107,12 +110,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     double[] driverInput = m_pilotControl.getDriverInput();
+    double curPitch = m_pigeon.getPitch();
+
     if (driverInput[0] != 0 || driverInput[1] != 0) {
       m_vroomVroom.arcadeDrive(driverInput[0], driverInput[1]);
     }
     else if (m_pilotControl.isAutoLeveling()) {
-
-      double curPitch = m_pigeon.getPitch();
 
       System.out.println("Current pitch: [" + curPitch + "]");
       m_vroomVroom.autoLevel(curPitch);
@@ -126,14 +129,15 @@ public class Robot extends TimedRobot {
         System.out.println("The bot is not level.");
       }
 
-      //publisher widget method to push boolean value of current pitch and "level" status
-      m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
-      //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be FALSE)
-      m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
     }
     else {
       m_vroomVroom.arcadeDrive(0, 0);
     }
+
+    //publisher widget method to push boolean value of current pitch and "level" status
+    m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
+    //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be FALSE)
+    m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
   }
 
   /** This function is called once when the robot is disabled. */
