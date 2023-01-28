@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Drivetrain.Gear;
 
 public class PilotController {
     private XboxController m_controller;
@@ -15,12 +14,15 @@ public class PilotController {
      * Takes the driver input from the controller.
      * @return speed (0) and turn (1) values in an array
      */
-    public double[] getDriverInput() {
-        double[] driverInput = new double[2];
+    public DriveInput getDriverInput() {
+        DriveInput driverInput = new DriveInput();
 
-        driverInput[RobotMap.PilotControllerConstants.DRIVER_INPUT_SPEED] = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
+        driverInput.m_speed = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
         //Adjusting for a deadband to compensate for controller stick drift.
-        driverInput[RobotMap.PilotControllerConstants.DRIVER_INPUT_TURN] = adjustForDeadband(m_controller.getLeftX());
+        driverInput.m_turnSpeed = adjustForDeadband(m_controller.getLeftX());
+
+        driverInput.m_gear = getPilotGear();
+        driverInput.m_isAutoLeveling = this.isAutoLeveling();
         return driverInput;
     }
 

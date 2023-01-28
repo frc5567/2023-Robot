@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
     String shuffleBoardName = "Shuffleboard";
     m_shuffleName = new RobotShuffleboard(shuffleBoardName);
 
-    m_auton = new Auton(m_vroomVroom, m_shuffleName);
+    m_auton = new Auton(m_shuffleName);
 
     m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
 
@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_vroomVroom.brakeMode();
+    m_vroomVroom.zeroEncoders();
 
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
@@ -96,7 +97,7 @@ public class Robot extends TimedRobot {
 
     DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
     //run periodic method of Auton class
-    ArcDriveInput driveInput = m_auton.periodic(drivePos);
+    DriveInput driveInput = m_auton.periodic(drivePos);
     m_vroomVroom.arcadeDrive(driveInput.m_speed, driveInput.m_turnSpeed);
   }
 
@@ -109,13 +110,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    double[] driverInput = m_pilotControl.getDriverInput();
+    DriveInput driverInput = m_pilotControl.getDriverInput();
     double curPitch = m_pigeon.getPitch();
-
-    if (driverInput[0] != 0 || driverInput[1] != 0) {
-      m_vroomVroom.arcadeDrive(driverInput[0], driverInput[1]);
-    }
-    else if (m_pilotControl.isAutoLeveling()) {
+    
+    if (driverInput.m_isAutoLeveling) {
 
       System.out.println("Current pitch: [" + curPitch + "]");
       m_vroomVroom.autoLevel(curPitch);
@@ -131,7 +129,7 @@ public class Robot extends TimedRobot {
 
     }
     else {
-      m_vroomVroom.arcadeDrive(0, 0);
+      m_vroomVroom.arcadeDrive(driverInput);
     }
 
     //publisher widget method to push boolean value of current pitch and "level" status
