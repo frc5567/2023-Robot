@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Drivetrain.Gear;
 
 public class PilotController {
     private XboxController m_controller;
@@ -23,6 +24,24 @@ public class PilotController {
         return driverInput;
     }
 
+        /** 
+     * Get driver gear change.
+     * @return Gear indicates what the pilot is telling us to do. Unknown indicates no gear change.
+     * */ 
+    public Gear getPilotGear(){
+        Gear returnGear = Gear.kUnknown;
+
+        // When x button is pressed, the robot switches to high gear.
+        if(m_controller.getXButtonPressed()){
+            returnGear = Gear.kHighGear;
+        } 
+        // When y button is pressed the robot switches to low gear. 
+        else if(m_controller.getYButtonPressed()){
+            returnGear = Gear.kLowGear; 
+        }
+        return returnGear;
+    }
+    
     /**
      * Return input from the controller for auto leveling.
      */
