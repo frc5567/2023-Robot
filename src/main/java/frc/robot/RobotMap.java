@@ -90,5 +90,16 @@ public class RobotMap {
          */
         public static final double STICK_DEADBAND = 0.09;
     }
+
+    /**
+     * All robot shuffleboard constants
+     */
+    public static class RobotShuffleboardConstants {
+
+        /**
+         * Default value of Auton path, no object auton
+         */
+        public static final double DEFAULT_AUTON_PATH = 0;
+    }
     
 }

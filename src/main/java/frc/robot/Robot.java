@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
   private Drivetrain m_vroomVroom;
   private PilotController m_pilotControl;
   private RobotShuffleboard m_shuffleName;
+  private Auton m_auton;
 
   com.ctre.phoenix.sensors.Pigeon2 m_pigeon;
 
@@ -46,6 +47,8 @@ public class Robot extends TimedRobot {
     m_shuffleName.init();
     String shuffleBoardName = "Shuffleboard";
     m_shuffleName = new RobotShuffleboard(shuffleBoardName);
+
+    m_auton = new Auton(m_vroomVroom, m_shuffleName);
 
     m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
 
@@ -80,12 +83,18 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+
+    m_shuffleName.setAutonPath();
+    m_auton.init();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-
+    //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be TRUE)
+    m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
+    //run periodic method of Auton class
+    m_auton.periodic();
   }
 
   /** This function is called once when teleop is enabled. */
@@ -119,6 +128,8 @@ public class Robot extends TimedRobot {
 
       //publisher widget method to push boolean value of current pitch and "level" status
       m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
+      //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be FALSE)
+      m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
     }
     else {
       m_vroomVroom.arcadeDrive(0, 0);
