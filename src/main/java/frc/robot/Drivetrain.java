@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -28,6 +30,43 @@ public class Drivetrain {
     private DifferentialDrive m_drivetrain;
     private MotorControllerGroup m_leftSide;
     private MotorControllerGroup m_rightSide;
+    
+    // Declaring the gear so it can be used for swicthing between high and low gear
+    private Gear m_gear;
+
+    // Pneumatic Controller for Gear box
+    private DoubleSolenoid m_solenoid;
+    
+    
+    /**
+     * Gear the drivetrain is currently in. Gear Unknown is the intial value before we init it. 
+     */
+    public enum Gear {
+        kLowGear ("Low Gear"),
+
+        kHighGear ("High Gear"),
+
+        kUnknown ("Unknown");
+
+        private String GearName;
+
+       /**
+        * This is the constructor for the enum Gear, setting the intial state. 
+        */
+        Gear (String GearName){
+            this.GearName = GearName;
+        }
+
+        /**
+         * Returns gearname as a string.
+         * @return GearName
+         */
+
+        public String toString(){
+            return this.GearName;
+        }
+    }
+    
 
 
     /**
@@ -46,6 +85,9 @@ public class Drivetrain {
 
         m_drivetrain = new DifferentialDrive(m_leftSide, m_rightSide);
 
+        // Instanciation of the gear and setting it to unknown.
+        m_gear = Gear.kUnknown; 
+
     }
 
     /**
@@ -59,6 +101,9 @@ public class Drivetrain {
         m_rightLeader.setInverted(true);
         m_leftFollower.setInverted(InvertType.FollowMaster);
         m_rightFollower.setInverted(InvertType.FollowMaster);
+
+        // Shiftgear in robot in Low Gear
+        shiftGear(Gear.kLowGear);
 
     }
 
@@ -107,16 +152,16 @@ public class Drivetrain {
     }
 
     /**
-     * Boolean method to check whether thes bot is level at a given time.
+     * String method to check whether thes bot is level at a given time.
      * @param currentPitch the angle of pitch that the robot is currently experiencing
-     * @return true if bot is within "level" range, false otherwise
+     * @return String ending for a leveled bot, if level, otherwise String ending for not leveled bot
      */
-    public boolean isLevel(double currentPitch) {
+    public String isLevel(double currentPitch) {
         if (Math.abs(currentPitch) < RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE){
-            return true;
+            return "is level.";
         }
         else {
-            return false;
+            return "is not level.";
         }
     }
 
@@ -139,5 +184,29 @@ public class Drivetrain {
         m_leftFollower.setNeutralMode(NeutralMode.Coast);
         m_rightFollower.setNeutralMode(NeutralMode.Coast);
     }
+
+    /** shiftGear is the way we change between high and low gear (Gear.kLowGear and Gear.kHighGear)
+     * @param gear
+     */
+    public void shiftGear(Gear gear){
+        // Compare the incoming parameter to the current state and determine if it is already set to that gear. 
+        if (m_gear == gear){
+            return;
+        }
+
+        m_gear = gear; 
+
+        // Solenoid causes the gear to shift. kForward(Plunger Out) and KReverse (Plunger In) are both in WPILib. 
+        // Together they change the Penumatics.
+        if(m_gear == Gear.kLowGear){
+            m_solenoid.set(Value.kForward);
+        }
+        else if (m_gear == Gear.kHighGear){
+            m_solenoid.set(Value.kReverse);
+        }
+    }
+
+
+
 
 }
