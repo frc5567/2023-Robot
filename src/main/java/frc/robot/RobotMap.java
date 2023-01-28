@@ -62,6 +62,17 @@ public class RobotMap {
          * Auto leveling high drive speed
          */
         public static final double HIGH_LEVEL_DRIVE_SPEED = 0.5;
+        /**
+        * Low Gear Solenoid port on the PCM.
+         *
+         * TODO: Find Ports that low gear and high gear connect to.
+         */
+        public static final int DOUBLESOLENOID_LOW_GEAR_PORT = 6;
+
+        /** 
+         * High gear Solenoid port on PCM.
+         */
+         public static final int DOUBLESOLENOID_HIGH_GEAR_PORT = 7;
 
     }
 
