@@ -44,9 +44,9 @@ public class Robot extends TimedRobot {
     m_vroomVroom.initDrivetrain();
     m_pilotControl = new PilotController();
 
-    m_shuffleName.init();
     String shuffleBoardName = "Shuffleboard";
     m_shuffleName = new RobotShuffleboard(shuffleBoardName);
+    m_shuffleName.init();
 
     m_auton = new Auton(m_shuffleName);
 
