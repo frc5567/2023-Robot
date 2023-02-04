@@ -117,6 +117,7 @@ public class RobotMap {
          */
         public static final double DEFAULT_AUTON_PATH = 0;
     }
+
     /**
      * Encapsulates constants for the elevator class.
      */
@@ -140,6 +141,32 @@ public class RobotMap {
         public static final double MID_POSITION = 500.0;
         public static final double HIGH_POSITION = 750.0;
     
+    }
+
+    /**
+     * Encapsulates constants for the elevator class.
+     *TODO: double check all constants and TEST
+     */
+    public static class ArmConstants {
+
+        public static final int ARM_CAN_ID = 15;
+
+        public static final int PID_PRIMARY = 0;
+        public static final double NEUTRAL_DEADBAND = 0.001;
+        public static final double PID_PEAK_OUTPUT = 1.0;
+        public static final int ARM_ACCELERATION = 2000;
+        public static final int ARM_CRUISE_VELOCITY = 2000;
+
+        public static final Gains ARM_GAINS = new Gains(0.4, 0.0, 0.0, 0.0, 100, 1.0);
+
+        public static final double DRUM_CIRCUMFERENCE = 8.1875;
+        public static final int TICKS_PER_REVOLUTION = 2048;
+
+        public static final double START_POSITION = 0.0;
+        public static final double LOW_POSITION = 10.0;
+        public static final double MID_POSITION = 20.0;
+        public static final double HIGH_POSITION = 30.0;
+        
     }
     
 }
