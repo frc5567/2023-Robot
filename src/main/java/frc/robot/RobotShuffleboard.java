@@ -9,6 +9,7 @@ public class RobotShuffleboard {
     ShuffleboardTab m_driverTab;
     Drivetrain m_drivetrain;
 
+    Shuffleboard m_shuffleboard;
     boolean m_isLevel;
 
     private NetworkTableEntry m_isLevelEntry;
