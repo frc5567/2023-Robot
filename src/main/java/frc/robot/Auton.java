@@ -30,7 +30,7 @@ public class Auton {
      */
     public void init() {
         //initializes elements of robot for the Auton specifically
-        m_currentAutonPath = m_robotShuffleboard.getAutonPath();
+        //m_currentAutonPath = m_robotShuffleboard.getAutonPath();
         m_step = 1;
         selectPath();
     }

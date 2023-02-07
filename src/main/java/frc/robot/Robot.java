@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
 
-    m_shuffleName.setAutonPath();
+    //m_shuffleName.setAutonPath();
     m_auton.init();
   }
 
@@ -93,7 +93,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be TRUE)
-    m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
+    //m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
 
     DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
     //run periodic method of Auton class
@@ -112,30 +112,26 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     DriveInput driverInput = m_pilotControl.getDriverInput();
     double curPitch = m_pigeon.getPitch();
+
+    //updated boolean for checking whether pitch is within "level" range, if/else statement for outputting into the console, initial value of false
+    boolean isBotLevel = false;
     
     if (driverInput.m_isAutoLeveling) {
 
-      System.out.println("Current pitch: [" + curPitch + "]");
-      m_vroomVroom.autoLevel(curPitch);
+      isBotLevel = m_vroomVroom.autoLevel(curPitch);
 
-      //updated boolean for checking whether pitch is within "level" range, if/else statement for outputting into the console
-      boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
-      if (isBotLevel == true) {
-        System.out.println("The bot is level.");
-      }
-      else {
-        System.out.println("The bot is not level.");
-      }
-
+      //boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
     else {
       m_vroomVroom.arcadeDrive(driverInput);
+      isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
 
+    //TODO: CALL SHUFFLEBOARD STUFF HERE!!! Use isBotLevel
     //publisher widget method to push boolean value of current pitch and "level" status
-    m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
+    //m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
     //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be FALSE)
-    m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
+    //m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
   }
 
   /** This function is called once when the robot is disabled. */
