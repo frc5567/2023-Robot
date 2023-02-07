@@ -26,6 +26,7 @@ public class RobotShuffleboard {
 
     public void periodic(boolean isBotLevel) {
         SmartDashboard.putBoolean("is Level", isBotLevel);
+        setIsLevelEntryThing();
     }
 
     private void setIsLevelEntryThing() {
