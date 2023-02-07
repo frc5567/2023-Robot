@@ -127,6 +127,7 @@ public class Robot extends TimedRobot {
       isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
 
+    m_shuffleName.periodic(isBotLevel);
     //TODO: CALL SHUFFLEBOARD STUFF HERE!!! Use isBotLevel
     //publisher widget method to push boolean value of current pitch and "level" status
     //m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
