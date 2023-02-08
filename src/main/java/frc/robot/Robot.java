@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    //Auton Shuffleboard Updating
+    //Auton shuffleboard choices updating
     m_chooser.setDefaultOption("0 Object", kDefaultAuto);
     m_chooser.addOption("1 Object", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -47,7 +47,6 @@ public class Robot extends TimedRobot {
     m_vroomVroom.initDrivetrain();
     m_pilotControl = new PilotController();
 
-    //String shuffleBoardName = "Shuffleboard";
     m_shuffleName = new RobotShuffleboard();
     m_shuffleName.init();
 

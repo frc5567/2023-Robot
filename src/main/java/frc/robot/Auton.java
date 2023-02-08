@@ -6,7 +6,7 @@ public class Auton {
     private RobotShuffleboard m_robotShuffleboard;
     //integer and String, respectively, to store what step (by number, 1-? steps) and what path we are on (0 or 1 object)
     private int m_step;
-    private String m_path;
+    private String m_path = "";
     //initally sets AutonPath to 0 object, creates member variable for currentPath (auton)
     private double m_currentAutonPath = RobotMap.RobotShuffleboardConstants.DEFAULT_AUTON_PATH;
     //Boolean for showing whether auton is started and is set to false otherwise and after
@@ -17,7 +17,7 @@ public class Auton {
      * Constructor method of the Auton class with passed in robot classes
      * @param shuffleboard passes in the shuffleboard communcations and allows updating of that console during Auton
      */
-    public Auton( RobotShuffleboard shuffleboard) {
+    public Auton(RobotShuffleboard shuffleboard) {
         //configure member variables to starting instances of robot systems
         m_robotShuffleboard = shuffleboard;
         //sets auton initial step to step 1
@@ -52,6 +52,7 @@ public class Auton {
      * Method for actually selecting Auton path from shuffleboard and set console to reflect that
      */
     private void selectPath() {
+        //TODO: add code here for grabbing chosen path from Shuffleboard and setting m_currentAutonPath to it
         //path integer assigned is based on number of objects auton has set to achieve
         if (m_currentAutonPath == 0){
             System.out.println("Setting Auton to Charging Station Path");
@@ -74,7 +75,6 @@ public class Auton {
      */
     public DriveInput periodic(DriveEncoderPos drivePos) {
         DriveInput driveInput = new DriveInput(0, 0, Gear.kLowGear);
-        //TODO: add step stuff
         if (m_autonStartOut){
             System.out.println("AUTON STARTED");
             m_autonStartOut = false;
@@ -86,7 +86,10 @@ public class Auton {
                 m_step += 1;
                 System.out.println("Internal auton configuration error detected: non-fatal error. AUTON START UP CONTINUING");
             }
-            //FOR THE STEPS, WE WANT TO: 1. move forward out of the community, 2. move backward enough to start 3. auto level function
+            //FOR THE STEPS, WE WANT TO: 
+            //1. move forward out of the community, 
+            //2. move backward enough to start 
+            //3. auto level function
             else if (m_step == 1) {
                 if (drivePos.m_leftLeaderPos >= 4096 && drivePos.m_rightLeaderPos >= 4096) {
                     //speed and turn are already set to 0 in driveInput
@@ -99,7 +102,7 @@ public class Auton {
         
         //TODO: create pathing for 1 object auton
 
-        //return statment
+        //return statment for DriveInput object return type for making bot move
         return driveInput;
     }
 }

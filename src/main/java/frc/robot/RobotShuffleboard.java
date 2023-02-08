@@ -6,11 +6,12 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class RobotShuffleboard {
-    ShuffleboardTab m_driverTab;
-    Drivetrain m_drivetrain;
 
-    //shuffle board member variables: BOTH CURRENTLY HERE MIGHT BE UNUSED, SHOULD BE TESTED
+    //member variables instantiated for object use
+    ShuffleboardTab m_driverTab;
+    //more shuffle board member variables; TODO: BOTH CURRENTLY HERE MIGHT BE UNUSED, SHOULD BE TESTED
     Shuffleboard m_shuffleboard;
+    Drivetrain m_drivetrain;
     boolean m_isLevel;
 
     //Table label entries are created here
@@ -40,7 +41,7 @@ public class RobotShuffleboard {
 
 /**
  * No need for this code to be used at the moment.
- * Code borrowed from 2022 Robot code, not useful, but used in initial implementation for debugging Shuffleboard.
+ * Code pseudo borrowed from 2022 Robot code, not useful, but used in initial implementation for debugging Shuffleboard.
  * 
     private void setIsLevelEntryThing() {
         m_isLevel = m_isLevelEntry.getBoolean(false);
