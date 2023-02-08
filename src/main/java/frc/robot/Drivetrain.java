@@ -15,10 +15,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 
-
+//WHEN THE TIME COMES, ALL COMMENTS THAT HAVE "COMMENTED OUT FOR BOT(wiffle) TESTING:" MUST BE REMOVED TO LET GEAR STUFF WORK!!!
 
 /**
- * 
  * 
  * There is a drivetrain class now.
  * 
@@ -34,7 +33,7 @@ public class Drivetrain {
     private MotorControllerGroup m_rightSide;
 
     // Declaring the gear so it can be used for swicthing between high and low gear
-    //private Gear m_gear;
+    //COMMENTED OUT FOR BOT(wiffle) TESTING: private Gear m_gear;
 
     // Pneumatic Controller for Gear box
     private DoubleSolenoid m_solenoid;
@@ -58,7 +57,7 @@ public class Drivetrain {
         m_drivetrain = new DifferentialDrive(m_leftSide, m_rightSide);
 
         // Instantiation of the gear and setting it to unknown.
-        //m_gear = Gear.kUnknown;
+        //COMMENTED OUT FOR BOT(wiffle) TESTING: m_gear = Gear.kUnknown;
 
     }
 
@@ -75,7 +74,7 @@ public class Drivetrain {
         m_rightFollower.setInverted(InvertType.FollowMaster);
 
         // Shiftgear in robot in Low Gear
-        //shiftGear(Gear.kLowGear);
+        //COMMENTED OUT FOR BOT(wiffle) TESTING: shiftGear(Gear.kLowGear);
 
     }
 
@@ -101,7 +100,7 @@ public class Drivetrain {
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
         //this. means the instance of the class that you are currently in (Drivetrain)
-        //this.shiftGear(driveInput.m_gear);
+        //COMMENTED OUT FOR BOT(wiffle) TESTING: this.shiftGear(driveInput.m_gear);
     }
 
     /**
@@ -174,6 +173,7 @@ public class Drivetrain {
      * @param gear
      */
     
+    //COMMENTED OUT FOR BOT(wiffle) TESTING: 
     /**
     public void shiftGear(Gear gear){
         // Compare the incoming parameter to the current state and determine if it is already set to that gear. 
@@ -208,7 +208,7 @@ public class Drivetrain {
 
     /**
      * Zeros out the encoder positions of the drivetrain
-     * TODO: add constants to robot map
+     * TODO: add these constants to robot map
      */
     public void zeroEncoders() {
         m_leftLeader.getSensorCollection().setQuadraturePosition(0, 30);
