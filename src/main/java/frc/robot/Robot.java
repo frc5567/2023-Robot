@@ -36,9 +36,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
+    //Auton Shuffleboard Updating
+    m_chooser.setDefaultOption("0 Object", kDefaultAuto);
+    m_chooser.addOption("1 Object", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    //Instantiation of needed classes and names assigned as appropriate
     String drivetrainName = "VroomVroom";
     m_vroomVroom = new Drivetrain(drivetrainName);
     m_vroomVroom.initDrivetrain();
@@ -119,15 +122,16 @@ public class Robot extends TimedRobot {
     if (driverInput.m_isAutoLeveling) {
 
       isBotLevel = m_vroomVroom.autoLevel(curPitch);
+      m_shuffleName.periodic(isBotLevel);
 
       //boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
     else {
       m_vroomVroom.arcadeDrive(driverInput);
       isBotLevel = m_vroomVroom.isLevel(curPitch);
+      m_shuffleName.periodic(isBotLevel);
     }
 
-    m_shuffleName.periodic(isBotLevel);
     //publisher widget method to push boolean value of current pitch and "level" status
     //m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
     //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be FALSE)
