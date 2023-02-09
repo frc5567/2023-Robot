@@ -1,121 +1,68 @@
 package frc.robot;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.networktables.BooleanPublisher;
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.GenericSubscriber;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 
+/**
+ * Robot Shuffleboard class created for user input for the variety of classes needing it
+ */
 public class RobotShuffleboard {
 
-    private String m_shuffleName;
-    
-    //declares member variable for the driver tab. 
+    //member variables instantiated for object use
     ShuffleboardTab m_driverTab;
+    //more shuffle board member variables; TODO: BOTH CURRENTLY HERE MIGHT BE UNUSED, SHOULD BE TESTED
+    Shuffleboard m_shuffleboard;
+    Drivetrain m_drivetrain;
+    boolean m_isLevel;
 
-    //declares member variable for tab updater for autoLevel function
-    private BooleanPublisher m_autoLevel;
-    //declares member variable for tab updater for whether autonRunning
-    private BooleanPublisher m_autonRunning;
-    //declares member variable for auton path and 
-    double m_autonPath;
-    private DoublePublisher m_autonPathEntry;
+    //Table label entries are created here
+    private GenericEntry m_isLevelEntry;
 
     /**
-     * Constructor method that creates table for Shuffleboard, with subtable "Datatable".
-     * 
-     * creates a table tab for the checking the bot level
-     * @param shuffleName assigns the name of an instantiated Shuffleboard
+     * Main constructor for Shuffleboard class; creates tabs for Shuffleboard, though we should only need DriverTab
      */
-    public RobotShuffleboard(String shuffleName) {
-        m_shuffleName = shuffleName;
+    public RobotShuffleboard() {
         m_driverTab = Shuffleboard.getTab("Driver Tab");
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-
-        // get the subtable called "datatable"
-        NetworkTable datatable = inst.getTable("Shuffleboard");
-    
-        // publish a topic in "datatable" called "is level"
-        m_autoLevel = datatable.getBooleanTopic("is level").publish();
-
-        // publish a topic in "datatable" called "auton running"
-        m_autoLevel = datatable.getBooleanTopic("auton running").publish();
-
-        // publish a topic in "datatable" called "auton"
-        m_autonPathEntry = datatable.getDoubleTopic("auton").publish();
     }
 
-    /**
-     * init method to call configuration methods for creating a shuffleboard
-     */
+    //Init method to configure each of the shuffleboard widgets
     public void init() {
-        drivetrainShuffleboardConfig();
-        setAutonPath();
+        shuffleboardConfig();
     }
 
     /**
-     * Method to set, from curLevel boolean, the widget boolean value for whether bot is level
-     * @param isLevel boolean that tells whether bot is level, derived (as of now) only from Drivetrain's isLevel method
+     * Periodic method of Shuffleboard
+     * mainly for updating DriverTab box values
+     * @param isBotLevel is a boolean passed in for the isLevel widget for updating
      */
-    public void setWhetherBotIsLevel(boolean isLevel) {
-        m_autoLevel.set(isLevel);
-
+    public void periodic(boolean isBotLevel) {
+        //SmartDashboard.putBoolean("is Level", isBotLevel);
+        m_isLevelEntry.setBoolean(isBotLevel);
     }
 
-    /**
-     * Method to set, from curAutonState boolean, the widget boolean value for whether bot Auton is running
-     * @param autonRunning boolean that tells whether bot is level, derived (as of now) only from Drivetrain's isLevel method
-     */
-    public void setWhetherAutonRunning(boolean autonRunning) {
-        m_autonRunning.set(autonRunning);
-
+/**
+ * No need for this code to be used at the moment.
+ * Code pseudo borrowed from 2022 Robot code, not useful, but used in initial implementation for debugging Shuffleboard.
+ * 
+    private void setIsLevelEntryThing() {
+        m_isLevel = m_isLevelEntry.getBoolean(false);
     }
 
-
-    /**
-     * Method for setting autonPath on shuffleboard, default is 0 object auton
-     * Takes no parameters and returns nothing.
-     * Used for both Auton and Robot classes
-     */
-    public void setAutonPath() {
-        //typecasted to GenericSubscriber for grabbing value, not setting like Publisher
-        //TODO: see if there is better (less clunky) method for finding value of autonPathEntry
-        m_autonPath = ((GenericSubscriber) m_autonPathEntry).getDouble(RobotMap.RobotShuffleboardConstants.DEFAULT_AUTON_PATH);
+    public boolean getIsLevelThing(){
+        setIsLevelEntryThing();
+        return m_isLevel;
     }
+*/
 
     /**
-     * Method to grab the current Auton path from the shuffleboard
-     * specifically for translating the choice to the Auton class
-     * @return the path (double) that the robot will take in auton; takes no parameters
+     * Method for setting widgets up with entry member variables updated to reflect widget entry values; returns and takes nothing
      */
-    public double getAutonPath(){
-        setAutonPath();
-        return m_autonPath;
-    }
-
-
-    /**
-     * Method that grabs shuffleboard tab for Drivetrain and creates widget (boolean color box) for checking whether bot is level
-     */
-    public void drivetrainShuffleboardConfig() {
+    public void shuffleboardConfig() {
         Shuffleboard.selectTab("Driver Tab");
-        m_driverTab.addPersistent("is level", "red")
+        m_isLevelEntry = m_driverTab.addPersistent("is Level?", false)
                                     .withWidget(BuiltInWidgets.kBooleanBox)
                                     .getEntry();
-
-        //created boolean box for checking whether auton actually started and is running, figured it would be useful for shuffleboard interface, as well as console
-        m_driverTab.addPersistent("auton started", "red")
-                                    .withWidget(BuiltInWidgets.kBooleanBox)
-                                    .getEntry();
-        
-        //widget created for auton similar to widget for whether bot is level, but value can be assigned to entry member variable for later use
-        m_autonPathEntry = (DoublePublisher) m_driverTab.addPersistent("Auton Path", RobotMap.RobotShuffleboardConstants.DEFAULT_AUTON_PATH)
-                                    .withWidget(BuiltInWidgets.kTextView)
-                                    .getEntry();
-
     }
-    
 }
