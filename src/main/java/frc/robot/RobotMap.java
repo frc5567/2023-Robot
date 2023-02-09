@@ -168,5 +168,21 @@ public class RobotMap {
         public static final double HIGH_POSITION = 30.0;
         
     }
+
+    /**
+     * Encapsulates constants for the copilot controller class.
+     */
+    public static class CopilotConstants {
+
+        //Arbitrary values TODO: before testing make these more reasonable.
+        public static final double ELEVATOR_START_POS = 1;
+        public static final double ELEVATOR_LOW_POS = 2;
+        public static final double ELEVATOR_MID_POS = 3;
+        public static final double ELEVATOR_HIGH_POS = 4;
+        public static final double ARM_START_POS = 1;
+        public static final double ARM_LOW_POS = 2;
+        public static final double ARM_MID_POS = 3;
+        public static final double ARM_HIGH_POS = 4;
+    }
     
 }
