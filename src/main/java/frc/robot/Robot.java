@@ -26,6 +26,10 @@ public class Robot extends TimedRobot {
   private PilotController m_pilotControl;
   private RobotShuffleboard m_shuffleName;
   private Auton m_auton;
+  private Elevator m_elevator;
+  private Arm m_arm;
+  private CopilotController m_copilotControl;
+
 
   com.ctre.phoenix.sensors.Pigeon2 m_pigeon;
 
@@ -53,6 +57,10 @@ public class Robot extends TimedRobot {
     m_auton = new Auton(m_shuffleName);
 
     m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
+
+    m_elevator = new Elevator();
+    m_arm = new Arm();
+    m_copilotControl = new CopilotController();
 
   }
 
@@ -113,6 +121,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     DriveInput driverInput = m_pilotControl.getDriverInput();
+    CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
     double curPitch = m_pigeon.getPitch();
 
     //updated boolean for checking whether pitch is within "level" range, if/else statement for outputting into the console, initial value of false
@@ -130,6 +139,9 @@ public class Robot extends TimedRobot {
       isBotLevel = m_vroomVroom.isLevel(curPitch);
       m_shuffleName.periodic(isBotLevel);
     }
+    
+    m_elevator.drivePID(coDriverInput.m_elevatorPos);
+    m_arm.armPID(coDriverInput.m_armPos);
 
     //publisher widget method to push boolean value of current pitch and "level" status
     //m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
