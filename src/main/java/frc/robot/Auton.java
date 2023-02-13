@@ -87,7 +87,10 @@ public class Auton {
         DriveInput driveInput = new DriveInput(0, 0, Gear.kLowGear);
         if (m_autonStartOut){
             System.out.println("AUTON STARTED");
-            m_autonStartOut = false;
+        }
+        else {
+            m_path = "";
+            m_step = 0;
         }
 
         //auton path for 0 objects
@@ -137,7 +140,8 @@ public class Auton {
                 }
             }
             else if (m_step == 4){
-                //TODO: end Auton, instantiate some variables, alert user
+                //end Auton, instantiate some variables, alert user
+                m_autonStartOut = false;
                 System.out.println("AUTON NOW ENDED");
             }
         }
