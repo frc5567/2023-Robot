@@ -29,6 +29,8 @@ public class Robot extends TimedRobot {
   private Elevator m_elevator;
   private Arm m_arm;
   private CopilotController m_copilotControl;
+  private Claw m_claw;
+  private Shoulder m_shoulder;
 
 
   com.ctre.phoenix.sensors.Pigeon2 m_pigeon;
@@ -61,6 +63,8 @@ public class Robot extends TimedRobot {
     m_elevator = new Elevator();
     m_arm = new Arm();
     m_copilotControl = new CopilotController();
+    m_claw = new Claw();
+    m_shoulder = new Shoulder();
 
   }
 
@@ -142,6 +146,8 @@ public class Robot extends TimedRobot {
     
     m_elevator.drivePID(coDriverInput.m_elevatorPos);
     m_arm.armPID(coDriverInput.m_armPos);
+    m_claw.setClawState(coDriverInput.m_clawPos);
+    m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
 
     //publisher widget method to push boolean value of current pitch and "level" status
     //m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
