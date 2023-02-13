@@ -109,10 +109,22 @@ public class Robot extends TimedRobot {
     //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be TRUE)
     //m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
 
+    //isLevel variable sets for Auton, much like TeleOp
+    boolean isBotLevelAuton = false;
+    double curPitchAuton = m_pigeon.getPitch();
+    isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
+
     DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
     //run periodic method of Auton class
-    DriveInput driveInput = m_auton.periodic(drivePos);
+    DriveInput driveInput = m_auton.periodic(drivePos, isBotLevelAuton);
     m_vroomVroom.arcadeDrive(driveInput.m_speed, driveInput.m_turnSpeed);
+
+    //autoLevel check and run
+    if (m_auton.toRunAutoLevelOrNotToRun == true) {
+      m_vroomVroom.autoLevel(curPitchAuton);
+    }
+    //Sysout for testing whether autolevel boolean in changing, TO BE DELETED
+    System.out.println(m_auton.toRunAutoLevelOrNotToRun);
   }
 
   /** This function is called once when teleop is enabled. */
