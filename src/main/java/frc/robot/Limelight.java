@@ -6,19 +6,21 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
- * 
+ * Limelight class that encapsulates the code for determining location target relative to the bot. 
  */
 public class Limelight {
 
     /**
-     * Delcares the Pipeline object for the limelight Class
+     * Declares the Pipeline object for the limelight Class
      */
 
      public Pipeline m_pipeline;
      public Pipeline m_AptagPipe;
      public Pipeline m_RetroTapePipe; 
 
-     
+    /**
+     * Creates an enum to store the pipeline ID's(0 for retro tape and 1 for april tags) and the methond to get its ID.
+     */
     public enum Pipeline{
         kRetroTapePipeID(0),
         kApTagPipeID(1);
@@ -30,8 +32,9 @@ public class Limelight {
         private Pipeline(int pipelineID){
             m_pipelineID = pipelineID;
         }
-
-        //returns the member varuble for the Pipeline. 
+        /**
+         * @return the member varuble for the Pipeline. 
+         */
         public int getID(){
             return m_pipelineID;
         }
@@ -47,8 +50,10 @@ public class Limelight {
     // Percent of the reflective tape the screen takes up so we can calculate the distance. 
    double m_areaOfScreen;
 
-   // Gets the values of the x angle offset and the target area. (Add Shuffleboard updates later)
-
+   
+   /**
+    * Constructor that gets the values of the x angle offset and the target area.
+    */
    public Limelight() {
         m_xAngleOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
         m_areaOfScreen = m_limelightTable.getEntry("ta").getDouble(0.0);
@@ -61,13 +66,15 @@ public class Limelight {
     setPipeline(Pipeline.kRetroTapePipeID);
 
    }
-
+   /**
+    * Method that gets the values of the x angle offset and the target area and sets them to the member variables for each.
+    */
    public void periodic() {
     m_xAngleOffset = m_limelightTable.getEntry("tx").getDouble(0.0);
     m_areaOfScreen = m_limelightTable.getEntry("ta").getDouble(0.0);
 
     //TODO: After shuffleboard is finished, uncomment this code.
-    /**
+    /** 
      * Puts the x angle offset on the shuffleboard.
      * SmartDashboard.putNumber("LimelightX Offset", m_xAngleOffset);
      * Puts the percentage of screen on the shuffleboard.
