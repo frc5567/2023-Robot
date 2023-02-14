@@ -83,6 +83,7 @@ public class Auton {
      * @param isBotLevelBack is a boolean input for passed in from Robot to see if the bot is level; mostly for charging station
      * @return DriveInput object that can control drivetrain outside of drivetrain class via position encoders
      */
+    //TODO: sysout step changes should eventually become updates to some shuffleboard widget instead of console (messy, current)
     public DriveInput periodic(DriveEncoderPos drivePos, boolean isBotLevelBack) {
         DriveInput driveInput = new DriveInput(0, 0, Gear.kLowGear);
         if (m_autonStartOut){
@@ -104,8 +105,9 @@ public class Auton {
             //2. move backward enough to start 
             //3. auto level function
             else if (m_step == 1) {
+                System.out.println("now on Step 1");
                 //TODO: adjust encoder ticks to reflect 140 inches out, currently set for 2 wheel revolutions
-                if (drivePos.m_leftLeaderPos >= 4096 && drivePos.m_rightLeaderPos >= 4096) {
+                if (drivePos.m_leftLeaderPos >= 8192 && drivePos.m_rightLeaderPos >= 8192) {
                     //speed and turn are already set to 0 in driveInput
                     m_step += 1;
                 }
@@ -115,33 +117,32 @@ public class Auton {
                 }
             }
             else if (m_step == 2) {
+                System.out.println("now on Step 2");
                 if (!isBotLevelBack){
                    //speed and turn are already set to 0 in driveInput
                    m_step += 1;
                 }
                 else {
                     //slightly slower for backing up
-                    driveInput.m_speed = 0.3;
+                    driveInput.m_speed = -0.3;
                     driveInput.m_turnSpeed = 0;
                 }
             }
             else if (m_step == 3) {
-                //200 20ms time stamps is over 4 total seconds of wait time
-                if (periodicTicCounter >= 200) {
-                    //do the autoLevel thing
-                    toRunAutoLevelOrNotToRun = true;
-                    if (isBotLevelBack) {
+                System.out.println("now on Step 3");
+                //run autoLevel
+                toRunAutoLevelOrNotToRun = true;
+                if (isBotLevelBack) {
+                    //autolevel for 10 more seconds
+                    if (periodicTicCounter >= 500) {
                         toRunAutoLevelOrNotToRun = false;
                         m_step += 1;
                     }
                 }
-                else {
-                    periodicTicCounter++;
-                }
+                periodicTicCounter++;
             }
             else if (m_step == 4){
                 //end Auton, instantiate some variables, alert user
-                m_autonStartOut = false;
                 System.out.println("AUTON NOW ENDED");
             }
         }
