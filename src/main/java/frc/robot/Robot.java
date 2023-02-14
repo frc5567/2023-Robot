@@ -126,8 +126,6 @@ public class Robot extends TimedRobot {
     if (m_auton.toRunAutoLevelOrNotToRun == true) {
       m_vroomVroom.autoLevel(curPitchAuton);
     }
-    //Sysout for testing whether autolevel boolean in changing, TO BE DELETED
-    System.out.println(m_auton.toRunAutoLevelOrNotToRun);
   }
 
   /** This function is called once when teleop is enabled. */
