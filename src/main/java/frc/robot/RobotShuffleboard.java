@@ -53,5 +53,11 @@ public class RobotShuffleboard {
         m_isLevelEntry = m_driverTab.addPersistent("is Level?", false)
                                     .withWidget(BuiltInWidgets.kBooleanBox)
                                     .getEntry();
+        m_xOffsetEntry = m_driverTab.addPersistent("x Angle Offset", 0.0)
+                                    .withWidget(BuiltInWidgets.kTextView)
+                                    .getEntry();
+        m_areaOfScreenEntry = m_driverTab.addPersistent("Area of Screen", 0.0)
+                                    .withWidget(BuiltInWidgets.kTextView)
+                                    .getEntry();
     }
 }
