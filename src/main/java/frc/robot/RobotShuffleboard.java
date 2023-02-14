@@ -15,6 +15,8 @@ public class RobotShuffleboard {
 
     //Table label entries are created here
     private GenericEntry m_isLevelEntry;
+    private GenericEntry m_xOffsetEntry;
+    private GenericEntry m_areaOfScreenEntry;
 
     /**
      * Main constructor for Shuffleboard class; creates tabs for Shuffleboard, though we should only need DriverTab
@@ -36,9 +38,11 @@ public class RobotShuffleboard {
      * @param isBotLevel is a boolean passed in for the isLevel widget for updating
      * @SmartDashboardComments with SmartDashboard outputs are for use if the Entry tabs do not properly update, but they have no use at the moment (as the tabs do properly update)
      */
-    public void periodic(boolean isBotLevel) {
+    public void periodic(boolean isBotLevel, double xOffset, double areaOfScreen) {
         //SmartDashboard.putBoolean("is Level", isBotLevel);
         m_isLevelEntry.setBoolean(isBotLevel);
+        m_xOffsetEntry.setDouble(xOffset);
+        m_areaOfScreenEntry.setDouble(areaOfScreen);
     }
 
     /**
