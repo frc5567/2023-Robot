@@ -208,11 +208,10 @@ public class Drivetrain {
 
     /**
      * Zeros out the encoder positions of the drivetrain
-     * TODO: add these constants to robot map
      */
     public void zeroEncoders() {
-        m_leftLeader.getSensorCollection().setQuadraturePosition(0, 30);
-        m_rightLeader.getSensorCollection().setQuadraturePosition(0, 30);
+        m_leftLeader.getSensorCollection().setQuadraturePosition(0, RobotMap.TIMEOUT_MS);
+        m_rightLeader.getSensorCollection().setQuadraturePosition(0, RobotMap.TIMEOUT_MS);
 
     }
 

@@ -82,7 +82,7 @@ public class Arm {
 	}
 
     /**
-     * 
+     * If the arm is at the target, stops the arm. Otherwise, figures out how far the arm needs to move and uses motion magic to get there.
      * @param deltaInches
      */
     public void armPID(double deltaInches) {
