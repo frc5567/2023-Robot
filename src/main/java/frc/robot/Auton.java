@@ -167,6 +167,7 @@ public class Auton {
                 //end Auton, instantiate some variables, alert user
                 if (sysOutCounter == m_step) {
                     System.out.println("AUTON NOW ENDED");
+                    m_autonStartOut = false;
                 }
                 sysOutCounter += 1;
             }
