@@ -4,7 +4,7 @@ public class Auton {
 
     //member variables to hold controls and robot parts passed in
     private RobotShuffleboard m_robotShuffleboard;
-    //integer and String, respectively, to store what step (by number, 1-? steps) and what path we are on (0 or 1 object)
+    //integer and String, respectively, to store what step (by number, 1-? steps) and what path we are on (comm out, 0, 1, or 2 object)
     private int m_step;
     private String m_path = "";
     //default sets AutonPath to 0 object, creates member variable for currentPath (auton)
