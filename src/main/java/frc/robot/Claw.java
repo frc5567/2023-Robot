@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
  * Claw class that encapsulates the claw position.
@@ -30,6 +31,15 @@ public class Claw {
     
     // Delcares the double solenoid.
     DoubleSolenoid m_clawSol;
+
+    /**
+     * Constructor for claw class. 
+     * One double solenoid
+     */
+    public Claw() {
+        m_clawSol = new DoubleSolenoid(RobotMap.PCM_CAN_ID, PneumaticsModuleType.CTREPCM, RobotMap.ClawConstants.DOUBLESOLENOID_OPEN_PORT, RobotMap.ClawConstants.DOUBLESOLENOID_CLOSE_PORT);
+
+    }
 
     /**
      * Sets the solenoid to open or close.

@@ -13,6 +13,11 @@ public class RobotMap {
     public static final int PIGEON_CAN_ID = 21;
 
     /**
+     * PCM (pneumatic control module)
+     */
+    public static final int PCM_CAN_ID = 14;
+
+    /**
      * All drivetrain constants
      */
     public static class DrivetrainConstants {
@@ -72,12 +77,12 @@ public class RobotMap {
          *
          * TODO: Find Ports that low gear and high gear connect to.
          */
-        public static final int DOUBLESOLENOID_LOW_GEAR_PORT = 6;
+        public static final int DOUBLE_SOLENOID_LOW_GEAR_PORT = 6;
 
         /** 
          * High gear Solenoid port on PCM.
          */
-         public static final int DOUBLESOLENOID_HIGH_GEAR_PORT = 7;
+         public static final int DOUBLE_SOLENOID_HIGH_GEAR_PORT = 7;
 
     }
 
@@ -183,6 +188,24 @@ public class RobotMap {
         public static final double ARM_LOW_POS = 2;
         public static final double ARM_MID_POS = 3;
         public static final double ARM_HIGH_POS = 4;
+    }
+
+    /**
+     * Encapsulates the constants for the claw class
+     * TODO: Check ports
+     */
+    public static class ClawConstants {
+        public static final int DOUBLESOLENOID_OPEN_PORT = 4;
+        public static final int DOUBLESOLENOID_CLOSE_PORT = 5;
+    }
+
+    /**
+     * Encapsulates the constants for the shoulder class
+     * TODO: Check ports
+     */
+    public static class ShoulderConstants {
+        public static final int DOUBLESOLENOID_UP_PORT = 8;
+        public static final int DOUBLESOLENOID_DOWN_PORT = 9;
     }
     
 }
