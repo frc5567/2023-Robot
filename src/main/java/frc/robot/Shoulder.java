@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 
@@ -32,6 +33,14 @@ public class Shoulder {
     }
     // Declares the double solenoid.
     DoubleSolenoid m_shoulderSol;
+
+    /**
+     * Constructor for the shoulder class
+     * One double solenoid
+     */
+    public Shoulder() {
+        m_shoulderSol = new DoubleSolenoid(RobotMap.PCM_CAN_ID, PneumaticsModuleType.CTREPCM, RobotMap.ShoulderConstants.DOUBLESOLENOID_UP_PORT, RobotMap.ShoulderConstants.DOUBLESOLENOID_DOWN_PORT);
+    }
     
     /**
      * Sets the solenoid to open or closed.

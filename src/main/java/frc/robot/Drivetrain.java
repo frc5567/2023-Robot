@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -53,6 +54,8 @@ public class Drivetrain {
         m_rightFollower = new WPI_VictorSPX(RobotMap.DrivetrainConstants.RIGHT_FOLLOWER_CAN_ID);
         m_leftSide = new MotorControllerGroup(m_leftLeader, m_leftFollower);
         m_rightSide = new MotorControllerGroup(m_rightLeader,m_rightFollower);
+        
+        m_solenoid = new DoubleSolenoid(RobotMap.PCM_CAN_ID, PneumaticsModuleType.CTREPCM, RobotMap.DrivetrainConstants.DOUBLE_SOLENOID_LOW_GEAR_PORT, RobotMap.DrivetrainConstants.DOUBLE_SOLENOID_HIGH_GEAR_PORT);
 
         m_drivetrain = new DifferentialDrive(m_leftSide, m_rightSide);
 
