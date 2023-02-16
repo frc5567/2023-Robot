@@ -45,7 +45,7 @@ public class RobotMap {
         /**
          * Max angle of charge station
          */
-        public static final double MAX_ANGLE = 17.0;
+        public static final double MAX_ANGLE = 25.0;
         /**
          * Upper end angle for robot speed when charge station between 12 and 6 deg.
          */

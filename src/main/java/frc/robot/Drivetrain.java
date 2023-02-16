@@ -68,6 +68,7 @@ public class Drivetrain {
      */
     public void initDrivetrain() {
 
+        //TODO: THIS IS CORRECT FOR THE WIFFLEBOT, BUT HAS TO BE CHECKED ON REAL BOT
         m_leftLeader.setInverted(false);
         m_rightLeader.setInverted(true);
         m_leftFollower.setInverted(InvertType.FollowMaster);
@@ -199,8 +200,9 @@ public class Drivetrain {
      * @return DriveEncoderPos 
      */
     public DriveEncoderPos getEncoderPositions() {
-        double leftPos = m_leftLeader.getSelectedSensorPosition();
-        double rightPos = m_rightLeader.getSelectedSensorPosition();
+        //TODO: THESE NEGATED POS VARS DO NOT MAKE LOGIC SENSE WITH WIFFLEBOT TESTING, BUT WORK
+        double leftPos = -m_leftLeader.getSelectedSensorPosition();
+        double rightPos = -m_rightLeader.getSelectedSensorPosition();
         DriveEncoderPos drivePositions = new DriveEncoderPos(leftPos, rightPos);
         return drivePositions;
 
@@ -208,11 +210,10 @@ public class Drivetrain {
 
     /**
      * Zeros out the encoder positions of the drivetrain
-     * TODO: add these constants to robot map
      */
     public void zeroEncoders() {
-        m_leftLeader.getSensorCollection().setQuadraturePosition(0, 30);
-        m_rightLeader.getSensorCollection().setQuadraturePosition(0, 30);
+        m_leftLeader.getSensorCollection().setQuadraturePosition(0, RobotMap.TIMEOUT_MS);
+        m_rightLeader.getSensorCollection().setQuadraturePosition(0, RobotMap.TIMEOUT_MS);
 
     }
 

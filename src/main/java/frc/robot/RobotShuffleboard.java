@@ -10,15 +10,13 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
  */
 public class RobotShuffleboard {
 
-    //member variables instantiated for object use
+    //member variables instantiated for tab object use
     ShuffleboardTab m_driverTab;
-    //more shuffle board member variables; TODO: BOTH CURRENTLY HERE MIGHT BE UNUSED, SHOULD BE TESTED
-    Shuffleboard m_shuffleboard;
-    Drivetrain m_drivetrain;
-    boolean m_isLevel;
 
     //Table label entries are created here
     private GenericEntry m_isLevelEntry;
+    private GenericEntry m_xOffsetEntry;
+    private GenericEntry m_areaOfScreenEntry;
 
     /**
      * Main constructor for Shuffleboard class; creates tabs for Shuffleboard, though we should only need DriverTab
@@ -27,7 +25,9 @@ public class RobotShuffleboard {
         m_driverTab = Shuffleboard.getTab("Driver Tab");
     }
 
-    //Init method to configure each of the shuffleboard widgets
+    /**
+     * Init method to configure each of the shuffleboard widgets
+     */
     public void init() {
         shuffleboardConfig();
     }
@@ -36,25 +36,14 @@ public class RobotShuffleboard {
      * Periodic method of Shuffleboard
      * mainly for updating DriverTab box values
      * @param isBotLevel is a boolean passed in for the isLevel widget for updating
+     * @SmartDashboardComments with SmartDashboard outputs are for use if the Entry tabs do not properly update, but they have no use at the moment (as the tabs do properly update)
      */
-    public void periodic(boolean isBotLevel) {
+    public void periodic(boolean isBotLevel, double xOffset, double areaOfScreen) {
         //SmartDashboard.putBoolean("is Level", isBotLevel);
         m_isLevelEntry.setBoolean(isBotLevel);
+        m_xOffsetEntry.setDouble(xOffset);
+        m_areaOfScreenEntry.setDouble(areaOfScreen);
     }
-
-/**
- * No need for this code to be used at the moment.
- * Code pseudo borrowed from 2022 Robot code, not useful, but used in initial implementation for debugging Shuffleboard.
- * 
-    private void setIsLevelEntryThing() {
-        m_isLevel = m_isLevelEntry.getBoolean(false);
-    }
-
-    public boolean getIsLevelThing(){
-        setIsLevelEntryThing();
-        return m_isLevel;
-    }
-*/
 
     /**
      * Method for setting widgets up with entry member variables updated to reflect widget entry values; returns and takes nothing
@@ -63,6 +52,12 @@ public class RobotShuffleboard {
         Shuffleboard.selectTab("Driver Tab");
         m_isLevelEntry = m_driverTab.addPersistent("is Level?", false)
                                     .withWidget(BuiltInWidgets.kBooleanBox)
+                                    .getEntry();
+        m_xOffsetEntry = m_driverTab.addPersistent("x Angle Offset", 0.0)
+                                    .withWidget(BuiltInWidgets.kTextView)
+                                    .getEntry();
+        m_areaOfScreenEntry = m_driverTab.addPersistent("Area of Screen", 0.0)
+                                    .withWidget(BuiltInWidgets.kTextView)
                                     .getEntry();
     }
 }

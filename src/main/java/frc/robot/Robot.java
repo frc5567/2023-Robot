@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private Drivetrain m_vroomVroom;
+  private Limelight m_limelight;
   private PilotController m_pilotControl;
   private RobotShuffleboard m_shuffleName;
   private Auton m_auton;
@@ -55,6 +56,8 @@ public class Robot extends TimedRobot {
 
     m_shuffleName = new RobotShuffleboard();
     m_shuffleName.init();
+
+    m_limelight = new Limelight();
 
     m_auton = new Auton(m_shuffleName);
 
@@ -109,10 +112,20 @@ public class Robot extends TimedRobot {
     //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be TRUE)
     //m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
 
+    //isLevel variable sets for Auton, much like TeleOp
+    boolean isBotLevelAuton = false;
+    double curPitchAuton = m_pigeon.getPitch();
+    isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
+
     DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
     //run periodic method of Auton class
-    DriveInput driveInput = m_auton.periodic(drivePos);
+    DriveInput driveInput = m_auton.periodic(drivePos, isBotLevelAuton);
     m_vroomVroom.arcadeDrive(driveInput.m_speed, driveInput.m_turnSpeed);
+
+    //autoLevel check and run
+    if (m_auton.toRunAutoLevelOrNotToRun == true) {
+      m_vroomVroom.autoLevel(curPitchAuton);
+    }
   }
 
   /** This function is called once when teleop is enabled. */
@@ -127,6 +140,8 @@ public class Robot extends TimedRobot {
     DriveInput driverInput = m_pilotControl.getDriverInput();
     CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
     double curPitch = m_pigeon.getPitch();
+    m_limelight.periodic();
+    
 
     //updated boolean for checking whether pitch is within "level" range, if/else statement for outputting into the console, initial value of false
     boolean isBotLevel = false;
@@ -134,14 +149,14 @@ public class Robot extends TimedRobot {
     if (driverInput.m_isAutoLeveling) {
 
       isBotLevel = m_vroomVroom.autoLevel(curPitch);
-      m_shuffleName.periodic(isBotLevel);
+      m_shuffleName.periodic(isBotLevel, m_limelight.xOffset(), m_limelight.areaOfScreen());
 
       //boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
     else {
       m_vroomVroom.arcadeDrive(driverInput);
       isBotLevel = m_vroomVroom.isLevel(curPitch);
-      m_shuffleName.periodic(isBotLevel);
+      m_shuffleName.periodic(isBotLevel, m_limelight.xOffset(), m_limelight.areaOfScreen());
     }
     
     m_elevator.drivePID(coDriverInput.m_elevatorPos);
