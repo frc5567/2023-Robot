@@ -41,8 +41,9 @@ public class RobotShuffleboard {
     public void periodic(boolean isBotLevel, double xOffset, double areaOfScreen) {
         //SmartDashboard.putBoolean("is Level", isBotLevel);
         m_isLevelEntry.setBoolean(isBotLevel);
-        m_xOffsetEntry.setDouble(xOffset);
-        m_areaOfScreenEntry.setDouble(areaOfScreen);
+        //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
+        //m_xOffsetEntry.setDouble(xOffset);
+        //m_areaOfScreenEntry.setDouble(areaOfScreen);
     }
 
     /**

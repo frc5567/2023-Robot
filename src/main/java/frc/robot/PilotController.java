@@ -18,8 +18,8 @@ public class PilotController {
         DriveInput driverInput = new DriveInput();
 
         driverInput.m_speed = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
-        //Adjusting for a deadband to compensate for controller stick drift.
-        driverInput.m_turnSpeed = adjustForDeadband(m_controller.getLeftX());
+        //LOGIC HERE IS WEIRD, HAD TO REVERSE POLARITY OF STICK OUTPUT FROM WIFFLE TESTING (turn controls were backwards)
+        driverInput.m_turnSpeed = -adjustForDeadband(m_controller.getLeftX());
 
         driverInput.m_gear = getPilotGear();
         driverInput.m_isAutoLeveling = this.isAutoLeveling();

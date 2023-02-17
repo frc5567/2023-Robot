@@ -132,13 +132,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_vroomVroom.brakeMode();
+    m_vroomVroom.zeroEncoders();
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
     DriveInput driverInput = m_pilotControl.getDriverInput();
-    CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
+    //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
+    //CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
     double curPitch = m_pigeon.getPitch();
     m_limelight.periodic();
     
@@ -159,21 +161,19 @@ public class Robot extends TimedRobot {
       m_shuffleName.periodic(isBotLevel, m_limelight.xOffset(), m_limelight.areaOfScreen());
     }
     
-    m_elevator.drivePID(coDriverInput.m_elevatorPos);
-    m_arm.armPID(coDriverInput.m_armPos);
-    m_claw.setClawState(coDriverInput.m_clawPos);
-    m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
+    //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
+    //m_elevator.drivePID(coDriverInput.m_elevatorPos);
+    //m_arm.armPID(coDriverInput.m_armPos);
+    //m_claw.setClawState(coDriverInput.m_clawPos);
+    //m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
 
-    //publisher widget method to push boolean value of current pitch and "level" status
-    //m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
-    //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be FALSE)
-    //m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
     m_vroomVroom.coastMode();
+    m_auton.init();
   }
 
   /** This function is called periodically when disabled. */

@@ -17,8 +17,6 @@ public class Auton {
     boolean toRunAutoLevelOrNotToRun = false;
     //for use in counting cycles of periodic for wait time
     private int periodicTicCounter = 0;
-    //sysout counter for console clarity
-    private int sysOutCounter = 0;
 
 
     /**
@@ -29,7 +27,7 @@ public class Auton {
         //configure member variables to starting instances of robot systems
         m_robotShuffleboard = shuffleboard;
         //sets auton initial step to step 0
-        m_step = 0;
+        m_step = 1;
     }
 
     /**
@@ -89,14 +87,7 @@ public class Auton {
     public DriveInput periodic(DriveEncoderPos drivePos, boolean isBotLevelBack) {
         DriveInput driveInput = new DriveInput(0, 0, Gear.kLowGear);
         if (m_autonStartOut){
-            if (sysOutCounter == m_step) {
-                System.out.println("AUTON STARTED");
-                m_step += 1;
-                sysOutCounter = m_step;
-            }
-            else {
-                sysOutCounter += 1;
-            }
+            System.out.println("AUTON STARTED");
         }
         else {
             m_path = "";
@@ -107,7 +98,6 @@ public class Auton {
         if (m_path == "zero"){
             if (m_step == 0) {
                 m_step += 1;
-                sysOutCounter = m_step;
                 System.out.println("Internal auton configuration error detected: non-fatal error. AUTON START UP CONTINUING BUT NOTED");
             }
             //FOR THE STEPS, WE WANT TO: 
@@ -115,42 +105,31 @@ public class Auton {
             //2. move backward enough to start 
             //3. auto level function
             else if (m_step == 1) {
-                if(sysOutCounter == m_step) {
-                    System.out.println("now on Step 1");
-                }
-                sysOutCounter += 1;
-                //TODO: adjust encoder ticks to reflect 140 inches out, currently set for 2 wheel revolutions
-                if (drivePos.m_leftLeaderPos >= 8192 && drivePos.m_rightLeaderPos >= 8192) {
+                System.out.println("now on Step 1");
+                //number of tics is now good; TODO: adjust encoder ticks to reflect 140 inches out [on real bot and on carpet]
+                if (drivePos.m_leftLeaderPos >= 33750 && drivePos.m_rightLeaderPos >= 33750) {
                     //speed and turn are already set to 0 in driveInput
                     m_step += 1;
-                    sysOutCounter = m_step;
                 }
                 else {
-                    driveInput.m_speed = 0.4;
+                    driveInput.m_speed = 0.5;
                     driveInput.m_turnSpeed = 0;
                 }
             }
             else if (m_step == 2) {
-                if (sysOutCounter == m_step) {
-                    System.out.println("now on Step 2");
-                }
-                sysOutCounter += 1;
+                System.out.println("now on Step 2");
                 if (!isBotLevelBack){
                    //speed and turn are already set to 0 in driveInput
                    m_step += 1;
-                   sysOutCounter = m_step;
                 }
                 else {
                     //slightly slower for backing up
-                    driveInput.m_speed = -0.3;
+                    driveInput.m_speed = -0.45;
                     driveInput.m_turnSpeed = 0;
                 }
             }
             else if (m_step == 3) {
-                if (sysOutCounter == m_step) {
-                    System.out.println("now on Step 3");
-                }
-                sysOutCounter += 1;
+                System.out.println("now on Step 3");
                 //run autoLevel
                 toRunAutoLevelOrNotToRun = true;
                 if (isBotLevelBack) {
@@ -158,18 +137,14 @@ public class Auton {
                     if (periodicTicCounter >= 500) {
                         toRunAutoLevelOrNotToRun = false;
                         m_step += 1;
-                        sysOutCounter = m_step;
                     }
                 }
                 periodicTicCounter++;
             }
             else if (m_step == 4){
                 //end Auton, instantiate some variables, alert user
-                if (sysOutCounter == m_step) {
-                    System.out.println("AUTON NOW ENDED");
-                    m_autonStartOut = false;
-                }
-                sysOutCounter += 1;
+                System.out.println("AUTON NOW ENDED");
+                m_autonStartOut = false;
             }
         }
         
