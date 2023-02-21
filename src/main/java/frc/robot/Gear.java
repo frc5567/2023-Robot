@@ -1,6 +1,5 @@
 package frc.robot;
 
-
 /**
  * Gear the drivetrain is currently in. Gear Unknown is the intial value before we init it. 
  */
@@ -24,7 +23,6 @@ public enum Gear {
      * Returns gearname as a string.
      * @return GearName
      */
-
     public String toString(){
         return this.GearName;
     }

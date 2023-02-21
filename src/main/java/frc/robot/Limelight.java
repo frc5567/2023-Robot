@@ -1,7 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.*;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -11,12 +9,11 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class Limelight {
 
     /**
-     * Declares the Pipeline object for the limelight Class
+     * Declares the Pipeline objects for the limelight Class
      */
-
-     public Pipeline m_pipeline;
-     public Pipeline m_AptagPipe;
-     public Pipeline m_RetroTapePipe; 
+    public Pipeline m_pipeline;
+    public Pipeline m_AptagPipe;
+    public Pipeline m_RetroTapePipe; 
 
     /**
      * Creates an enum to store the pipeline ID's(0 for retro tape and 1 for april tags) and the methond to get its ID.
@@ -24,8 +21,6 @@ public class Limelight {
     public enum Pipeline{
         kRetroTapePipeID(0),
         kApTagPipeID(1);
-        
-        
 
         int m_pipelineID;
         //Intakes the pipelineID and sets it to the member variable 
@@ -38,16 +33,15 @@ public class Limelight {
         public int getID(){
             return m_pipelineID;
         }
-
     }
  
-
+    //declares the network table for the limelight
    NetworkTable m_limelightTable; 
 
-   //Sets the x angle offset so we can calculate the distance from the limelight to the reflective tape.  
+    //Sets the x angle offset so we can calculate the distance from the limelight to the reflective tape.  
    double m_xAngleOffset;
 
-    // Percent of the reflective tape the screen takes up so we can calculate the distance. 
+    //Percent of the reflective tape the screen takes up so we can calculate the distance. 
    double m_areaOfScreen;
 
    
@@ -62,13 +56,13 @@ public class Limelight {
         m_areaOfScreen = m_limelightTable.getEntry("ta").getDouble(0.0);
    }
 
-
-
-   //Disables the LEDs and sets the default pipeline to the RetroTape pipeline
+   /**
+    * Sets the default pipeline to the RetroTape pipeline
+    */
    public void init() {
     setPipeline(Pipeline.kRetroTapePipeID);
-
    }
+
    /**
     * Method that gets the values of the x angle offset and the target area and sets them to the member variables for each.
     */
@@ -85,6 +79,7 @@ public class Limelight {
      * SmartDashboard.putNumber("LimelightArea Percentage", m_areaOfScreen);
      */
    }
+
    /**
     * Tells how far the target is from left to right.
     * @return the angular value in the x direction of the target(-29.8 to 29.8)
@@ -92,6 +87,7 @@ public class Limelight {
    public double xOffset() {
     return(m_xAngleOffset);
    }
+   
    /**
     * Determines the percent of the screen the target takes up.
     * @return the area of the screen taken up by target

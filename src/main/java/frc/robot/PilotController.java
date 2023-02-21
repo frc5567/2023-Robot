@@ -2,9 +2,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 
+/**
+ * Encapsulates the pilot controller inputs
+ */
 public class PilotController {
     private XboxController m_controller;
 
+    /**
+     * Constructor for the pilot controller. Instantiates the xbox controller.
+     */
     public PilotController() {
         m_controller = new XboxController(RobotMap.PilotControllerConstants.XBOX_CONTROLLER_USB_PORT);
 
@@ -18,6 +24,7 @@ public class PilotController {
         DriveInput driverInput = new DriveInput();
 
         driverInput.m_speed = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
+        
         //Adjusting for a deadband to compensate for controller stick drift.
         driverInput.m_turnSpeed = adjustForDeadband(m_controller.getLeftX());
 
@@ -26,10 +33,10 @@ public class PilotController {
         return driverInput;
     }
 
-        /** 
+    /** 
      * Get driver gear change.
      * @return Gear indicates what the pilot is telling us to do. Unknown indicates no gear change.
-     * */ 
+     */ 
     public Gear getPilotGear(){
         Gear returnGear = Gear.kUnknown;
 

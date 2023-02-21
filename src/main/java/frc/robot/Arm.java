@@ -1,7 +1,10 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.*;
 
 /**
  * Arm class encapsulating motion magic for our arm on top of the elevator.
@@ -26,14 +29,12 @@ public class Arm {
 
     /**
      * Intitializtion method for the Arm class
+     * sets motor inversion (false), sets neutral mode (Brake), zeros encoders.
      */
     public void init() {
-        //sets the inversion status to false
+        m_arm.configFactoryDefault();
         m_arm.setInverted(false);
-        
         m_arm.setNeutralMode(NeutralMode.Brake);
-
-        this.zeroEncoders();
     }
 
     /**
@@ -46,22 +47,17 @@ public class Arm {
 		// Configures sensor as quadrature encoder
 		m_arm.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, RobotMap.ArmConstants.PID_PRIMARY, RobotMap.TIMEOUT_MS);
 
-		// Config sensor and motor direction
-        //TODO: when testing check to see which way the motor is positive/if we need to invert it
-		m_arm.setInverted(true);
-		m_arm.setSensorPhase(true);
-
 		// Set status frame period for data collection where 5 is period length in ms
 		m_arm.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, RobotMap.TIMEOUT_MS);
 
 		// Config neutral deadband
 		m_arm.configNeutralDeadband(RobotMap.ArmConstants.NEUTRAL_DEADBAND, RobotMap.TIMEOUT_MS);
 
-		// Config peak output
+		// Config peak output (forward and reverse)
 		m_arm.configPeakOutputForward(+RobotMap.ArmConstants.PID_PEAK_OUTPUT, RobotMap.TIMEOUT_MS);
 		m_arm.configPeakOutputReverse(-RobotMap.ArmConstants.PID_PEAK_OUTPUT, RobotMap.TIMEOUT_MS);
 
-		// Motion Magic Config
+		// Motion Magic Config (acceleration and cruise velocity)
 		m_arm.configMotionAcceleration(RobotMap.ArmConstants.ARM_ACCELERATION, RobotMap.TIMEOUT_MS);
 		m_arm.configMotionCruiseVelocity(RobotMap.ArmConstants.ARM_CRUISE_VELOCITY, RobotMap.TIMEOUT_MS);
 
@@ -79,30 +75,32 @@ public class Arm {
 
 		// Sets profile slot for PID
 		m_arm.selectProfileSlot(0, RobotMap.ArmConstants.PID_PRIMARY);
+
+        this.zeroEncoders();
 	}
 
     /**
-     * If the arm is at the target, stops the arm. Otherwise, figures out how far the arm needs to move and uses motion magic to get there.
-     * @param deltaInches
+     * If the arm is at the target, stop the arm. Otherwise, use motion magic to figure out how far the arm needs to move.
+     * @param target
      */
-    public void armPID(double deltaInches) {
+    public void armPID(double target) {
         double armPosition = m_arm.getSelectedSensorPosition();
 
-        if(deltaInches < 0) {
-
+        if(target <= -10000000) {
             m_arm.set(ControlMode.PercentOutput, 0.0);
             System.out.println(" Stop (arm)");
-
         }
 
         else{
-
-            double target = (deltaInches) * (RobotMap.ArmConstants.TICKS_PER_REVOLUTION / RobotMap.ArmConstants.DRUM_CIRCUMFERENCE);
             m_arm.set(ControlMode.MotionMagic, target);
             System.out.println("Go to [" + target + "] Arm Position: [" + armPosition + "]");
-
         }
-
     }
-    
+
+    /**
+     * sets to coast mode (used when disabled)
+     */
+    public void coastMode() {
+		m_arm.setNeutralMode(NeutralMode.Coast);
+	}
 }

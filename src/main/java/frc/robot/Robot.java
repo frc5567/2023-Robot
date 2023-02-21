@@ -33,7 +33,6 @@ public class Robot extends TimedRobot {
   private Claw m_claw;
   private Shoulder m_shoulder;
 
-
   com.ctre.phoenix.sensors.Pigeon2 m_pigeon;
 
 
@@ -52,7 +51,9 @@ public class Robot extends TimedRobot {
     String drivetrainName = "VroomVroom";
     m_vroomVroom = new Drivetrain(drivetrainName);
     m_vroomVroom.initDrivetrain();
+
     m_pilotControl = new PilotController();
+    m_copilotControl = new CopilotController();
 
     m_shuffleName = new RobotShuffleboard();
     m_shuffleName.init();
@@ -65,9 +66,11 @@ public class Robot extends TimedRobot {
 
     m_elevator = new Elevator();
     m_arm = new Arm();
-    m_copilotControl = new CopilotController();
     m_claw = new Claw();
     m_shoulder = new Shoulder();
+
+    m_arm.init();
+    m_arm.configPID();
 
   }
 
@@ -132,17 +135,20 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_vroomVroom.brakeMode();
+    m_arm.init();
+    m_arm.configPID();
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+
     DriveInput driverInput = m_pilotControl.getDriverInput();
     CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
     double curPitch = m_pigeon.getPitch();
+
     m_limelight.periodic();
     
-
     //updated boolean for checking whether pitch is within "level" range, if/else statement for outputting into the console, initial value of false
     boolean isBotLevel = false;
     
@@ -159,6 +165,7 @@ public class Robot extends TimedRobot {
       m_shuffleName.periodic(isBotLevel, m_limelight.xOffset(), m_limelight.areaOfScreen());
     }
     
+    //inputs the values from the controllers to the PID/set state methods.
     m_elevator.drivePID(coDriverInput.m_elevatorPos);
     m_arm.armPID(coDriverInput.m_armPos);
     m_claw.setClawState(coDriverInput.m_clawPos);
@@ -174,6 +181,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_vroomVroom.coastMode();
+    m_arm.coastMode();
   }
 
   /** This function is called periodically when disabled. */

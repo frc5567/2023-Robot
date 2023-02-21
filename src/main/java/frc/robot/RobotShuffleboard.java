@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /**
- * Robot Shuffleboard class created for user input for the variety of classes needing it
+ * Robot Shuffleboard class created for user input for the variety of classes needing it.
  */
 public class RobotShuffleboard {
 
-    //member variables instantiated for tab object use
+    //member variable instantiated for tab object use
     ShuffleboardTab m_driverTab;
 
     //Table label entries are created here

@@ -4,12 +4,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
-
 /**
- *  Class that encapsulates shoulder state.
+ * Class that encapsulates shoulder state.
  */
 public class Shoulder {
-    
     /**
      * Enum used to store the shoulder state (0 for down, 1 for up).
      */
@@ -29,14 +27,13 @@ public class Shoulder {
         public int getShoulderState() {
             return m_shoulderValue;
         }
-
     }
+
     // Declares the double solenoid.
     DoubleSolenoid m_shoulderSol;
 
     /**
-     * Constructor for the shoulder class
-     * One double solenoid
+     * Constructor for the shoulder class. Instantiates one double solenoid.
      */
     public Shoulder() {
         m_shoulderSol = new DoubleSolenoid(RobotMap.PCM_CAN_ID, PneumaticsModuleType.CTREPCM, RobotMap.ShoulderConstants.DOUBLESOLENOID_UP_PORT, RobotMap.ShoulderConstants.DOUBLESOLENOID_DOWN_PORT);
