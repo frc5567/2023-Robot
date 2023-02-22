@@ -19,7 +19,7 @@ import com.ctre.phoenix.sensors.Pigeon2;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
+  public static String m_autonSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private Drivetrain m_vroomVroom;
@@ -44,9 +44,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //Auton shuffleboard choices updating
-    m_chooser.setDefaultOption("0 Object", kDefaultAuto);
+    m_chooser.setDefaultOption("none", kDefaultAuto);
+    m_chooser.addOption("0 Object", kCustomAuto);
     m_chooser.addOption("1 Object", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    SmartDashboard.putData("Auton choices", m_chooser);
+    m_autonSelected = m_chooser.getSelected();
 
     //Instantiation of needed classes and names assigned as appropriate
     String drivetrainName = "VroomVroom";
@@ -65,9 +67,10 @@ public class Robot extends TimedRobot {
 
     m_elevator = new Elevator();
     m_arm = new Arm();
-    m_copilotControl = new CopilotController();
-    m_claw = new Claw();
-    m_shoulder = new Shoulder();
+    //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
+    //m_copilotControl = new CopilotController();
+    //m_claw = new Claw();
+    //m_shoulder = new Shoulder();
 
   }
 
@@ -98,12 +101,13 @@ public class Robot extends TimedRobot {
     m_vroomVroom.brakeMode();
     m_vroomVroom.zeroEncoders();
 
-    m_autoSelected = m_chooser.getSelected();
+    m_autonSelected = m_chooser.getSelected();
+
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
 
     //m_shuffleName.setAutonPath();
     m_auton.init();
+    m_auton.selectPath(m_autonSelected);
   }
 
   /** This function is called periodically during autonomous. */
@@ -126,6 +130,8 @@ public class Robot extends TimedRobot {
     if (m_auton.toRunAutoLevelOrNotToRun == true) {
       m_vroomVroom.autoLevel(curPitchAuton);
     }
+
+    m_shuffleName.periodic(isBotLevelAuton, m_auton.isRunning(), m_autonSelected, m_limelight.xOffset(), m_limelight.areaOfScreen());
   }
 
   /** This function is called once when teleop is enabled. */
@@ -151,14 +157,14 @@ public class Robot extends TimedRobot {
     if (driverInput.m_isAutoLeveling) {
 
       isBotLevel = m_vroomVroom.autoLevel(curPitch);
-      m_shuffleName.periodic(isBotLevel, m_limelight.xOffset(), m_limelight.areaOfScreen());
+      m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_limelight.xOffset(), m_limelight.areaOfScreen());
 
       //boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
     else {
       m_vroomVroom.arcadeDrive(driverInput);
       isBotLevel = m_vroomVroom.isLevel(curPitch);
-      m_shuffleName.periodic(isBotLevel, m_limelight.xOffset(), m_limelight.areaOfScreen());
+      m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_limelight.xOffset(), m_limelight.areaOfScreen());
     }
     
     //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
@@ -174,6 +180,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_vroomVroom.coastMode();
     m_auton.init();
+    m_auton.m_autonStartOut = false;
   }
 
   /** This function is called periodically when disabled. */

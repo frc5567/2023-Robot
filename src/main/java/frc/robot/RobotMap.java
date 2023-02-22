@@ -120,7 +120,7 @@ public class RobotMap {
         /**
          * Default value of Auton path, no object auton
          */
-        public static final double DEFAULT_AUTON_PATH = 0;
+        public static final String DEFAULT_AUTON_PATH = "0 Object";
     }
 
     /**

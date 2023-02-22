@@ -8,7 +8,7 @@ public class Auton {
     private int m_step;
     private String m_path = "";
     //default sets AutonPath to 0 object, creates member variable for currentPath (auton)
-    private double m_currentAutonPath = RobotMap.RobotShuffleboardConstants.DEFAULT_AUTON_PATH;
+    private String m_currentAutonPath = RobotMap.RobotShuffleboardConstants.DEFAULT_AUTON_PATH;
     //boolean for showing whether auton is started and is set to false otherwise and after
     boolean m_autonStartOut = false;
     //boolean for running out of class method, set to false by default
@@ -39,16 +39,14 @@ public class Auton {
         //m_currentAutonPath = m_robotShuffleboard.getAutonPath();
         m_step = 0;
         m_autonStartOut = true;
-        selectPath();
-        //TODO: set path from shuffleboard choice here
     }
 
     /**
-     * Method that checks state of auton
-     * @return whether auton is running
+     * Method that checks running state (not path) of auton
+     * @return whether auton is running via start flag and path assignment verification
      */
     public boolean isRunning() {
-        if (m_path != "" || m_autonStartOut){
+        if (m_path != "" && m_autonStartOut){
             return true;
         }
         else {
@@ -59,21 +57,19 @@ public class Auton {
     /**
      * Method for actually selecting Auton path from shuffleboard and set console to reflect that
      */
-    private void selectPath() {
-        //TODO: add code here for grabbing chosen path from Shuffleboard and setting m_currentAutonPath to it
+    public void selectPath(String autonPath) {
+        m_currentAutonPath = autonPath;
         //path integer assigned is based on number of objects auton has set to achieve
-        if (m_currentAutonPath == 0){
+        if (m_currentAutonPath == "0 Object"){
             System.out.println("Setting Auton to Charging Station Path");
-            m_path = "zero";
+            m_path = m_currentAutonPath;
         }
-        else if (m_currentAutonPath == 1){
+        else if (m_currentAutonPath == "1 Object"){
             System.out.println("Setting Auton to 1 Object Path");
-            m_path = "one";
+            m_path = m_currentAutonPath;
         }
         else{
-            m_currentAutonPath = 0;
-            System.out.println("Setting Auton to Charging Station Path");
-            m_path = "zero";
+            System.out.println("No path selected. Please restart auton mode and choose one.");
         }
     }
 
@@ -95,7 +91,7 @@ public class Auton {
         }
 
         //auton path for 0 objects
-        if (m_path == "zero"){
+        if (m_path == "0 Object"){
             if (m_step == 0) {
                 m_step += 1;
                 System.out.println("Internal auton configuration error detected: non-fatal error. AUTON START UP CONTINUING BUT NOTED");
@@ -144,6 +140,7 @@ public class Auton {
             else if (m_step == 4){
                 //end Auton, instantiate some variables, alert user
                 System.out.println("AUTON NOW ENDED");
+                m_path = "";
                 m_autonStartOut = false;
             }
         }

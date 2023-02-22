@@ -16,6 +16,8 @@ public class RobotShuffleboard {
 
     //Table label entries are created here
     private GenericEntry m_isLevelEntry;
+    private GenericEntry m_autonRunningEntry;
+    private GenericEntry m_autonStateEntry;
     private GenericEntry m_xOffsetEntry;
     private GenericEntry m_areaOfScreenEntry;
 
@@ -39,9 +41,15 @@ public class RobotShuffleboard {
      * @param isBotLevel is a boolean passed in for the isLevel widget for updating
      * @SmartDashboardComments with SmartDashboard outputs are for use if the Entry tabs do not properly update, but they have no use at the moment (as the tabs do properly update)
      */
-    public void periodic(boolean isBotLevel, double xOffset, double areaOfScreen) {
+    public void periodic(boolean isBotLevel, boolean autonRunning, String autonStateString, double xOffset, double areaOfScreen) {
         //SmartDashboard.putBoolean("is Level", isBotLevel);
         m_isLevelEntry.setBoolean(isBotLevel);
+        //SmartDashboard.putBoolean("Auton Running?", autonRunning);
+        m_autonRunningEntry.setBoolean(autonRunning);
+        m_autonStateEntry.setString(autonStateString);
+
+        //SmartDashboard.putBoolean("x Angle Offset", xOffset);
+        //SmartDashboard.putBoolean("Area of Screen", areaOfScreen);
         //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
         //m_xOffsetEntry.setDouble(xOffset);
         //m_areaOfScreenEntry.setDouble(areaOfScreen);
@@ -55,6 +63,12 @@ public class RobotShuffleboard {
         m_isLevelEntry = m_driverTab.add("is Level?", false)
                                     .withWidget(BuiltInWidgets.kBooleanBox)
                                     .getEntry();
+        m_autonRunningEntry = m_driverTab.add("Auton Running?", false)
+                                    .withWidget(BuiltInWidgets.kBooleanBox)
+                                    .getEntry();
+        m_autonStateEntry = m_driverTab.add("Auton Path:", "No Path Assigned")
+                                    .withWidget(BuiltInWidgets.kTextView)
+                                    .getEntry();                            
         m_xOffsetEntry = m_driverTab.add("x Angle Offset", 0.0)
                                     .withWidget(BuiltInWidgets.kTextView)
                                     .getEntry();
