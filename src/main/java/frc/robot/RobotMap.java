@@ -51,10 +51,12 @@ public class RobotMap {
          * Max angle of charge station
          */
         public static final double MAX_ANGLE = 25.0;
+
         /**
          * Upper end angle for robot speed when charge station between 12 and 6 deg.
          */
         public static final double UPPER_MID_RANGE_ANGLE = 12.0;
+
         /**
          * Upper end angle for robot speed when charge station between 6 and 2 deg.
          */
@@ -64,17 +66,19 @@ public class RobotMap {
          * Auto leveling crawl drive speed
          */
         public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.3;
+
         /**
          * Auto leveling mid drive speed
          */
         public static final double MID_LEVEL_DRIVE_SPEED = 0.4;
+
         /**
          * Auto leveling high drive speed
          */
         public static final double HIGH_LEVEL_DRIVE_SPEED = 0.5;
+
         /**
-        * Low Gear Solenoid port on the PCM.
-         *
+         * Low Gear Solenoid port on the PCM.
          * TODO: Find Ports that low gear and high gear connect to.
          */
         public static final int DOUBLE_SOLENOID_LOW_GEAR_PORT = 6;
@@ -116,7 +120,6 @@ public class RobotMap {
      * All robot shuffleboard constants
      */
     public static class RobotShuffleboardConstants {
-
         /**
          * Default value of Auton path, no object auton
          */
@@ -150,7 +153,7 @@ public class RobotMap {
 
     /**
      * Encapsulates constants for the elevator class.
-     *TODO: double check all constants and TEST
+     * TODO: double check all constants and TEST
      */
     public static class ArmConstants {
 
@@ -159,8 +162,8 @@ public class RobotMap {
         public static final int PID_PRIMARY = 0;
         public static final double NEUTRAL_DEADBAND = 0.001;
         public static final double PID_PEAK_OUTPUT = 1.0;
-        public static final int ARM_ACCELERATION = 2000;
-        public static final int ARM_CRUISE_VELOCITY = 2000;
+        public static final int ARM_ACCELERATION = 15000;
+        public static final int ARM_CRUISE_VELOCITY = 15000;
 
         public static final Gains ARM_GAINS = new Gains(0.4, 0.0, 0.0, 0.0, 100, 1.0);
 
@@ -168,9 +171,10 @@ public class RobotMap {
         public static final int TICKS_PER_REVOLUTION = 2048;
 
         public static final double START_POSITION = 0.0;
-        public static final double LOW_POSITION = 10.0;
-        public static final double MID_POSITION = 20.0;
-        public static final double HIGH_POSITION = 30.0;
+        public static final double FLOOR_POS = -65410;
+        public static final double MID_POS = -344000;
+        public static final double HIGH_POS = -372000;
+        public static final double APPROACH_POS = -429000;
         
     }
 

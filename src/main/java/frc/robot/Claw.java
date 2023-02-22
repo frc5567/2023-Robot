@@ -29,7 +29,7 @@ public class Claw {
         }
     }
     
-    // Delcares the double solenoid.
+    //Delcares the double solenoid.
     DoubleSolenoid m_clawSol;
 
     /**

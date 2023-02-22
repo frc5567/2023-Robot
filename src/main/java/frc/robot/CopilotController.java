@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Claw.ClawState;
 import frc.robot.Shoulder.ShoulderState;
 
+/**
+ * Encapsulates the input for the copilot controller.
+ */
 public class CopilotController {
     private XboxController m_controller;
 
