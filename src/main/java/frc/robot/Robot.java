@@ -19,7 +19,7 @@ import com.ctre.phoenix.sensors.Pigeon2;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
-  public static String m_autonSelected;
+  private String m_autonSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private Drivetrain m_vroomVroom;
