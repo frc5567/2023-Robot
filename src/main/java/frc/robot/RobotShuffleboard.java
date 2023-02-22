@@ -24,7 +24,7 @@ public class RobotShuffleboard {
      * Main constructor for Shuffleboard class; creates tabs for Shuffleboard, though we should only need DriverTab
      */
     public RobotShuffleboard() {
-        m_driverTab = Shuffleboard.getTab("Driver Tab");
+        m_driverTab = Shuffleboard.getTab("[Driver Tab]");
     }
 
     /**
@@ -58,7 +58,7 @@ public class RobotShuffleboard {
      * Method for setting widgets up with entry member variables updated to reflect widget entry values; returns and takes nothing
      */
     public void shuffleboardConfig() {
-        Shuffleboard.selectTab("Driver Tab");
+        Shuffleboard.selectTab("[Driver Tab]");
         m_isLevelEntry = m_driverTab.add("is Level?", false)
                                     .withWidget(BuiltInWidgets.kBooleanBox)
                                     .getEntry();
