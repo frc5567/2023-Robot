@@ -3,7 +3,6 @@ package frc.robot;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /**
@@ -66,7 +65,7 @@ public class RobotShuffleboard {
         m_autonRunningEntry = m_driverTab.add("Auton Running?", false)
                                     .withWidget(BuiltInWidgets.kBooleanBox)
                                     .getEntry();
-        m_autonStateEntry = m_driverTab.add("Auton Path:", "No Path Assigned")
+        m_autonStateEntry = m_driverTab.add("Auton Path:", "No Path Running; pick from SmartDashboard!")
                                     .withWidget(BuiltInWidgets.kTextView)
                                     .getEntry();                            
         m_xOffsetEntry = m_driverTab.add("x Angle Offset", 0.0)

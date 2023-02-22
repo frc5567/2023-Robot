@@ -46,6 +46,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("none", kDefaultAuto);
     m_chooser.addOption("0 Object", kCustomAuto);
     m_chooser.addOption("1 Object", kCustomAuto);
+    m_chooser.addOption("Community Out", kCustomAuto);
+    m_chooser.addOption("2 Object", kCustomAuto);
     SmartDashboard.putData("Auton choices", m_chooser);
     m_autonSelected = m_chooser.getSelected();
 
@@ -62,7 +64,7 @@ public class Robot extends TimedRobot {
 
     m_limelight = new Limelight();
 
-    m_auton = new Auton(m_shuffleName);
+    m_auton = new Auton();
 
     m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
 

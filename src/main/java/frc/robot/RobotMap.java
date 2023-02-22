@@ -117,9 +117,9 @@ public class RobotMap {
     }
 
     /**
-     * All robot shuffleboard constants
+     * All auton constants for class methods and pathing
      */
-    public static class RobotShuffleboardConstants {
+    public static class AutonConstants {
         /**
          * Default value of Auton path, no object auton
          */
