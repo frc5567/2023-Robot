@@ -32,7 +32,7 @@ public class DriveInput {
     }
 
      /**
-     * Constructor that sets the speed and turn
+     * Constructor that sets the speed, turn, and gear
      * @param speed
      * @param turn
      * @param gear

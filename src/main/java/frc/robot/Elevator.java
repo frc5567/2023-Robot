@@ -1,5 +1,4 @@
 package frc.robot;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.*;
 
@@ -30,9 +29,9 @@ public class Elevator {
     
     /**
      * Initialization method for the Elevator class.
+     * sets motor controller inversion to false, sets the neutral mode to brake, and zeros encoder. 
      */
     public void init() {
-
         // Sets the inversion status of the elevator to false.
         m_elevator.setInverted(false);
 
@@ -92,27 +91,19 @@ public class Elevator {
     /**
      * If the target distance is less than 0 it stops elevator.
      * If the distance is greater than zero it calculates the target and tells elevator to go there.
-     * @param deltaInches
+     * @param target
      */
-    public void drivePID(double deltaInches) {
-
+    public void drivePID(double target) {
         double position = m_elevator.getSelectedSensorPosition();
 
-
-        if(deltaInches < 0) {
-
+        if(target < 0) {
             m_elevator.set(ControlMode.PercentOutput, 0.0);
             System.out.println(" Stop");
-
         }
 
         else{
-
-            double target = (deltaInches) * (RobotMap.ElevatorConstants.TICKS_PER_REVOLUTION / RobotMap.ElevatorConstants.DRUM_CIRCUMFERENCE);
             m_elevator.set(ControlMode.MotionMagic, target);
             System.out.println("Go to [" + target + "] Position: [" + position + "]");
-
         }
-
     }
 }

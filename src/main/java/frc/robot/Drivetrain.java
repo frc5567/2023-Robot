@@ -19,9 +19,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Talon;
 //WHEN THE TIME COMES, ALL COMMENTS THAT HAVE "COMMENTED OUT FOR BOT(wiffle) TESTING:" MUST BE REMOVED TO LET GEAR STUFF WORK!!!
 
 /**
- * 
- * There is a drivetrain class now.
- * 
+ * Class encapsulates drive position, gear, and auto leveling method.
  */
 public class Drivetrain {
     private String m_drivetrainName;
@@ -43,7 +41,6 @@ public class Drivetrain {
 
     /**
      * Constructor for the drivetrain taking a name.
-     * 
      * @param dName The name of the drivetrain.
      */
     public Drivetrain(String dName) {
