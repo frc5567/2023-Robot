@@ -33,6 +33,9 @@ public class CoDriveInput {
     public CoDriveInput(double elevatorPos, double armPos) {
         m_elevatorPos = elevatorPos;
         m_armPos = armPos;
+        m_manualElevator = 0;
+        m_clawPos = ClawState.kOpen;
+        m_shoulderPos = ShoulderState.kDown;
     }
 
     /**
@@ -45,6 +48,8 @@ public class CoDriveInput {
         m_elevatorPos = elevatorPos;
         m_armPos = armPos;
         m_clawPos = clawPos;
+        m_manualElevator = 0;
+        m_shoulderPos = ShoulderState.kDown;
     }
 
     /**
@@ -59,6 +64,7 @@ public class CoDriveInput {
         m_armPos = armPos;
         m_clawPos = clawPos;
         m_shoulderPos = shoulderPos;
+        m_manualElevator = 0;
     }
 
     /**

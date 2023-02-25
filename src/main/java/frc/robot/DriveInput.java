@@ -33,6 +33,8 @@ public class DriveInput {
         m_turnSpeed = turn;
         m_gear = Gear.kLowGear;
         m_isAutoLeveling = false;
+        m_manualArm = 0;
+        m_armPosition = RobotMap.CopilotConstants.ARM_START_POS;
     }
 
      /**
@@ -46,6 +48,8 @@ public class DriveInput {
         m_turnSpeed = turn;
         m_gear = gear;
         m_isAutoLeveling = false;
+        m_manualArm = 0;
+        m_armPosition = RobotMap.CopilotConstants.ARM_START_POS;
     }
 
     /**
@@ -61,6 +65,7 @@ public class DriveInput {
         m_gear = gear;
         m_armPosition = armPos;
         m_isAutoLeveling = false;
+        m_manualArm = 0;
     }
 
     /**
