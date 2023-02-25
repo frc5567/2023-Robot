@@ -97,6 +97,12 @@ public class Arm {
         }
     }
 
+    public void driveArm(double speed) {
+        m_arm.set(speed);
+        double enc = m_arm.getSelectedSensorPosition(RobotMap.ArmConstants.PID_PRIMARY);
+        System.out.println("[" + speed + "][" + enc + "]");
+    }
+
     /**
      * sets to coast mode (used when disabled)
      */

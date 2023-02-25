@@ -11,13 +11,15 @@ public class CoDriveInput {
     public double m_armPos;
     public ClawState m_clawPos;
     public ShoulderState m_shoulderPos;
+    public double m_manualElevator;
 
     /**
      * Default constructor which sets zero values
      */
     public CoDriveInput() {
-        m_elevatorPos = 0;
-        m_armPos = 0;
+        m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_START_POS;
+        m_armPos = RobotMap.CopilotConstants.ARM_START_POS;
+        m_manualElevator = 0;
         //TODO: might want to switch default value to closed in the future.
         m_clawPos = ClawState.kOpen;
         m_shoulderPos = ShoulderState.kDown;
@@ -45,7 +47,7 @@ public class CoDriveInput {
         m_clawPos = clawPos;
     }
 
-     /**
+    /**
      * Constructor that sets the elevator, arm, claw, and shoulder positions.
      * @param elevatorPos
      * @param armPos
@@ -57,6 +59,22 @@ public class CoDriveInput {
         m_armPos = armPos;
         m_clawPos = clawPos;
         m_shoulderPos = shoulderPos;
+    }
+
+    /**
+     * Constructor that sets the elevator, arm, claw, manual elevator speed, and shoulder positions.
+     * @param elevatorPos
+     * @param armPos
+     * @param clawPos
+     * @param shoulderPos
+     * @param manualElevator
+     */
+    public CoDriveInput(double elevatorPos, double armPos, ClawState clawPos, ShoulderState shoulderPos, double manualElevator) {
+        m_elevatorPos = elevatorPos;
+        m_armPos = armPos;
+        m_clawPos = clawPos;
+        m_shoulderPos = shoulderPos;
+        m_manualElevator = manualElevator;
     }
 }
 

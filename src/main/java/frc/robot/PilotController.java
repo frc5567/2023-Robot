@@ -23,8 +23,33 @@ public class PilotController {
     public DriveInput getDriverInput() {
         DriveInput driverInput = new DriveInput();
 
+        if (m_controller.getStartButton()) {
+            driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_START_POS;
+        }
+        else if (m_controller.getAButton()) {
+            driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_FLOOR_POS;
+        }
+        else if (m_controller.getBButton()) {
+            driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_MID_POS;
+        }
+        else if (m_controller.getXButton()) {
+            driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_HIGH_POS;
+        }
+        else if (m_controller.getYButton()) {
+            driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_APPROACH_POS;
+        }
+        else {
+            double speed = m_controller.getRightY();
+           if (Math.abs(speed) > 0.09) {
+            driverInput.m_manualArm = speed;
+           }
+           else {
+            driverInput.m_manualArm = 0;
+           }  
+        }
+
         driverInput.m_speed = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
-        
+
         //Adjusting for a deadband to compensate for controller stick drift.
         driverInput.m_turnSpeed = adjustForDeadband(m_controller.getLeftX());
 
@@ -41,11 +66,11 @@ public class PilotController {
         Gear returnGear = Gear.kUnknown;
 
         // When x button is pressed, the robot switches to high gear.
-        if(m_controller.getXButtonPressed()){
+        if(m_controller.getLeftBumper()){
             returnGear = Gear.kHighGear;
         } 
         // When y button is pressed the robot switches to low gear. 
-        else if(m_controller.getYButtonPressed()){
+        else if(m_controller.getRightBumper()){
             returnGear = Gear.kLowGear; 
         }
         return returnGear;
@@ -55,7 +80,7 @@ public class PilotController {
      * Return input from the controller for auto leveling.
      */
     public boolean isAutoLeveling() {
-        boolean autoLeveling = m_controller.getAButton();
+        boolean autoLeveling = m_controller.getBackButton();
 
         return autoLeveling;
     }

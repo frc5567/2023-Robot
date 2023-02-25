@@ -45,11 +45,17 @@ public class CopilotController {
 
         }
         else if (m_controller.getYButton()){
-            coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_APPROACH_POS;
+            //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_APPROACH_POS;
         }
         else {
-            coDriveInput.m_armPos = -10000000;
-            coDriveInput.m_elevatorPos = -10000000;
+           // coDriveInput.m_armPos = -10000000;
+           double speed = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis();
+           if (Math.abs(speed) > 0.09) {
+            coDriveInput.m_manualElevator = speed;
+           }
+           else {
+            coDriveInput.m_manualElevator = 0;
+           }   
         }
 
         // When the right bumper is pressed, toggles the claw state.

@@ -170,8 +170,19 @@ public class Robot extends TimedRobot {
     }
     
     //inputs the values from the controllers to the PID/set state methods.
-    m_elevator.drivePID(coDriverInput.m_elevatorPos);
-    m_arm.armPID(coDriverInput.m_armPos);
+    if (coDriverInput.m_manualElevator != 0) {
+      m_elevator.drive(coDriverInput.m_manualElevator);
+    }
+    else {
+      m_elevator.drivePID(coDriverInput.m_elevatorPos);
+    }
+    if (driverInput.m_manualArm != 0) {
+      m_arm.driveArm(driverInput.m_manualArm);
+    }
+    else {
+      m_arm.armPID(driverInput.m_armPosition);
+    }
+    
     //m_claw.setClawState(coDriverInput.m_clawPos);
     //m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
 
