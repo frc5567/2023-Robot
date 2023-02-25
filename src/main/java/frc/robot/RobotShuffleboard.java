@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Robot Shuffleboard class created for user input for the variety of classes needing it.
@@ -17,6 +18,7 @@ public class RobotShuffleboard {
     private GenericEntry m_isLevelEntry;
     private GenericEntry m_autonRunningEntry;
     private GenericEntry m_autonStateEntry;
+    private GenericEntry m_autonStepEntry;
     private GenericEntry m_xOffsetEntry;
     private GenericEntry m_areaOfScreenEntry;
 
@@ -36,19 +38,28 @@ public class RobotShuffleboard {
 
     /**
      * Periodic method of Shuffleboard
-     * mainly for updating DriverTab box values
+     * mainly for updating DriverTab widget values
      * @param isBotLevel is a boolean passed in for the isLevel widget for updating
-     * @SmartDashboardComments with SmartDashboard outputs are for use if the Entry tabs do not properly update, but they have no use at the moment (as the tabs do properly update)
+     * @param autonRunning is a boolean passed for seeing whether Auton is running
+     * @param autonStateString String for updating what path the Auton mode is running
+     * @param autonStep Step integer for seeing what step Auton is on, regardless of path
+     * @param xOffset double for seeing Limelight xOffset var updated
+     * @param areaOfScreen double for seeing Limelight areaOfScreen var updated
+     * @CodedSmartDashboardComments code with SmartDashboard outputs in mind are for use if the Entry tabs do not properly update, but they have no use at the moment (as the tabs do properly update)
      */
-    public void periodic(boolean isBotLevel, boolean autonRunning, String autonStateString, double xOffset, double areaOfScreen) {
+    public void periodic(boolean isBotLevel, boolean autonRunning, String autonStateString, int autonStep, double xOffset, double areaOfScreen) {
         //SmartDashboard.putBoolean("is Level", isBotLevel);
         m_isLevelEntry.setBoolean(isBotLevel);
+
         //SmartDashboard.putBoolean("Auton Running?", autonRunning);
         m_autonRunningEntry.setBoolean(autonRunning);
+        //SmartDashboard.putString("Auton Path:", autonStateString);
         m_autonStateEntry.setString(autonStateString);
+        //SmartDashboard.putNumber("Auton Step:", autonStep);
+        m_autonStepEntry.setInteger(autonStep);
 
-        //SmartDashboard.putBoolean("x Angle Offset", xOffset);
-        //SmartDashboard.putBoolean("Area of Screen", areaOfScreen);
+        //SmartDashboard.putNumber("x Angle Offset", xOffset);
+        //SmartDashboard.putNumber("Area of Screen", areaOfScreen);
         //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
         //m_xOffsetEntry.setDouble(xOffset);
         //m_areaOfScreenEntry.setDouble(areaOfScreen);
@@ -59,15 +70,21 @@ public class RobotShuffleboard {
      */
     public void shuffleboardConfig() {
         Shuffleboard.selectTab("[Driver Tab]");
+        //Robot state widgets
         m_isLevelEntry = m_driverTab.add("is Level?", false)
                                     .withWidget(BuiltInWidgets.kBooleanBox)
                                     .getEntry();
+        //Auton widgets
         m_autonRunningEntry = m_driverTab.add("Auton Running?", false)
                                     .withWidget(BuiltInWidgets.kBooleanBox)
                                     .getEntry();
         m_autonStateEntry = m_driverTab.add("Auton Path:", "No Path Running; pick from SmartDashboard!")
                                     .withWidget(BuiltInWidgets.kTextView)
-                                    .getEntry();                            
+                                    .getEntry();
+        m_autonStepEntry = m_driverTab.add("Auton Step:", 0)
+                                    .withWidget(BuiltInWidgets.kTextView)
+                                    .getEntry();
+        //Limelight widgets                         
         m_xOffsetEntry = m_driverTab.add("x Angle Offset", 0.0)
                                     .withWidget(BuiltInWidgets.kTextView)
                                     .getEntry();

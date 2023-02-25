@@ -6,7 +6,7 @@ public class Auton {
     //ex: private RobotShuffleboard m_robotShuffleboard;
 
     //integer and String, respectively, to store what step (by number, 1-? steps) and what path we are on (comm out, 0, 1, or 2 object)
-    private int m_step;
+    int m_step;
     private String m_path = "";
     //default sets AutonPath to 0 object, creates member variable for currentPath (auton)
     private String m_currentAutonPath = RobotMap.AutonConstants.DEFAULT_AUTON_PATH;
@@ -38,7 +38,7 @@ public class Auton {
     public void init() {
         //initializes elements of robot for the Auton specifically
         //m_currentAutonPath = m_robotShuffleboard.getAutonPath();
-        m_step = 1;
+        m_step = 0;
         m_autonStartOut = true;
     }
 
@@ -60,6 +60,7 @@ public class Auton {
      */
     public void selectPath(String autonPath) {
         m_currentAutonPath = autonPath;
+        m_step = 1;
         //path integer assigned is based on number of objects auton has set to achieve
         if (m_currentAutonPath == "0 Object"){
             System.out.println("Setting Auton to Charging Station Path");

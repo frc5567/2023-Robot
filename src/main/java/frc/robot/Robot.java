@@ -137,7 +137,7 @@ public class Robot extends TimedRobot {
       m_vroomVroom.autoLevel(curPitchAuton);
     }
 
-    m_shuffleName.periodic(isBotLevelAuton, m_auton.isRunning(), m_autonSelected, m_limelight.xOffset(), m_limelight.areaOfScreen());
+    m_shuffleName.periodic(isBotLevelAuton, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
   }
 
   /** This function is called once when teleop is enabled. */
@@ -147,6 +147,8 @@ public class Robot extends TimedRobot {
 
     m_arm.init();
     m_arm.configPID();
+
+    m_auton.m_autonStartOut = false;
 
   }
 
@@ -167,14 +169,14 @@ public class Robot extends TimedRobot {
     if (driverInput.m_isAutoLeveling) {
 
       isBotLevel = m_vroomVroom.autoLevel(curPitch);
-      m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_limelight.xOffset(), m_limelight.areaOfScreen());
+      m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
 
       //boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
     else {
       m_vroomVroom.arcadeDrive(driverInput);
       isBotLevel = m_vroomVroom.isLevel(curPitch);
-      m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_limelight.xOffset(), m_limelight.areaOfScreen());
+      m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
     }
     
     //inputs the values from the controllers to the PID/set state methods.
@@ -191,7 +193,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_vroomVroom.coastMode();
     m_arm.coastMode();
-    m_auton.init();
+
     m_auton.m_autonStartOut = false;
   }
 
