@@ -32,7 +32,8 @@ public class Drivetrain {
     private MotorControllerGroup m_rightSide;
 
     // Declaring the gear so it can be used for swicthing between high and low gear
-    //COMMENTED OUT FOR BOT(wiffle) TESTING: private Gear m_gear;
+    //COMMENTED OUT FOR BOT(wiffle) TESTING: 
+    private Gear m_gear;
 
     // Pneumatic Controller for Gear box
     private DoubleSolenoid m_solenoid;
@@ -57,7 +58,8 @@ public class Drivetrain {
         m_drivetrain = new DifferentialDrive(m_leftSide, m_rightSide);
 
         // Instantiation of the gear and setting it to unknown.
-        //COMMENTED OUT FOR BOT(wiffle) TESTING: m_gear = Gear.kUnknown;
+        //COMMENTED OUT FOR BOT(wiffle) TESTING: 
+        m_gear = Gear.kUnknown;
 
     }
 
@@ -69,13 +71,14 @@ public class Drivetrain {
     public void initDrivetrain() {
 
         //TODO: THIS IS CORRECT FOR THE WIFFLEBOT, BUT HAS TO BE CHECKED ON REAL BOT
-        m_leftLeader.setInverted(false);
-        m_rightLeader.setInverted(true);
+        m_leftLeader.setInverted(true);
+        m_rightLeader.setInverted(false);
         m_leftFollower.setInverted(InvertType.FollowMaster);
         m_rightFollower.setInverted(InvertType.FollowMaster);
 
         // Shiftgear in robot in Low Gear
-        //COMMENTED OUT FOR BOT(wiffle) TESTING: shiftGear(Gear.kLowGear);
+        //COMMENTED OUT FOR BOT(wiffle) TESTING: 
+        this.shiftGear(Gear.kLowGear);
 
     }
 
@@ -101,7 +104,8 @@ public class Drivetrain {
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
         //this. means the instance of the class that you are currently in (Drivetrain)
-        //COMMENTED OUT FOR BOT(wiffle) TESTING: this.shiftGear(driveInput.m_gear);
+        //COMMENTED OUT FOR BOT(wiffle) TESTING: 
+        this.shiftGear(driveInput.m_gear);
     }
 
     /**
@@ -173,9 +177,7 @@ public class Drivetrain {
      /** shiftGear is the way we change between high and low gear (Gear.kLowGear and Gear.kHighGear)
      * @param gear
      */
-    
     //COMMENTED OUT FOR BOT(wiffle) TESTING: 
-    /**
     public void shiftGear(Gear gear){
         // Compare the incoming parameter to the current state and determine if it is already set to that gear. 
         if (m_gear == gear){
@@ -193,7 +195,7 @@ public class Drivetrain {
             m_solenoid.set(Value.kReverse);
         }
     }
-    */
+    
 
     /**
      * Gets encoder positions of the drivetrain

@@ -89,21 +89,14 @@ public class Elevator {
     public void drivePID(double target) {
         double position = m_elevator.getSelectedSensorPosition();
 
-        if(target <= -10000000) {
-            m_elevator.set(ControlMode.PercentOutput, 0.0);
-            //System.out.println(" Stop");
-        }
-
-        else{
-            m_elevator.set(ControlMode.MotionMagic, target);
-            System.out.println("Go to [" + target + "] Position: [" + position + "]");
-        }
+        m_elevator.set(ControlMode.MotionMagic, target);
+        System.out.println("Go to [" + target + "] Vater Position: [" + position + "]");
     }
 
     public void drive(double speed) {
         m_elevator.set(speed);
         double enc = m_elevator.getSelectedSensorPosition(RobotMap.ElevatorConstants.PID_PRIMARY);
-        System.out.println("[" + speed + "][" + enc + "]");
+        //System.out.println("Vater [" + speed + "][" + enc + "]");
     }
 
     public void coastMode(){

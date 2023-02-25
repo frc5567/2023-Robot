@@ -45,7 +45,7 @@ public class Arm {
 		m_arm.set(ControlMode.PercentOutput, 0);
 
 		// Configures sensor as quadrature encoder
-		m_arm.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, RobotMap.ArmConstants.PID_PRIMARY, RobotMap.TIMEOUT_MS);
+		m_arm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, RobotMap.ArmConstants.PID_PRIMARY, RobotMap.TIMEOUT_MS);
 
 		// Set status frame period for data collection where 5 is period length in ms
 		m_arm.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, RobotMap.TIMEOUT_MS);
@@ -86,21 +86,14 @@ public class Arm {
     public void armPID(double target) {
         double armPosition = m_arm.getSelectedSensorPosition();
 
-        if(target <= -10000000) {
-            m_arm.set(ControlMode.PercentOutput, 0.0);
-            System.out.println(" Stop (arm)");
-        }
-
-        else{
-            m_arm.set(ControlMode.MotionMagic, target);
-            System.out.println("Go to [" + target + "] Arm Position: [" + armPosition + "]");
-        }
+        m_arm.set(ControlMode.MotionMagic, target);
+        //System.out.println("Go to [" + target + "] Arm Position: [" + armPosition + "]");
     }
 
     public void driveArm(double speed) {
         m_arm.set(speed);
         double enc = m_arm.getSelectedSensorPosition(RobotMap.ArmConstants.PID_PRIMARY);
-        System.out.println("[" + speed + "][" + enc + "]");
+        //System.out.println("ARM [" + speed + "][" + enc + "]");
     }
 
     /**

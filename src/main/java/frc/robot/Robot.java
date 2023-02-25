@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     //Instantiation of needed classes and names assigned as appropriate
     String drivetrainName = "VroomVroom";
     m_vroomVroom = new Drivetrain(drivetrainName);
-    m_vroomVroom.initDrivetrain();
+    
 
     m_pilotControl = new PilotController();
     m_copilotControl = new CopilotController();
@@ -102,6 +102,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_vroomVroom.brakeMode();
     m_vroomVroom.zeroEncoders();
+    m_vroomVroom.initDrivetrain();
 
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
@@ -136,6 +137,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    m_vroomVroom.initDrivetrain();
     m_vroomVroom.brakeMode();
     m_arm.init();
     m_arm.configPID();
@@ -173,14 +175,22 @@ public class Robot extends TimedRobot {
     if (coDriverInput.m_manualElevator != 0) {
       m_elevator.drive(coDriverInput.m_manualElevator);
     }
-    else {
+    else if (!Double.isNaN(coDriverInput.m_elevatorPos)) {
       m_elevator.drivePID(coDriverInput.m_elevatorPos);
     }
+    else {
+      m_elevator.drive(0.0);
+    }
+
     if (driverInput.m_manualArm != 0) {
       m_arm.driveArm(driverInput.m_manualArm);
     }
-    else {
+    else if (!Double.isNaN(driverInput.m_armPosition)) {
       m_arm.armPID(driverInput.m_armPosition);
+    } 
+    else {
+      // No Input case
+      m_arm.driveArm(0.0);
     }
     
     //m_claw.setClawState(coDriverInput.m_clawPos);

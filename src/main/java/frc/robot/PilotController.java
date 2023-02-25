@@ -39,6 +39,7 @@ public class PilotController {
             driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_APPROACH_POS;
         }
         else {
+            driverInput.m_armPosition = RobotMap.NO_POS_INPUT;
             double speed = m_controller.getRightY();
            if (Math.abs(speed) > 0.09) {
             driverInput.m_manualArm = speed;

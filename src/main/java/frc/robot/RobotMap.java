@@ -15,7 +15,9 @@ public class RobotMap {
     /**
      * PCM (pneumatic control module)
      */
-    public static final int PCM_CAN_ID = 14;
+    public static final int PCM_CAN_ID = 1;
+    
+    public static final double NO_POS_INPUT = Double.NaN;
 
     /**
      * All drivetrain constants
@@ -81,12 +83,12 @@ public class RobotMap {
          * Low Gear Solenoid port on the PCM.
          * TODO: Find Ports that low gear and high gear connect to.
          */
-        public static final int DOUBLE_SOLENOID_LOW_GEAR_PORT = 6;
+        public static final int DOUBLE_SOLENOID_LOW_GEAR_PORT = 5;
 
         /** 
          * High gear Solenoid port on PCM.
          */
-         public static final int DOUBLE_SOLENOID_HIGH_GEAR_PORT = 7;
+         public static final int DOUBLE_SOLENOID_HIGH_GEAR_PORT = 4;
 
     }
 
@@ -135,11 +137,11 @@ public class RobotMap {
 
         public static final int PID_PRIMARY = 0;
         public static final double NEUTRAL_DEADBAND = 0.001;
-        public static final double PID_PEAK_OUTPUT = 0.5;
+        public static final double PID_PEAK_OUTPUT = 0.3;
         public static final int ELEVATOR_ACCELERATION = 4000;
         public static final int ELEVATOR_CRUISE_VELOCITY = 4000;
 
-        public static final Gains ELEVATOR_GAINS = new Gains(0.4, 0.0, 0.0, 0.0, 100, 1.0);
+        public static final Gains ELEVATOR_GAINS = new Gains(0.3, 0.0, 0.0, 0.0, 100, 1.0);
 
         public static final double DRUM_CIRCUMFERENCE = 8.1875;
         public static final int TICKS_PER_REVOLUTION = 2048;
@@ -174,7 +176,7 @@ public class RobotMap {
         public static final double FLOOR_POS = -65410;
         public static final double MID_POS = -344000;
         public static final double HIGH_POS = -372000;
-        public static final double APPROACH_POS = -429000;
+        public static final double APPROACH_POS = -431000;
         
     }
 
@@ -200,8 +202,8 @@ public class RobotMap {
      * TODO: Check ports
      */
     public static class ClawConstants {
-        public static final int DOUBLESOLENOID_OPEN_PORT = 4;
-        public static final int DOUBLESOLENOID_CLOSE_PORT = 5;
+        public static final int DOUBLESOLENOID_OPEN_PORT = 2;
+        public static final int DOUBLESOLENOID_CLOSE_PORT = 3;
     }
 
     /**
@@ -209,8 +211,8 @@ public class RobotMap {
      * TODO: Check ports
      */
     public static class ShoulderConstants {
-        public static final int DOUBLESOLENOID_UP_PORT = 8;
-        public static final int DOUBLESOLENOID_DOWN_PORT = 9;
+        public static final int DOUBLESOLENOID_UP_PORT = 0;
+        public static final int DOUBLESOLENOID_DOWN_PORT = 1;
     }
     
 }

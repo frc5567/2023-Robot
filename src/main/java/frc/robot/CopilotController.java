@@ -44,11 +44,11 @@ public class CopilotController {
             coDriveInput.m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_HIGH_POS;
 
         }
-        else if (m_controller.getYButton()){
-            //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_APPROACH_POS;
-        }
+        // else if (m_controller.getYButton()){
+        //     //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_APPROACH_POS;
+        // }
         else {
-           // coDriveInput.m_armPos = -10000000;
+           coDriveInput.m_elevatorPos = RobotMap.NO_POS_INPUT;
            double speed = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis();
            if (Math.abs(speed) > 0.09) {
             coDriveInput.m_manualElevator = speed;
