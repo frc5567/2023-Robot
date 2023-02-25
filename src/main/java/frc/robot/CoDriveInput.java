@@ -50,6 +50,7 @@ public class CoDriveInput {
      * @param elevatorPos
      * @param armPos
      * @param clawPos
+     * @param shoulderPos
      */
     public CoDriveInput(double elevatorPos, double armPos, ClawState clawPos, ShoulderState shoulderPos) {
         m_elevatorPos = elevatorPos;

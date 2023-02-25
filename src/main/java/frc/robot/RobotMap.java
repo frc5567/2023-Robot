@@ -135,9 +135,9 @@ public class RobotMap {
 
         public static final int PID_PRIMARY = 0;
         public static final double NEUTRAL_DEADBAND = 0.001;
-        public static final double PID_PEAK_OUTPUT = 1.0;
-        public static final int ELEVATOR_ACCELERATION = 2500;
-        public static final int ELEVATOR_CRUISE_VELOCITY = 3500;
+        public static final double PID_PEAK_OUTPUT = 0.5;
+        public static final int ELEVATOR_ACCELERATION = 4000;
+        public static final int ELEVATOR_CRUISE_VELOCITY = 4000;
 
         public static final Gains ELEVATOR_GAINS = new Gains(0.4, 0.0, 0.0, 0.0, 100, 1.0);
 
@@ -145,9 +145,9 @@ public class RobotMap {
         public static final int TICKS_PER_REVOLUTION = 2048;
 
         public static final double START_POSITION = 0.0;
-        public static final double LOW_POSITION = 250.0;
-        public static final double MID_POSITION = 500.0;
-        public static final double HIGH_POSITION = 750.0;
+        public static final double FLOOR_POS = 566000;
+        public static final double MID_POS = 818000;
+        public static final double HIGH_POS = 1386000;
     
     }
 
@@ -184,14 +184,15 @@ public class RobotMap {
     public static class CopilotConstants {
 
         //Arbitrary values TODO: before testing make these more reasonable.
-        public static final double ELEVATOR_START_POS = 1;
-        public static final double ELEVATOR_LOW_POS = 2;
-        public static final double ELEVATOR_MID_POS = 3;
-        public static final double ELEVATOR_HIGH_POS = 4;
-        public static final double ARM_START_POS = 1;
-        public static final double ARM_LOW_POS = 2;
-        public static final double ARM_MID_POS = 3;
-        public static final double ARM_HIGH_POS = 4;
+        public static final double ELEVATOR_START_POS = 0.0;
+        public static final double ELEVATOR_FLOOR_POS = 566000;
+        public static final double ELEVATOR_MID_POS = 818000;
+        public static final double ELEVATOR_HIGH_POS = 1386000;
+        public static final double ARM_START_POS = 0.0;
+        public static final double ARM_FLOOR_POS = -65410;
+        public static final double ARM_MID_POS = -344000;
+        public static final double ARM_HIGH_POS = -372000;
+        public static final double ARM_APPROACH_POS = -429000;
     }
 
     /**

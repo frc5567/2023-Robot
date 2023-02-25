@@ -71,6 +71,8 @@ public class Robot extends TimedRobot {
 
     m_arm.init();
     m_arm.configPID();
+    m_elevator.init();
+    m_elevator.configPID();
 
   }
 
@@ -137,6 +139,8 @@ public class Robot extends TimedRobot {
     m_vroomVroom.brakeMode();
     m_arm.init();
     m_arm.configPID();
+    m_elevator.init();
+    m_elevator.configPID();
   }
 
   /** This function is called periodically during operator control. */
@@ -168,8 +172,8 @@ public class Robot extends TimedRobot {
     //inputs the values from the controllers to the PID/set state methods.
     m_elevator.drivePID(coDriverInput.m_elevatorPos);
     m_arm.armPID(coDriverInput.m_armPos);
-    m_claw.setClawState(coDriverInput.m_clawPos);
-    m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
+    //m_claw.setClawState(coDriverInput.m_clawPos);
+    //m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
 
     //publisher widget method to push boolean value of current pitch and "level" status
     //m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
@@ -182,6 +186,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_vroomVroom.coastMode();
     m_arm.coastMode();
+    m_elevator.coastMode();
   }
 
   /** This function is called periodically when disabled. */
