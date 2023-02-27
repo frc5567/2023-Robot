@@ -153,7 +153,7 @@ public class Robot extends TimedRobot {
 
     DriveInput driverInput = m_pilotControl.getDriverInput();
     //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
-    //CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
+    CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
     double curPitch = m_pigeon.getPitch();
 
     m_limelight.periodic();

@@ -17,7 +17,7 @@ public class DriveInput {
     public DriveInput() {
         m_speed = 0;
         m_turnSpeed = 0;
-        m_armPosition = RobotMap.CopilotConstants.ARM_START_POS;
+        m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
         m_manualArm = 0;
         m_gear = Gear.kLowGear;
         m_isAutoLeveling = false;
@@ -34,7 +34,7 @@ public class DriveInput {
         m_gear = Gear.kLowGear;
         m_isAutoLeveling = false;
         m_manualArm = 0;
-        m_armPosition = RobotMap.CopilotConstants.ARM_START_POS;
+        m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
     }
 
      /**
@@ -49,7 +49,7 @@ public class DriveInput {
         m_gear = gear;
         m_isAutoLeveling = false;
         m_manualArm = 0;
-        m_armPosition = RobotMap.CopilotConstants.ARM_START_POS;
+        m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
     }
 
     /**
