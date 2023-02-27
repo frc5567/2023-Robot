@@ -139,8 +139,10 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     m_vroomVroom.initDrivetrain();
     m_vroomVroom.brakeMode();
+
     m_arm.init();
     m_arm.configPID();
+
     m_elevator.init();
     m_elevator.configPID();
   }
@@ -150,7 +152,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     DriveInput driverInput = m_pilotControl.getDriverInput();
-    CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
+    //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
+    //CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
     double curPitch = m_pigeon.getPitch();
 
     m_limelight.periodic();

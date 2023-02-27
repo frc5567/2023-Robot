@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /**
@@ -41,8 +42,9 @@ public class RobotShuffleboard {
     public void periodic(boolean isBotLevel, double xOffset, double areaOfScreen) {
         //SmartDashboard.putBoolean("is Level", isBotLevel);
         m_isLevelEntry.setBoolean(isBotLevel);
-        m_xOffsetEntry.setDouble(xOffset);
-        m_areaOfScreenEntry.setDouble(areaOfScreen);
+        //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
+        //m_xOffsetEntry.setDouble(xOffset);
+        //m_areaOfScreenEntry.setDouble(areaOfScreen);
     }
 
     /**
@@ -50,13 +52,13 @@ public class RobotShuffleboard {
      */
     public void shuffleboardConfig() {
         Shuffleboard.selectTab("Driver Tab");
-        m_isLevelEntry = m_driverTab.addPersistent("is Level?", false)
+        m_isLevelEntry = m_driverTab.add("is Level?", false)
                                     .withWidget(BuiltInWidgets.kBooleanBox)
                                     .getEntry();
-        m_xOffsetEntry = m_driverTab.addPersistent("x Angle Offset", 0.0)
+        m_xOffsetEntry = m_driverTab.add("x Angle Offset", 0.0)
                                     .withWidget(BuiltInWidgets.kTextView)
                                     .getEntry();
-        m_areaOfScreenEntry = m_driverTab.addPersistent("Area of Screen", 0.0)
+        m_areaOfScreenEntry = m_driverTab.add("Area of Screen", 0.0)
                                     .withWidget(BuiltInWidgets.kTextView)
                                     .getEntry();
     }
