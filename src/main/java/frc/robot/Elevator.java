@@ -14,18 +14,14 @@ public class Elevator {
      * Constructor for the elevator class. Sets CAN ID to the Talon from RobotMap.
      */
     public Elevator() {
-
         m_elevator = new WPI_TalonSRX(RobotMap.ElevatorConstants.ELEVATOR_CAN_ID);
-
     }
 
     /**
      * Resets the encoder postition to zero.
      */
     private void zeroEncoders() {
-
         m_elevator.setSelectedSensorPosition(0.0, RobotMap.ElevatorConstants.PID_PRIMARY, RobotMap.TIMEOUT_MS);
-
     }
     
     /**
@@ -79,12 +75,12 @@ public class Elevator {
 		// Sets profile slot for PID
 		m_elevator.selectProfileSlot(0, RobotMap.ElevatorConstants.PID_PRIMARY);
 
+        //zeros encoders
         this.zeroEncoders();
 	}
 
     /**
-     * If the target distance is less than 0 it stops elevator.
-     * If the distance is greater than zero it calculates the target and tells elevator to go there.
+     * Use motion magic to figure out how far the elevator needs to move based on the target.
      * @param target
      */
     public void drivePID(double target) {
@@ -94,12 +90,19 @@ public class Elevator {
         System.out.println("Go to [" + target + "] Vater Position: [" + position + "]");
     }
 
+    /**
+     * Manual drive method for the elevator. Takes input from the controller.
+     * @param speed
+     */
     public void drive(double speed) {
         m_elevator.set(speed);
         double enc = m_elevator.getSelectedSensorPosition(RobotMap.ElevatorConstants.PID_PRIMARY);
         //System.out.println("Vater [" + speed + "][" + enc + "]");
     }
 
+    /**
+     * sets elevator to coast mode (used when disabled)
+     */
     public void coastMode(){
         m_elevator.setNeutralMode(NeutralMode.Coast);
     }

@@ -49,6 +49,7 @@ public class PilotController {
            }  
         }
 
+        //arcade drive controls
         driverInput.m_speed = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
 
         //Adjusting for a deadband to compensate for controller stick drift.

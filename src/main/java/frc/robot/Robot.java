@@ -4,11 +4,11 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.sensors.Pigeon2;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.ctre.phoenix.*;
-import com.ctre.phoenix.sensors.Pigeon2;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -171,7 +171,9 @@ public class Robot extends TimedRobot {
       m_shuffleName.periodic(isBotLevel, m_limelight.xOffset(), m_limelight.areaOfScreen());
     }
     
-    //inputs the values from the controllers to the PID/set state methods.
+    /**
+     * elevator: inputs the values from the controllers to the PID/set state methods.
+     **/
     if (coDriverInput.m_manualElevator != 0) {
       m_elevator.drive(coDriverInput.m_manualElevator);
     }
@@ -182,6 +184,9 @@ public class Robot extends TimedRobot {
       m_elevator.drive(0.0);
     }
 
+    /**
+     * elevator: inputs the values from the controllers to the PID/set state methods.
+     **/
     if (driverInput.m_manualArm != 0) {
       m_arm.driveArm(driverInput.m_manualArm);
     }

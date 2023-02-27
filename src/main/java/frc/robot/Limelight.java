@@ -80,25 +80,26 @@ public class Limelight {
      */
    }
 
-   /**
-    * Tells how far the target is from left to right.
-    * @return the angular value in the x direction of the target(-29.8 to 29.8)
-    */
+    /**
+     * Tells how far the target is from left to right.
+     * @return the angular value in the x direction of the target(-29.8 to 29.8)
+     */
    public double xOffset() {
     return(m_xAngleOffset);
    }
    
-   /**
-    * Determines the percent of the screen the target takes up.
-    * @return the area of the screen taken up by target
-    */
+    /**
+     * Determines the percent of the screen the target takes up.
+     * @return the area of the screen taken up by target
+     */
    public double areaOfScreen() {
     return(m_areaOfScreen);
    }
 
-   //Switches the pipelines in the Network Table. 
+    /**
+     * Switches the pipelines in the Network Table. 
+     */
    public static void setPipeline(Pipeline pipeline){
-
         NetworkTableInstance.getDefault().getEntry("pipeline").setNumber(pipeline.getID());
     }
 
