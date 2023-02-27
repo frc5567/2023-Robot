@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 
-//WHEN THE TIME COMES, ALL COMMENTS THAT HAVE "COMMENTED OUT FOR BOT(wiffle) TESTING:" MUST BE REMOVED TO LET GEAR STUFF WORK!!!
-
 /**
  * Class encapsulates drive position, gear, and auto leveling method.
  */
@@ -32,7 +30,7 @@ public class Drivetrain {
     private MotorControllerGroup m_rightSide;
 
     // Declaring the gear so it can be used for swicthing between high and low gear
-    //COMMENTED OUT FOR BOT(wiffle) TESTING: private Gear m_gear;
+    private Gear m_gear;
 
     // Pneumatic Controller for Gear box
     private DoubleSolenoid m_solenoid;
@@ -57,26 +55,23 @@ public class Drivetrain {
         m_drivetrain = new DifferentialDrive(m_leftSide, m_rightSide);
 
         // Instantiation of the gear and setting it to unknown.
-        //COMMENTED OUT FOR BOT(wiffle) TESTING: m_gear = Gear.kUnknown;
+        m_gear = Gear.kUnknown;
 
     }
 
     /**
-     * 
      * Init function to set motor inversion.
-     * 
      */
     public void initDrivetrain() {
 
         //TODO: THIS IS CORRECT FOR THE WIFFLEBOT, BUT HAS TO BE CHECKED ON REAL BOT
-        m_leftLeader.setInverted(false);
-        m_rightLeader.setInverted(true);
+        m_leftLeader.setInverted(true);
+        m_rightLeader.setInverted(false);
         m_leftFollower.setInverted(InvertType.FollowMaster);
         m_rightFollower.setInverted(InvertType.FollowMaster);
 
         // Shiftgear in robot in Low Gear
-        //COMMENTED OUT FOR BOT(wiffle) TESTING: shiftGear(Gear.kLowGear);
-
+        this.shiftGear(Gear.kLowGear);
     }
 
     /**
@@ -85,7 +80,6 @@ public class Drivetrain {
      * @param turn Value between -1 and 1 for turning
      */
     public void arcadeDrive(double speed, double turn) {
-
         m_drivetrain.arcadeDrive(speed, turn);
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
@@ -100,8 +94,7 @@ public class Drivetrain {
         m_drivetrain.arcadeDrive(driveInput.m_speed, driveInput.m_turnSpeed);
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
-        //this. means the instance of the class that you are currently in (Drivetrain)
-        //COMMENTED OUT FOR BOT(wiffle) TESTING: this.shiftGear(driveInput.m_gear);
+        this.shiftGear(driveInput.m_gear);
     }
 
     /**
@@ -110,8 +103,8 @@ public class Drivetrain {
      * @return true if level, false if not
      */
     public boolean autoLevel(double currentPitch) {
-        
         boolean level = false;
+
         //level bot set to no speed
         if (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) {
             level = true;
@@ -170,12 +163,10 @@ public class Drivetrain {
         m_rightFollower.setNeutralMode(NeutralMode.Coast);
     }
 
-     /** shiftGear is the way we change between high and low gear (Gear.kLowGear and Gear.kHighGear)
+     /** 
+     * shiftGear is the way we change between high and low gear (Gear.kLowGear and Gear.kHighGear)
      * @param gear
      */
-    
-    //COMMENTED OUT FOR BOT(wiffle) TESTING: 
-    /**
     public void shiftGear(Gear gear){
         // Compare the incoming parameter to the current state and determine if it is already set to that gear. 
         if (m_gear == gear){
@@ -193,7 +184,7 @@ public class Drivetrain {
             m_solenoid.set(Value.kReverse);
         }
     }
-    */
+    
 
     /**
      * Gets encoder positions of the drivetrain

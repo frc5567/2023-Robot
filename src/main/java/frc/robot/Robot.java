@@ -4,11 +4,11 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.sensors.Pigeon2;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.ctre.phoenix.*;
-import com.ctre.phoenix.sensors.Pigeon2;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     //Instantiation of needed classes and names assigned as appropriate
     String drivetrainName = "VroomVroom";
     m_vroomVroom = new Drivetrain(drivetrainName);
-    m_vroomVroom.initDrivetrain();
+    
 
     m_pilotControl = new PilotController();
     m_copilotControl = new CopilotController();
@@ -71,6 +71,8 @@ public class Robot extends TimedRobot {
 
     m_arm.init();
     m_arm.configPID();
+    m_elevator.init();
+    m_elevator.configPID();
 
   }
 
@@ -100,6 +102,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_vroomVroom.brakeMode();
     m_vroomVroom.zeroEncoders();
+    m_vroomVroom.initDrivetrain();
 
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
@@ -134,11 +137,14 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    m_vroomVroom.initDrivetrain();
     m_vroomVroom.brakeMode();
 
     m_arm.init();
     m_arm.configPID();
 
+    m_elevator.init();
+    m_elevator.configPID();
   }
 
   /** This function is called periodically during operator control. */
@@ -168,11 +174,35 @@ public class Robot extends TimedRobot {
       m_shuffleName.periodic(isBotLevel, m_limelight.xOffset(), m_limelight.areaOfScreen());
     }
     
-    //inputs the values from the controllers to the PID/set state methods.
-    m_elevator.drivePID(coDriverInput.m_elevatorPos);
-    m_arm.armPID(coDriverInput.m_armPos);
-    m_claw.setClawState(coDriverInput.m_clawPos);
-    m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
+    /**
+     * elevator: inputs the values from the controllers to the PID/set state methods.
+     **/
+    if (coDriverInput.m_manualElevator != 0) {
+      m_elevator.drive(coDriverInput.m_manualElevator);
+    }
+    else if (!Double.isNaN(coDriverInput.m_elevatorPos)) {
+      m_elevator.drivePID(coDriverInput.m_elevatorPos);
+    }
+    else {
+      m_elevator.drive(0.0);
+    }
+
+    /**
+     * elevator: inputs the values from the controllers to the PID/set state methods.
+     **/
+    if (driverInput.m_manualArm != 0) {
+      m_arm.driveArm(driverInput.m_manualArm);
+    }
+    else if (!Double.isNaN(driverInput.m_armPosition)) {
+      m_arm.armPID(driverInput.m_armPosition);
+    } 
+    else {
+      // No Input case
+      m_arm.driveArm(0.0);
+    }
+    
+    //m_claw.setClawState(coDriverInput.m_clawPos);
+    //m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
 
     //publisher widget method to push boolean value of current pitch and "level" status
     //m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
@@ -185,6 +215,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_vroomVroom.coastMode();
     m_arm.coastMode();
+    m_elevator.coastMode();
   }
 
   /** This function is called periodically when disabled. */
