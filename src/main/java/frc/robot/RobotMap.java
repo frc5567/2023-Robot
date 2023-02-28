@@ -140,18 +140,23 @@ public class RobotMap {
 
         public static final int PID_PRIMARY = 0;
         public static final double NEUTRAL_DEADBAND = 0.001;
-        public static final double PID_PEAK_OUTPUT = 0.3;
-        public static final int ELEVATOR_ACCELERATION = 4000;
-        public static final int ELEVATOR_CRUISE_VELOCITY = 4000;
+        public static final double PID_PEAK_OUTPUT = 1.0;
+        public static final int ELEVATOR_ACCELERATION = 50000;
+        public static final int ELEVATOR_CRUISE_VELOCITY = 50000;
 
-        public static final Gains ELEVATOR_GAINS = new Gains(0.3, 0.0, 0.0, 0.0, 100, 1.0);
+        public static final Gains ELEVATOR_GAINS = new Gains(0.4, 0.0, 0.0, 0.0, 100, 1.0);
 
         public static final double DRUM_CIRCUMFERENCE = 8.1875;
         public static final int TICKS_PER_REVOLUTION = 2048;
+
+        public static final double ELEVATOR_START_POS = 0.0;
+        public static final double ELEVATOR_FLOOR_POS = 566000;
+        public static final double ELEVATOR_MID_POS = 818000;
+        public static final double ELEVATOR_HIGH_POS = 1379250;
     }
 
     /**
-     * Encapsulates constants for the elevator class.
+     * Encapsulates constants for the arm class.
      * TODO: double check all constants and TEST
      */
     public static class ArmConstants {
@@ -168,23 +173,18 @@ public class RobotMap {
 
         public static final double DRUM_CIRCUMFERENCE = 8.1875;
         public static final int TICKS_PER_REVOLUTION = 2048;
+
+        public static final double ARM_START_POS = 0.0;
+        public static final double ARM_FLOOR_POS = -65410;
+        public static final double ARM_MID_POS = -344000;
+        public static final double ARM_HIGH_POS = -372000;
+        public static final double ARM_APPROACH_POS = -431000;
     }
 
     /**
      * Encapsulates constants for the copilot controller class.
      */
     public static class CopilotConstants {
-        //elevator:
-        public static final double ELEVATOR_START_POS = 0.0;
-        public static final double ELEVATOR_FLOOR_POS = 566000;
-        public static final double ELEVATOR_MID_POS = 818000;
-        public static final double ELEVATOR_HIGH_POS = 1386000;
-        //arm:
-        public static final double ARM_START_POS = 0.0;
-        public static final double ARM_FLOOR_POS = -65410;
-        public static final double ARM_MID_POS = -344000;
-        public static final double ARM_HIGH_POS = -372000;
-        public static final double ARM_APPROACH_POS = -431000;
     }
 
     /**

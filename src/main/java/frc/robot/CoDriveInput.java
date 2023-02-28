@@ -17,8 +17,8 @@ public class CoDriveInput {
      * Default constructor which sets zero values
      */
     public CoDriveInput() {
-        m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_START_POS;
-        m_armPos = RobotMap.CopilotConstants.ARM_START_POS;
+        m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_START_POS;
+        m_armPos = RobotMap.ArmConstants.ARM_START_POS;
         m_manualElevator = 0;
         //TODO: might want to switch default value to closed in the future.
         m_clawPos = ClawState.kOpen;

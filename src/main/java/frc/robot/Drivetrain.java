@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -21,10 +22,10 @@ import edu.wpi.first.wpilibj.motorcontrol.Talon;
  */
 public class Drivetrain {
     private String m_drivetrainName;
-    private WPI_TalonSRX m_leftLeader;
-    private WPI_TalonSRX m_rightLeader;
-    private WPI_VictorSPX m_leftFollower;
-    private WPI_VictorSPX m_rightFollower;
+    private WPI_TalonFX m_leftLeader;
+    private WPI_TalonFX m_rightLeader;
+    private WPI_TalonFX m_leftFollower;
+    private WPI_TalonFX m_rightFollower;
     private DifferentialDrive m_drivetrain;
     private MotorControllerGroup m_leftSide;
     private MotorControllerGroup m_rightSide;
@@ -43,10 +44,10 @@ public class Drivetrain {
      */
     public Drivetrain(String dName) {
         m_drivetrainName = dName;
-        m_leftLeader = new WPI_TalonSRX(RobotMap.DrivetrainConstants.LEFT_LEADER_CAN_ID);
-        m_rightLeader = new WPI_TalonSRX (RobotMap.DrivetrainConstants.RIGHT_LEADER_CAN_ID);
-        m_leftFollower = new WPI_VictorSPX(RobotMap.DrivetrainConstants.LEFT_FOLLOWER_CAN_ID);
-        m_rightFollower = new WPI_VictorSPX(RobotMap.DrivetrainConstants.RIGHT_FOLLOWER_CAN_ID);
+        m_leftLeader = new WPI_TalonFX(RobotMap.DrivetrainConstants.LEFT_LEADER_CAN_ID);
+        m_rightLeader = new WPI_TalonFX (RobotMap.DrivetrainConstants.RIGHT_LEADER_CAN_ID);
+        m_leftFollower = new WPI_TalonFX(RobotMap.DrivetrainConstants.LEFT_FOLLOWER_CAN_ID);
+        m_rightFollower = new WPI_TalonFX(RobotMap.DrivetrainConstants.RIGHT_FOLLOWER_CAN_ID);
         m_leftSide = new MotorControllerGroup(m_leftLeader, m_leftFollower);
         m_rightSide = new MotorControllerGroup(m_rightLeader,m_rightFollower);
         
@@ -203,8 +204,8 @@ public class Drivetrain {
      * Zeros out the encoder positions of the drivetrain
      */
     public void zeroEncoders() {
-        m_leftLeader.getSensorCollection().setQuadraturePosition(0, RobotMap.TIMEOUT_MS);
-        m_rightLeader.getSensorCollection().setQuadraturePosition(0, RobotMap.TIMEOUT_MS);
+        m_leftLeader.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
+        m_rightLeader.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
 
     }
 
