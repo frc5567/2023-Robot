@@ -152,7 +152,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     DriveInput driverInput = m_pilotControl.getDriverInput();
-    //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
+    // TODO: Test these elements now that they exist.
     CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
     double curPitch = m_pigeon.getPitch();
 
