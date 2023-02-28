@@ -63,18 +63,17 @@ public class CopilotController {
             if (coDriveInput.m_clawPos == ClawState.kOpen) {
                 coDriveInput.m_clawPos = ClawState.kClosed;
             }
-            else if (coDriveInput.m_clawPos == ClawState.kClosed) {
+            else {
                 coDriveInput.m_clawPos = ClawState.kOpen;
             }
         }
 
         // When the left bumper is pressed, toggles the shoulder state.
         if (m_controller.getLeftBumper()) {
-
             if (coDriveInput.m_shoulderPos == ShoulderState.kDown) {
                 coDriveInput.m_shoulderPos = ShoulderState.kUp;
             }
-            else if (coDriveInput.m_shoulderPos == ShoulderState.kUp) {
+            else {
                 coDriveInput.m_shoulderPos = ShoulderState.kDown;
             }
         }

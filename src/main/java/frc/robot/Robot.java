@@ -80,6 +80,9 @@ public class Robot extends TimedRobot {
     m_elevator.init();
     m_elevator.configPID();
 
+    m_shoulder.init();
+    m_claw.init();
+
   }
 
   /**
@@ -156,6 +159,7 @@ public class Robot extends TimedRobot {
 
     m_elevator.init();
     m_elevator.configPID();
+
   }
 
   /** This function is called periodically during operator control. */
@@ -213,8 +217,9 @@ public class Robot extends TimedRobot {
       m_arm.driveArm(0.0);
     }
     
-    //m_claw.setClawState(coDriverInput.m_clawPos);
-    //m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
+    m_claw.setClawState(coDriverInput.m_clawPos);
+
+    m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
 
   }
 

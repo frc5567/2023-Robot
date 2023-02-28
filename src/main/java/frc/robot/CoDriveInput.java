@@ -21,8 +21,8 @@ public class CoDriveInput {
         m_armPos = RobotMap.ArmConstants.ARM_START_POS;
         m_manualElevator = 0;
         //TODO: might want to switch default value to closed in the future.
-        m_clawPos = ClawState.kOpen;
-        m_shoulderPos = ShoulderState.kDown;
+        m_clawPos = ClawState.kUnknown;
+        m_shoulderPos = ShoulderState.kUnknown;
     }  
 
     /**
@@ -34,8 +34,8 @@ public class CoDriveInput {
         m_elevatorPos = elevatorPos;
         m_armPos = armPos;
         m_manualElevator = 0;
-        m_clawPos = ClawState.kOpen;
-        m_shoulderPos = ShoulderState.kDown;
+        m_clawPos = ClawState.kUnknown;
+        m_shoulderPos = ShoulderState.kUnknown;
     }
 
     /**
@@ -49,7 +49,7 @@ public class CoDriveInput {
         m_armPos = armPos;
         m_clawPos = clawPos;
         m_manualElevator = 0;
-        m_shoulderPos = ShoulderState.kDown;
+        m_shoulderPos = ShoulderState.kUnknown;
     }
 
     /**
