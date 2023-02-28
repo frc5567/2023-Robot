@@ -27,21 +27,21 @@ public class CopilotController {
         //commented out arm code for testing elevator
         if (m_controller.getStartButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_START_POS;
-            coDriveInput.m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_START_POS;
+            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_START_POS;
         }
         else if (m_controller.getAButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_FLOOR_POS;
-            coDriveInput.m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_FLOOR_POS;
+            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_FLOOR_POS;
 
         }
         else if (m_controller.getBButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_MID_POS;
-            coDriveInput.m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_MID_POS;
+            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_MID_POS;
 
         }
         else if (m_controller.getXButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_HIGH_POS;
-            coDriveInput.m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_HIGH_POS;
+            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_HIGH_POS;
 
         }
         // else if (m_controller.getYButton()){

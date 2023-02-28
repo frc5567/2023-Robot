@@ -46,8 +46,9 @@ public class Elevator {
 		// Configures sensor as quadrature encoder
 		m_elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, RobotMap.ElevatorConstants.PID_PRIMARY, RobotMap.TIMEOUT_MS);
 
+        // Commented these out due to a conflicting timing issue within the PID. The default configs that PID already has worked better with our current code. 
 		// Set status frame period for data collection where 5 is period length in ms
-		m_elevator.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, RobotMap.TIMEOUT_MS);
+		// m_elevator.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, RobotMap.TIMEOUT_MS);
 
 		// Config neutral deadband
 		m_elevator.configNeutralDeadband(RobotMap.ElevatorConstants.NEUTRAL_DEADBAND, RobotMap.TIMEOUT_MS);
@@ -69,8 +70,10 @@ public class Elevator {
 		m_elevator.configClosedLoopPeakOutput(0, RobotMap.ElevatorConstants.ELEVATOR_GAINS.kPeakOutput, RobotMap.TIMEOUT_MS);
 		m_elevator.configAllowableClosedloopError(0, 0, RobotMap.TIMEOUT_MS);
 
-		// PID closed loop config
-		m_elevator.configClosedLoopPeriod(0, 10, RobotMap.TIMEOUT_MS);
+    
+        // Commented these out due to a conflicting timing issue within the PID. The default configs that PID already has worked better with our current code. 
+		// PID closed loop config. 
+		// m_elevator.configClosedLoopPeriod(0, 10, RobotMap.TIMEOUT_MS);
 
 		// Sets profile slot for PID
 		m_elevator.selectProfileSlot(0, RobotMap.ElevatorConstants.PID_PRIMARY);

@@ -24,19 +24,19 @@ public class PilotController {
         DriveInput driverInput = new DriveInput();
 
         if (m_controller.getStartButton()) {
-            driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_START_POS;
+            driverInput.m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
         }
         else if (m_controller.getAButton()) {
-            driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_FLOOR_POS;
+            driverInput.m_armPosition = RobotMap.ArmConstants.ARM_FLOOR_POS;
         }
         else if (m_controller.getBButton()) {
-            driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_MID_POS;
+            driverInput.m_armPosition = RobotMap.ArmConstants.ARM_MID_POS;
         }
         else if (m_controller.getXButton()) {
-            driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_HIGH_POS;
+            driverInput.m_armPosition = RobotMap.ArmConstants.ARM_HIGH_POS;
         }
         else if (m_controller.getYButton()) {
-            driverInput.m_armPosition = RobotMap.CopilotConstants.ARM_APPROACH_POS;
+            driverInput.m_armPosition = RobotMap.ArmConstants.ARM_APPROACH_POS;
         }
         else {
             driverInput.m_armPosition = RobotMap.NO_POS_INPUT;
