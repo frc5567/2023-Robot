@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
+  private String m_autonSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private Drivetrain m_vroomVroom;
@@ -43,9 +43,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //Auton shuffleboard choices updating
-    m_chooser.setDefaultOption("0 Object", kDefaultAuto);
+    m_chooser.setDefaultOption("none", kDefaultAuto);
+    m_chooser.addOption("0 Object", kCustomAuto);
     m_chooser.addOption("1 Object", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    m_chooser.addOption("Community Out", kCustomAuto);
+    m_chooser.addOption("2 Object", kCustomAuto);
+    SmartDashboard.putData("Auton choices", m_chooser);
+    m_autonSelected = m_chooser.getSelected();
 
     //Instantiation of needed classes and names assigned as appropriate
     String drivetrainName = "VroomVroom";
@@ -60,12 +64,14 @@ public class Robot extends TimedRobot {
 
     m_limelight = new Limelight();
 
-    m_auton = new Auton(m_shuffleName);
+    m_auton = new Auton();
 
     m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
 
     m_elevator = new Elevator();
     m_arm = new Arm();
+
+    //TODO: test functionality; these will likely error out, as they currently have limited and improper functionality (motor assignment, control type, etc.)
     m_claw = new Claw();
     m_shoulder = new Shoulder();
 
@@ -104,12 +110,13 @@ public class Robot extends TimedRobot {
     m_vroomVroom.zeroEncoders();
     m_vroomVroom.initDrivetrain();
 
-    m_autoSelected = m_chooser.getSelected();
+    m_autonSelected = m_chooser.getSelected();
+
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
 
     //m_shuffleName.setAutonPath();
     m_auton.init();
+    m_auton.selectPath(m_autonSelected);
   }
 
   /** This function is called periodically during autonomous. */
@@ -132,6 +139,8 @@ public class Robot extends TimedRobot {
     if (m_auton.toRunAutoLevelOrNotToRun == true) {
       m_vroomVroom.autoLevel(curPitchAuton);
     }
+
+    m_shuffleName.periodic(isBotLevelAuton, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
   }
 
   /** This function is called once when teleop is enabled. */
@@ -143,6 +152,8 @@ public class Robot extends TimedRobot {
     m_arm.init();
     m_arm.configPID();
 
+    m_auton.m_autonStartOut = false;
+
     m_elevator.init();
     m_elevator.configPID();
   }
@@ -152,6 +163,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     DriveInput driverInput = m_pilotControl.getDriverInput();
+
     // TODO: Test these elements now that they exist.
     CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
     double curPitch = m_pigeon.getPitch();
@@ -164,14 +176,14 @@ public class Robot extends TimedRobot {
     if (driverInput.m_isAutoLeveling) {
 
       isBotLevel = m_vroomVroom.autoLevel(curPitch);
-      m_shuffleName.periodic(isBotLevel, m_limelight.xOffset(), m_limelight.areaOfScreen());
+      m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
 
       //boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
     else {
       m_vroomVroom.arcadeDrive(driverInput);
       isBotLevel = m_vroomVroom.isLevel(curPitch);
-      m_shuffleName.periodic(isBotLevel, m_limelight.xOffset(), m_limelight.areaOfScreen());
+      m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
     }
     
     /**
@@ -204,10 +216,6 @@ public class Robot extends TimedRobot {
     //m_claw.setClawState(coDriverInput.m_clawPos);
     //m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
 
-    //publisher widget method to push boolean value of current pitch and "level" status
-    //m_shuffleName.setWhetherBotIsLevel(m_vroomVroom.isLevel(curPitch));
-    //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be FALSE)
-    //m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
   }
 
   /** This function is called once when the robot is disabled. */
@@ -216,6 +224,8 @@ public class Robot extends TimedRobot {
     m_vroomVroom.coastMode();
     m_arm.coastMode();
     m_elevator.coastMode();
+
+    m_auton.m_autonStartOut = false;
   }
 
   /** This function is called periodically when disabled. */
