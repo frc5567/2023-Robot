@@ -4,11 +4,11 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.sensors.Pigeon2;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.ctre.phoenix.*;
-import com.ctre.phoenix.sensors.Pigeon2;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
     //Instantiation of needed classes and names assigned as appropriate
     String drivetrainName = "VroomVroom";
     m_vroomVroom = new Drivetrain(drivetrainName);
-    m_vroomVroom.initDrivetrain();
+    
 
     m_pilotControl = new PilotController();
     m_copilotControl = new CopilotController();
@@ -70,13 +70,15 @@ public class Robot extends TimedRobot {
 
     m_elevator = new Elevator();
     m_arm = new Arm();
-    //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
-    //m_copilotControl = new CopilotController();
-    //m_claw = new Claw();
-    //m_shoulder = new Shoulder();
+
+    //TODO: test functionality; these will likely error out, as they currently have limited and improper functionality (motor assignment, control type, etc.)
+    m_claw = new Claw();
+    m_shoulder = new Shoulder();
 
     m_arm.init();
     m_arm.configPID();
+    m_elevator.init();
+    m_elevator.configPID();
 
   }
 
@@ -106,6 +108,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_vroomVroom.brakeMode();
     m_vroomVroom.zeroEncoders();
+    m_vroomVroom.initDrivetrain();
 
     m_autonSelected = m_chooser.getSelected();
 
@@ -143,6 +146,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    m_vroomVroom.initDrivetrain();
     m_vroomVroom.brakeMode();
 
     m_arm.init();
@@ -150,6 +154,8 @@ public class Robot extends TimedRobot {
 
     m_auton.m_autonStartOut = false;
 
+    m_elevator.init();
+    m_elevator.configPID();
   }
 
   /** This function is called periodically during operator control. */
@@ -157,8 +163,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     DriveInput driverInput = m_pilotControl.getDriverInput();
-    //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
-    //CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
+    CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
     double curPitch = m_pigeon.getPitch();
 
     m_limelight.periodic();
@@ -179,10 +184,33 @@ public class Robot extends TimedRobot {
       m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
     }
     
-    //inputs the values from the controllers to the PID/set state methods.
-    //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
-    //m_elevator.drivePID(coDriverInput.m_elevatorPos);
-    //m_arm.armPID(coDriverInput.m_armPos);
+    /**
+     * elevator: inputs the values from the controllers to the PID/set state methods.
+     **/
+    if (coDriverInput.m_manualElevator != 0) {
+      m_elevator.drive(coDriverInput.m_manualElevator);
+    }
+    else if (!Double.isNaN(coDriverInput.m_elevatorPos)) {
+      m_elevator.drivePID(coDriverInput.m_elevatorPos);
+    }
+    else {
+      m_elevator.drive(0.0);
+    }
+
+    /**
+     * elevator: inputs the values from the controllers to the PID/set state methods.
+     **/
+    if (driverInput.m_manualArm != 0) {
+      m_arm.driveArm(driverInput.m_manualArm);
+    }
+    else if (!Double.isNaN(driverInput.m_armPosition)) {
+      m_arm.armPID(driverInput.m_armPosition);
+    } 
+    else {
+      // No Input case
+      m_arm.driveArm(0.0);
+    }
+    
     //m_claw.setClawState(coDriverInput.m_clawPos);
     //m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
 
@@ -193,6 +221,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_vroomVroom.coastMode();
     m_arm.coastMode();
+    m_elevator.coastMode();
 
     m_auton.m_autonStartOut = false;
   }

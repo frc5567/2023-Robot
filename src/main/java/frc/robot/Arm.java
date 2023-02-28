@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
  * Arm class encapsulating motion magic for our arm on top of the elevator.
  */
 public class Arm {
- 
+
     private WPI_TalonFX m_arm;
 
     /**
@@ -29,7 +29,7 @@ public class Arm {
 
     /**
      * Intitializtion method for the Arm class
-     * sets motor inversion (false), sets neutral mode (Brake), zeros encoders.
+     * Sets default configuration on the motor controller, sets motor inversion (false), sets neutral mode (Brake), zeros encoders.
      */
     public void init() {
         m_arm.configFactoryDefault();
@@ -45,7 +45,7 @@ public class Arm {
 		m_arm.set(ControlMode.PercentOutput, 0);
 
 		// Configures sensor as quadrature encoder
-		m_arm.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, RobotMap.ArmConstants.PID_PRIMARY, RobotMap.TIMEOUT_MS);
+		m_arm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, RobotMap.ArmConstants.PID_PRIMARY, RobotMap.TIMEOUT_MS);
 
 		// Set status frame period for data collection where 5 is period length in ms
 		m_arm.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, RobotMap.TIMEOUT_MS);
@@ -76,29 +76,33 @@ public class Arm {
 		// Sets profile slot for PID
 		m_arm.selectProfileSlot(0, RobotMap.ArmConstants.PID_PRIMARY);
 
+        //zeros the encoders
         this.zeroEncoders();
 	}
 
     /**
-     * If the arm is at the target, stop the arm. Otherwise, use motion magic to figure out how far the arm needs to move.
+     * Use motion magic to figure out how far the arm needs to move based on the target.
      * @param target
      */
     public void armPID(double target) {
         double armPosition = m_arm.getSelectedSensorPosition();
 
-        if(target <= -10000000) {
-            m_arm.set(ControlMode.PercentOutput, 0.0);
-            System.out.println(" Stop (arm)");
-        }
-
-        else{
-            m_arm.set(ControlMode.MotionMagic, target);
-            System.out.println("Go to [" + target + "] Arm Position: [" + armPosition + "]");
-        }
+        m_arm.set(ControlMode.MotionMagic, target);
+        //System.out.println("Go to [" + target + "] Arm Position: [" + armPosition + "]");
     }
 
     /**
-     * sets to coast mode (used when disabled)
+     * manual drive method for the arm. Takes input from the controller.
+     * @param speed
+     */
+    public void driveArm(double speed) {
+        m_arm.set(speed);
+        double enc = m_arm.getSelectedSensorPosition(RobotMap.ArmConstants.PID_PRIMARY);
+        //System.out.println("ARM [" + speed + "][" + enc + "]");
+    }
+
+    /**
+     * sets arm to coast mode (used when disabled)
      */
     public void coastMode() {
 		m_arm.setNeutralMode(NeutralMode.Coast);

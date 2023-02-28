@@ -24,29 +24,40 @@ public class CopilotController {
     public CoDriveInput getCoDriveInput() {
         CoDriveInput coDriveInput = new CoDriveInput();
 
-        if (m_controller.getAButton()) {
-            coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_START_POS;
+        //commented out arm code for testing elevator
+        if (m_controller.getStartButton()) {
+            //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_START_POS;
             coDriveInput.m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_START_POS;
         }
-        else if (m_controller.getXButton()) {
-            coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_LOW_POS;
-            coDriveInput.m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_LOW_POS;
+        else if (m_controller.getAButton()) {
+            //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_FLOOR_POS;
+            coDriveInput.m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_FLOOR_POS;
 
         }
         else if (m_controller.getBButton()) {
-            coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_MID_POS;
+            //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_MID_POS;
             coDriveInput.m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_MID_POS;
 
         }
-        else if (m_controller.getYButton()) {
-            coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_HIGH_POS;
+        else if (m_controller.getXButton()) {
+            //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_HIGH_POS;
             coDriveInput.m_elevatorPos = RobotMap.CopilotConstants.ELEVATOR_HIGH_POS;
 
         }
+        // else if (m_controller.getYButton()){
+        //     //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_APPROACH_POS;
+        // }
         else {
-            coDriveInput.m_armPos = -1;
-            coDriveInput.m_elevatorPos = -1;
+           coDriveInput.m_elevatorPos = RobotMap.NO_POS_INPUT;
+           double speed = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis();
+           if (Math.abs(speed) > 0.09) {
+            coDriveInput.m_manualElevator = speed;
+           }
+           else {
+            coDriveInput.m_manualElevator = 0;
+           }   
         }
+
         // When the right bumper is pressed, toggles the claw state.
         if (m_controller.getRightBumper()) {
             if (coDriveInput.m_clawPos == ClawState.kOpen) {
@@ -55,10 +66,8 @@ public class CopilotController {
             else if (coDriveInput.m_clawPos == ClawState.kClosed) {
                 coDriveInput.m_clawPos = ClawState.kOpen;
             }
-            else {
-                coDriveInput.m_clawPos = ClawState.kOpen;
-            }
         }
+
         // When the left bumper is pressed, toggles the shoulder state.
         if (m_controller.getLeftBumper()) {
 
@@ -66,10 +75,6 @@ public class CopilotController {
                 coDriveInput.m_shoulderPos = ShoulderState.kUp;
             }
             else if (coDriveInput.m_shoulderPos == ShoulderState.kUp) {
-                coDriveInput.m_shoulderPos = ShoulderState.kDown;
-            }
-            else {
-                //TODO check starting state
                 coDriveInput.m_shoulderPos = ShoulderState.kDown;
             }
         }
