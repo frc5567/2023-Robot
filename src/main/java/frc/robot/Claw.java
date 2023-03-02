@@ -13,7 +13,9 @@ public class Claw {
      */
     public enum ClawState {
         kOpen(0),
-        kClosed(1);
+        kClosed(1),
+        //no input from copilot
+        kUnknown(-1);
 
         private int m_clawValue;
 
@@ -30,7 +32,9 @@ public class Claw {
     }
     
     //Delcares the double solenoid.
-    DoubleSolenoid m_clawSol;
+    private DoubleSolenoid m_clawSol;
+
+    private ClawState m_currentClawState;
 
     /**
      * Constructor for claw class. 
@@ -38,7 +42,14 @@ public class Claw {
      */
     public Claw() {
         m_clawSol = new DoubleSolenoid(RobotMap.PCM_CAN_ID, PneumaticsModuleType.CTREPCM, RobotMap.ClawConstants.DOUBLESOLENOID_OPEN_PORT, RobotMap.ClawConstants.DOUBLESOLENOID_CLOSE_PORT);
+        m_currentClawState = ClawState.kUnknown;
+    }
 
+    /**
+     * Initialization method which sets the state to closed
+     */
+    public void init() {
+        this.setClawState(ClawState.kClosed);
     }
 
     /**
@@ -47,15 +58,33 @@ public class Claw {
      */
     public void setClawState(ClawState clawValue) {
         if (clawValue == ClawState.kOpen) {
+            m_currentClawState = ClawState.kOpen;
             //TODO: kForward and kReverse might be reversed; test.
             m_clawSol.set(Value.kForward);
+            System.out.println("Valid Claw State: open");
         }
         else if (clawValue == ClawState.kClosed) {
+            m_currentClawState = ClawState.kClosed;
             m_clawSol.set(Value.kReverse);
+            System.out.println("Valid Claw State: closed");
         }
         else {
-            System.out.println("Claw Error");
+            //Somebody passed in kUnknown
+            //System.out.println("Invalid Claw State");
         }
+    }
+
+    public void toggleClawState() {
+        if (m_currentClawState == ClawState.kOpen) {
+            this.setClawState(ClawState.kClosed);
+        }
+        else {
+            this.setClawState(ClawState.kOpen);
+        }
+    }
+
+    public ClawState getClawState() {
+        return m_currentClawState;
     }
 
 }

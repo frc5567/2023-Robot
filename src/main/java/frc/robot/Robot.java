@@ -9,6 +9,7 @@ import com.ctre.phoenix.sensors.Pigeon2;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.CoDriveInput.ToggleInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -79,6 +80,9 @@ public class Robot extends TimedRobot {
     m_arm.configPID();
     m_elevator.init();
     m_elevator.configPID();
+
+    m_shoulder.init();
+    m_claw.init();
 
   }
 
@@ -156,6 +160,7 @@ public class Robot extends TimedRobot {
 
     m_elevator.init();
     m_elevator.configPID();
+
   }
 
   /** This function is called periodically during operator control. */
@@ -213,8 +218,12 @@ public class Robot extends TimedRobot {
       m_arm.driveArm(0.0);
     }
     
-    //m_claw.setClawState(coDriverInput.m_clawPos);
-    //m_shoulder.setShoulderState(coDriverInput.m_shoulderPos);
+    if (coDriverInput.m_clawPos == ToggleInput.kToggle) {
+      m_claw.toggleClawState();
+    }
+    if (coDriverInput.m_shoulderPos == ToggleInput.kToggle) {
+      m_shoulder.toggleShoulderState();
+    }
 
   }
 
@@ -223,7 +232,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_vroomVroom.coastMode();
     m_arm.coastMode();
-    m_elevator.coastMode();
+    m_elevator.brakeMode();
 
     m_auton.m_autonStartOut = false;
   }

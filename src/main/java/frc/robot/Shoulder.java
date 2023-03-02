@@ -13,7 +13,9 @@ public class Shoulder {
      */
     public enum ShoulderState {
         kDown(0),
-        kUp(1);
+        kUp(1),
+        //no input from copilot
+        kUnknown(-1);
 
         private int m_shoulderValue;
 
@@ -30,13 +32,23 @@ public class Shoulder {
     }
 
     // Declares the double solenoid.
-    DoubleSolenoid m_shoulderSol;
+    private DoubleSolenoid m_shoulderSol;
+
+    private ShoulderState m_currentShoulderState;
 
     /**
      * Constructor for the shoulder class. Instantiates one double solenoid.
      */
     public Shoulder() {
         m_shoulderSol = new DoubleSolenoid(RobotMap.PCM_CAN_ID, PneumaticsModuleType.CTREPCM, RobotMap.ShoulderConstants.DOUBLESOLENOID_UP_PORT, RobotMap.ShoulderConstants.DOUBLESOLENOID_DOWN_PORT);
+        m_currentShoulderState = ShoulderState.kUnknown;
+    }
+
+    /**
+     * Initialization method for shoulder which sets the state to up.
+     */
+    public void init() {
+        this.setShoulderState(ShoulderState.kUp);
     }
     
     /**
@@ -46,17 +58,32 @@ public class Shoulder {
     public void setShoulderState(ShoulderState shoulderState) {
 
         if (shoulderState == ShoulderState.kDown) {
-            //TODO: kForward and kReverse might be reversed; test.
-            m_shoulderSol.set(Value.kForward);
-        }
-        else if (shoulderState == ShoulderState.kUp) {
-            //TODO: kForward and kReverse might be reversed; test.
+            m_currentShoulderState = ShoulderState.kDown;
             m_shoulderSol.set(Value.kReverse);
+            System.out.println("valid Shoulder State: down");
+        }
+        else if (shoulderState == ShoulderState.kUp){
+            m_currentShoulderState = ShoulderState.kUp;
+            m_shoulderSol.set(Value.kForward);
+            System.out.println("valid Shoulder State: up");
         }
         else {
-            System.out.println("Shoulder Error");
+            //System.out.println("Invalid Shoulder State");
         }
 
+    }
+
+    public void toggleShoulderState() {
+        if (m_currentShoulderState == ShoulderState.kUp) {
+            this.setShoulderState(ShoulderState.kDown);
+        }
+        else {
+            this.setShoulderState(ShoulderState.kUp);
+        }
+    }
+
+    public ShoulderState getShoulderState() {
+        return m_currentShoulderState;
     }
 
 }

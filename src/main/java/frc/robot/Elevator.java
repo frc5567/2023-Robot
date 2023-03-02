@@ -109,4 +109,11 @@ public class Elevator {
     public void coastMode(){
         m_elevator.setNeutralMode(NeutralMode.Coast);
     }
+
+    /**
+     * sets elevator to brake mode (used when disabled)
+     */
+    public void brakeMode(){
+        m_elevator.setNeutralMode(NeutralMode.Brake);
+    }
 }
