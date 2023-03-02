@@ -61,14 +61,25 @@ public class Claw {
             m_currentClawState = ClawState.kOpen;
             //TODO: kForward and kReverse might be reversed; test.
             m_clawSol.set(Value.kForward);
+            System.out.println("Valid Claw State: open");
         }
         else if (clawValue == ClawState.kClosed) {
             m_currentClawState = ClawState.kClosed;
             m_clawSol.set(Value.kReverse);
+            System.out.println("Valid Claw State: closed");
         }
         else {
             //Somebody passed in kUnknown
-            System.out.println("Invalid Claw State");
+            //System.out.println("Invalid Claw State");
+        }
+    }
+
+    public void toggleClawState() {
+        if (m_currentClawState == ClawState.kOpen) {
+            this.setClawState(ClawState.kClosed);
+        }
+        else {
+            this.setClawState(ClawState.kOpen);
         }
     }
 

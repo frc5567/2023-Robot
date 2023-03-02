@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Claw.ClawState;
+import frc.robot.CoDriveInput.ToggleInput;
 import frc.robot.Shoulder.ShoulderState;
 
 /**
@@ -59,23 +60,13 @@ public class CopilotController {
         }
 
         // When the right bumper is pressed, toggles the claw state.
-        if (m_controller.getRightBumper()) {
-            if (coDriveInput.m_clawPos == ClawState.kOpen) {
-                coDriveInput.m_clawPos = ClawState.kClosed;
-            }
-            else {
-                coDriveInput.m_clawPos = ClawState.kOpen;
-            }
+        if (m_controller.getRightBumperPressed()) {
+                coDriveInput.m_clawPos = ToggleInput.kToggle;
         }
 
         // When the left bumper is pressed, toggles the shoulder state.
-        if (m_controller.getLeftBumper()) {
-            if (coDriveInput.m_shoulderPos == ShoulderState.kDown) {
-                coDriveInput.m_shoulderPos = ShoulderState.kUp;
-            }
-            else {
-                coDriveInput.m_shoulderPos = ShoulderState.kDown;
-            }
+        if (m_controller.getLeftBumperPressed()) {
+                coDriveInput.m_shoulderPos = ToggleInput.kToggle;
         }
 
         return coDriveInput;

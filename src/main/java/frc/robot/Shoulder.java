@@ -59,18 +59,27 @@ public class Shoulder {
 
         if (shoulderState == ShoulderState.kDown) {
             m_currentShoulderState = ShoulderState.kDown;
-            //TODO: kForward and kReverse might be reversed; test.
-            m_shoulderSol.set(Value.kForward);
+            m_shoulderSol.set(Value.kReverse);
+            System.out.println("valid Shoulder State: down");
         }
         else if (shoulderState == ShoulderState.kUp){
             m_currentShoulderState = ShoulderState.kUp;
-            //TODO: kForward and kReverse might be reversed; test.
-            m_shoulderSol.set(Value.kReverse);
+            m_shoulderSol.set(Value.kForward);
+            System.out.println("valid Shoulder State: up");
         }
         else {
-            System.out.println("Invalid Shoulder State");
+            //System.out.println("Invalid Shoulder State");
         }
 
+    }
+
+    public void toggleShoulderState() {
+        if (m_currentShoulderState == ShoulderState.kUp) {
+            this.setShoulderState(ShoulderState.kDown);
+        }
+        else {
+            this.setShoulderState(ShoulderState.kUp);
+        }
     }
 
     public ShoulderState getShoulderState() {

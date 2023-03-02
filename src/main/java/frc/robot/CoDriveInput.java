@@ -9,9 +9,27 @@ import frc.robot.Shoulder.ShoulderState;
 public class CoDriveInput {
     public double m_elevatorPos;
     public double m_armPos;
-    public ClawState m_clawPos;
-    public ShoulderState m_shoulderPos;
+    public ToggleInput m_clawPos;
+    public ToggleInput m_shoulderPos;
     public double m_manualElevator;
+
+    public enum ToggleInput {
+        kNoInput(0),
+        kToggle(-1);
+
+        private int m_toggleInput;
+
+        /**
+         * sets the member variable to the claw value
+         * @param value
+         */
+        ToggleInput(int value) {
+            m_toggleInput = value;
+        }
+        public int getToggleState() {
+            return m_toggleInput;
+        }
+    }
 
     /**
      * Default constructor which sets zero values
@@ -21,8 +39,8 @@ public class CoDriveInput {
         m_armPos = RobotMap.ArmConstants.ARM_START_POS;
         m_manualElevator = 0;
         //TODO: might want to switch default value to closed in the future.
-        m_clawPos = ClawState.kUnknown;
-        m_shoulderPos = ShoulderState.kUnknown;
+        m_clawPos = ToggleInput.kNoInput;
+        m_shoulderPos = ToggleInput.kNoInput;
     }  
 
     /**
@@ -34,8 +52,8 @@ public class CoDriveInput {
         m_elevatorPos = elevatorPos;
         m_armPos = armPos;
         m_manualElevator = 0;
-        m_clawPos = ClawState.kUnknown;
-        m_shoulderPos = ShoulderState.kUnknown;
+        m_clawPos = ToggleInput.kNoInput;
+        m_shoulderPos = ToggleInput.kNoInput;
     }
 
     /**
@@ -44,12 +62,12 @@ public class CoDriveInput {
      * @param armPos
      * @param clawPos
      */
-    public CoDriveInput(double elevatorPos, double armPos, ClawState clawPos) {
+    public CoDriveInput(double elevatorPos, double armPos, ToggleInput clawPos) {
         m_elevatorPos = elevatorPos;
         m_armPos = armPos;
         m_clawPos = clawPos;
         m_manualElevator = 0;
-        m_shoulderPos = ShoulderState.kUnknown;
+        m_shoulderPos = ToggleInput.kNoInput;
     }
 
     /**
@@ -59,7 +77,7 @@ public class CoDriveInput {
      * @param clawPos
      * @param shoulderPos
      */
-    public CoDriveInput(double elevatorPos, double armPos, ClawState clawPos, ShoulderState shoulderPos) {
+    public CoDriveInput(double elevatorPos, double armPos, ToggleInput clawPos, ToggleInput shoulderPos) {
         m_elevatorPos = elevatorPos;
         m_armPos = armPos;
         m_clawPos = clawPos;
@@ -75,7 +93,7 @@ public class CoDriveInput {
      * @param shoulderPos
      * @param manualElevator
      */
-    public CoDriveInput(double elevatorPos, double armPos, ClawState clawPos, ShoulderState shoulderPos, double manualElevator) {
+    public CoDriveInput(double elevatorPos, double armPos, ToggleInput clawPos, ToggleInput shoulderPos, double manualElevator) {
         m_elevatorPos = elevatorPos;
         m_armPos = armPos;
         m_clawPos = clawPos;
