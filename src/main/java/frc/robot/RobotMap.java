@@ -149,10 +149,10 @@ public class RobotMap {
         public static final double DRUM_CIRCUMFERENCE = 8.1875;
         public static final int TICKS_PER_REVOLUTION = 2048;
 
-        public static final double ELEVATOR_START_POS = 0.0;
-        public static final double ELEVATOR_FLOOR_POS = 566000;
-        public static final double ELEVATOR_MID_POS = 818000;
-        public static final double ELEVATOR_HIGH_POS = 1379250;
+        public static final double ELEVATOR_START_POS = -818000;
+        public static final double ELEVATOR_FLOOR_POS = -252000;
+        public static final double ELEVATOR_MID_POS = 0;
+        public static final double ELEVATOR_HIGH_POS = 561250;
     }
 
     /**
@@ -175,10 +175,10 @@ public class RobotMap {
         public static final int TICKS_PER_REVOLUTION = 2048;
 
         public static final double ARM_START_POS = 0.0;
-        public static final double ARM_FLOOR_POS = -65410;
-        public static final double ARM_MID_POS = -344000;
-        public static final double ARM_HIGH_POS = -372000;
-        public static final double ARM_APPROACH_POS = -431000;
+        public static final double ARM_FLOOR_POS = 744900;
+        public static final double ARM_MID_POS = 487000;
+        public static final double ARM_HIGH_POS = 444700;
+        public static final double ARM_APPROACH_POS = 405000;
     }
 
     /**
