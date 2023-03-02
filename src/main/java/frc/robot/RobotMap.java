@@ -149,10 +149,10 @@ public class RobotMap {
         public static final double DRUM_CIRCUMFERENCE = 8.1875;
         public static final int TICKS_PER_REVOLUTION = 2048;
 
-        public static final double ELEVATOR_START_POS = 5260;
-        public static final double ELEVATOR_FLOOR_POS = 0.0;
-        public static final double ELEVATOR_MID_POS = -252000;
-        public static final double ELEVATOR_HIGH_POS = -818000;
+        public static final double ELEVATOR_START_POS = -818000;
+        public static final double ELEVATOR_FLOOR_POS = -252000;
+        public static final double ELEVATOR_MID_POS = 0;
+        public static final double ELEVATOR_HIGH_POS = 561250;
     }
 
     /**
