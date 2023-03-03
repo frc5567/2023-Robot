@@ -85,10 +85,7 @@ public class Arm {
      * @param target
      */
     public void armPID(double target) {
-        double armPosition = m_arm.getSelectedSensorPosition();
-
         m_arm.set(ControlMode.MotionMagic, target);
-        //System.out.println("Go to [" + target + "] Arm Position: [" + armPosition + "]");
     }
 
     /**
@@ -97,8 +94,6 @@ public class Arm {
      */
     public void driveArm(double speed) {
         m_arm.set(speed);
-        double enc = m_arm.getSelectedSensorPosition(RobotMap.ArmConstants.PID_PRIMARY);
-        //System.out.println("ARM [" + speed + "][" + enc + "]");
     }
 
     /**
@@ -107,4 +102,13 @@ public class Arm {
     public void coastMode() {
 		m_arm.setNeutralMode(NeutralMode.Coast);
 	}
+
+    /**
+     * Gets the current position of the arm mechanism in encoder ticks
+     * @return CurrentArmPosition
+     */
+    public Double getArmPosition() {
+        return m_arm.getSelectedSensorPosition();
+    }
+
 }

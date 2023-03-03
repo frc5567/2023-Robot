@@ -168,8 +168,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     DriveInput driverInput = m_pilotControl.getDriverInput();
-
-    // TODO: Test these elements now that they exist.
     CoDriveInput coDriverInput = m_copilotControl.getCoDriveInput();
     double curPitch = m_pigeon.getPitch();
 
@@ -192,7 +190,7 @@ public class Robot extends TimedRobot {
     }
     
     /**
-     * elevator: inputs the values from the controllers to the PID/set state methods.
+     * elevator: inputs the values from the controllers to the manual/PID methods.
      **/
     if (coDriverInput.m_manualElevator != 0) {
       m_elevator.drive(coDriverInput.m_manualElevator);
@@ -205,7 +203,7 @@ public class Robot extends TimedRobot {
     }
 
     /**
-     * elevator: inputs the values from the controllers to the PID/set state methods.
+     * arm: inputs the values from the controllers to the PID/set motor methods.
      **/
     if (driverInput.m_manualArm != 0) {
       m_arm.driveArm(driverInput.m_manualArm);
@@ -256,4 +254,54 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+
+  /**
+   * Method to move to a specific "state" in a coordinated fashion such that our mechanisms move simultaneously and avoiding 
+   * mechanical collisions by moving when there isn't clearance
+   */
+  private boolean transitionToNewState(RobotState targetState) {
+    boolean movementCompleted = false;
+
+    switch(targetState){
+      case kFloorPickup:
+      {
+        // we have to make sure the elevator is in a safe position to move the arm down to the floor, if the arm is currently above the elevator axis
+        Double currentArmPosition = this.m_arm.getArmPosition();
+        // If the encoder value is between start and approach positions, we're above the elevator and need to be careful
+        if (currentArmPosition <= RobotMap.ArmConstants.ARM_APPROACH_POS){
+          // make the elevator move to a safe position
+
+        }
+        else {
+          // Move the elevator and arm simultaneously to target positions
+          m_arm.armPID(targetState.getArmTarget());
+          m_elevator.drivePID(targetState.getElevatorTarget());
+        }
+
+        // Check for movement completed?
+      }
+      case kApproachHighCone:
+      {
+        // we have to make sure the elevator is in a safe position to move the arm if the arm is not currently above the elevator axis
+        Double currentArmPosition = this.m_arm.getArmPosition();
+        // If the encoder value is between start and approach positions, we're above the elevator and need to be careful
+        if (currentArmPosition > RobotMap.ArmConstants.ARM_APPROACH_POS){
+          // make the elevator move to a safe position
+
+
+        }
+        else {
+          // Move the elevator and arm simultaneously to target positions
+          m_arm.armPID(targetState.getArmTarget());
+          m_elevator.drivePID(targetState.getElevatorTarget());
+        }
+        
+        // Check for movement completed?
+      }
+      default:
+        break;
+    }
+
+    return movementCompleted;
+  }
 }
