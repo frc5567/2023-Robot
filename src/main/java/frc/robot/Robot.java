@@ -292,6 +292,9 @@ public class Robot extends TimedRobot {
         }
 
         // Check for movement completed?
+
+        // need to break out of case so we don't execute the next
+        break;
       }
       case kApproachHighCone:
       {
@@ -310,6 +313,9 @@ public class Robot extends TimedRobot {
         }
         
         // Check for movement completed?
+
+        // need to break out of case so we don't execute the next
+        break;
       }
       default:
         break;
