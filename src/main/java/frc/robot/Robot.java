@@ -470,7 +470,7 @@ public class Robot extends TimedRobot {
         }
         else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
-          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+          m_elevator.drivePID(targetState.getElevatorTarget());
         }
         else {
           // Move the elevator and arm simultaneously to target positions
