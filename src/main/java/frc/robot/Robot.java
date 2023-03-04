@@ -79,6 +79,8 @@ public class Robot extends TimedRobot {
     m_claw = new Claw();
     m_shoulder = new Shoulder();
 
+    m_vroomVroom.initDrivetrain();
+
     m_arm.init();
     m_arm.configPID();
     m_elevator.init();
@@ -163,16 +165,9 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    m_vroomVroom.initDrivetrain();
     m_vroomVroom.brakeMode();
 
-    m_arm.init();
-    m_arm.configPID();
-
     m_auton.m_autonStartOut = false;
-
-    m_elevator.init();
-    m_elevator.configPID();
 
   }
 
@@ -259,7 +254,17 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+    m_vroomVroom.initDrivetrain();
+
+    m_arm.init();
+    m_arm.configPID();
+    m_elevator.init();
+    m_elevator.configPID();
+
+    m_shoulder.init();
+    m_claw.init();
+  }
 
   /** This function is called periodically during test mode. */
   @Override
@@ -312,8 +317,8 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition <= RobotMap.ArmConstants.ARM_HIGH_POS && currentElevatorPosition >= RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
-          m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
+        else if (currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + 20000) && currentElevatorPosition >= RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_FLOOR_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
         else {
