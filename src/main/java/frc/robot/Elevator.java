@@ -116,4 +116,12 @@ public class Elevator {
     public void brakeMode(){
         m_elevator.setNeutralMode(NeutralMode.Brake);
     }
+
+    /**
+     * Gets the current position of the arm mechanism in encoder ticks
+     * @return CurrentElevatorPosition
+     */
+    public Double getElevatorPosition() {
+        return m_elevator.getSelectedSensorPosition();
+    }
 }

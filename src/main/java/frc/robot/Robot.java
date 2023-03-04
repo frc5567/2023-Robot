@@ -202,31 +202,36 @@ public class Robot extends TimedRobot {
       m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
     }
     
-    /**
-     * elevator: inputs the values from the controllers to the manual/PID methods.
-     **/
-    if (coDriverInput.m_manualElevator != 0) {
-      m_elevator.drive(coDriverInput.m_manualElevator);
-    }
-    else if (!Double.isNaN(coDriverInput.m_elevatorPos)) {
-      m_elevator.drivePID(coDriverInput.m_elevatorPos);
+    if (coDriverInput.m_desiredState != RobotState.kUnknown) {
+      this.transitionToNewState(coDriverInput.m_desiredState);
     }
     else {
-      m_elevator.drive(0.0);
-    }
+      /**
+       * elevator: inputs the values from the controllers to the manual/PID methods.
+       **/
+      if (coDriverInput.m_manualElevator != 0) {
+        m_elevator.drive(coDriverInput.m_manualElevator);
+      }
+      else if (!Double.isNaN(coDriverInput.m_elevatorPos)) {
+        m_elevator.drivePID(coDriverInput.m_elevatorPos);
+      }
+      else {
+        m_elevator.drive(0.0);
+      }
 
-    /**
-     * arm: inputs the values from the controllers to the PID/set motor methods.
-     **/
-    if (driverInput.m_manualArm != 0) {
-      m_arm.driveArm(driverInput.m_manualArm);
-    }
-    else if (!Double.isNaN(driverInput.m_armPosition)) {
-      m_arm.armPID(driverInput.m_armPosition);
-    } 
-    else {
-      // No Input case
-      m_arm.driveArm(0.0);
+      /**
+       * arm: inputs the values from the controllers to the PID/set motor methods.
+       **/
+      if (driverInput.m_manualArm != 0) {
+        m_arm.driveArm(driverInput.m_manualArm);
+      }
+      else if (!Double.isNaN(driverInput.m_armPosition)) {
+        m_arm.armPID(driverInput.m_armPosition);
+      } 
+      else {
+        // No Input case
+        m_arm.driveArm(0.0);
+      }
     }
     
     if (coDriverInput.m_clawPos == ToggleInput.kToggle) {
@@ -274,37 +279,64 @@ public class Robot extends TimedRobot {
    */
   private boolean transitionToNewState(RobotState targetState) {
     boolean movementCompleted = false;
+    // we have to make sure the elevator is in a safe position to move the arm down to the floor, if the arm is currently above the elevator axis
+    Double currentArmPosition = this.m_arm.getArmPosition();
+
+    Double currentElevatorPosition = this.m_elevator.getElevatorPosition();
 
     switch(targetState){
-      case kFloorPickup:
+      case kTravel:
       {
-        // we have to make sure the elevator is in a safe position to move the arm down to the floor, if the arm is currently above the elevator axis
-        Double currentArmPosition = this.m_arm.getArmPosition();
-        // If the encoder value is between start and approach positions, we're above the elevator and need to be careful
-        if (currentArmPosition <= RobotMap.ArmConstants.ARM_APPROACH_POS){
-          // make the elevator move to a safe position
-
+        if (currentArmPosition >= RobotMap.ArmConstants.ARM_HIGH_POS && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else if (currentArmPosition >= RobotMap.ArmConstants.ARM_APPROACH_POS && currentElevatorPosition >= RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
         else {
           // Move the elevator and arm simultaneously to target positions
           m_arm.armPID(targetState.getArmTarget());
           m_elevator.drivePID(targetState.getElevatorTarget());
         }
-
+        // need to break out of case so we don't execute the next
+        break;
+      }
+      case kFloorPickup:
+      {
+        // If the encoder value is between start and approach positions, we're above the elevator and need to be careful
+        //TODO: add deadbands
+        if (currentArmPosition <= RobotMap.ArmConstants.ARM_APPROACH_POS && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS){
+          // make the elevator move to a safe position
+          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else if (currentArmPosition <= RobotMap.ArmConstants.ARM_HIGH_POS && currentElevatorPosition >= RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else {
+          // Move the elevator and arm simultaneously to target positions
+          m_arm.armPID(targetState.getArmTarget());
+          m_elevator.drivePID(targetState.getElevatorTarget());
+        }
         // Check for movement completed?
-
+        
         // need to break out of case so we don't execute the next
         break;
       }
       case kApproachHighCone:
       {
-        // we have to make sure the elevator is in a safe position to move the arm if the arm is not currently above the elevator axis
-        Double currentArmPosition = this.m_arm.getArmPosition();
         // If the encoder value is between start and approach positions, we're above the elevator and need to be careful
         if (currentArmPosition > RobotMap.ArmConstants.ARM_APPROACH_POS){
           // make the elevator move to a safe position
-
-
+          if (currentElevatorPosition >= RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+            m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
+          }
+          else {
+            m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+          }
         }
         else {
           // Move the elevator and arm simultaneously to target positions

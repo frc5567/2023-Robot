@@ -28,11 +28,11 @@ public class CopilotController {
         //commented out arm code for testing elevator
         if (m_controller.getStartButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_START_POS;
-            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_START_POS;
+            coDriveInput.m_desiredState = RobotState.kTravel;
         }
         else if (m_controller.getAButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_FLOOR_POS;
-            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_FLOOR_POS;
+            coDriveInput.m_desiredState = RobotState.kFloorPickup;
 
         }
         else if (m_controller.getBButton()) {

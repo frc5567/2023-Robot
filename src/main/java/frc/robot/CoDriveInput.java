@@ -12,6 +12,7 @@ public class CoDriveInput {
     public ToggleInput m_clawPos;
     public ToggleInput m_shoulderPos;
     public double m_manualElevator;
+    public RobotState m_desiredState;
 
     public enum ToggleInput {
         kNoInput(0),
@@ -41,6 +42,7 @@ public class CoDriveInput {
         //TODO: might want to switch default value to closed in the future.
         m_clawPos = ToggleInput.kNoInput;
         m_shoulderPos = ToggleInput.kNoInput;
+        m_desiredState = RobotState.kUnknown;
     }  
 
     /**
@@ -54,6 +56,7 @@ public class CoDriveInput {
         m_manualElevator = 0;
         m_clawPos = ToggleInput.kNoInput;
         m_shoulderPos = ToggleInput.kNoInput;
+        m_desiredState = RobotState.kUnknown;
     }
 
     /**
@@ -68,6 +71,7 @@ public class CoDriveInput {
         m_clawPos = clawPos;
         m_manualElevator = 0;
         m_shoulderPos = ToggleInput.kNoInput;
+        m_desiredState = RobotState.kUnknown;
     }
 
     /**
@@ -83,6 +87,7 @@ public class CoDriveInput {
         m_clawPos = clawPos;
         m_shoulderPos = shoulderPos;
         m_manualElevator = 0;
+        m_desiredState = RobotState.kUnknown;
     }
 
     /**
@@ -99,6 +104,25 @@ public class CoDriveInput {
         m_clawPos = clawPos;
         m_shoulderPos = shoulderPos;
         m_manualElevator = manualElevator;
+        m_desiredState = RobotState.kUnknown;
+    }
+
+    /**
+     * Constructor that sets the elevator, arm, claw, manual elevator speed, and shoulder positions.
+     * @param elevatorPos
+     * @param armPos
+     * @param clawPos
+     * @param shoulderPos
+     * @param manualElevator
+     * @param desiredState
+     */
+    public CoDriveInput(double elevatorPos, double armPos, ToggleInput clawPos, ToggleInput shoulderPos, double manualElevator, RobotState desiredState) {
+        m_elevatorPos = elevatorPos;
+        m_armPos = armPos;
+        m_clawPos = clawPos;
+        m_shoulderPos = shoulderPos;
+        m_manualElevator = manualElevator;
+        m_desiredState = desiredState;
     }
 }
 

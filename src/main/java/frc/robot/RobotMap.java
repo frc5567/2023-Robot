@@ -179,6 +179,7 @@ public class RobotMap {
         public static final double ARM_MID_POS = 487000;
         public static final double ARM_HIGH_POS = 444700;
         public static final double ARM_APPROACH_POS = 405000;
+        public static final double FLOOR_PICKUP_POS = 647000;
     }
 
     /**
