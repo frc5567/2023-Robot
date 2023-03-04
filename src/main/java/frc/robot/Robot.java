@@ -204,6 +204,9 @@ public class Robot extends TimedRobot {
     if (coDriverInput.m_desiredState != RobotState.kUnknown) {
       this.transitionToNewState(coDriverInput.m_desiredState);
     }
+    else if (driverInput.m_desiredState != RobotState.kUnknown) {
+      this.transitionToNewState(driverInput.m_desiredState);
+    }
     else {
       /**
        * elevator: inputs the values from the controllers to the manual/PID methods.
