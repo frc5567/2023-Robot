@@ -90,7 +90,7 @@ public class Elevator {
         double position = m_elevator.getSelectedSensorPosition();
 
         m_elevator.set(ControlMode.MotionMagic, target);
-        System.out.println("Go to [" + target + "] Vater Position: [" + position + "]");
+        //System.out.println("Go to [" + target + "] Vater Position: [" + position + "]");
     }
 
     /**

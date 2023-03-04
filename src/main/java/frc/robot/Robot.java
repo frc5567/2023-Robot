@@ -37,6 +37,8 @@ public class Robot extends TimedRobot {
   private Shoulder m_shoulder;
   private UsbCamera m_camera;
 
+  private int m_outCounter;
+
   com.ctre.phoenix.sensors.Pigeon2 m_pigeon;
 
 
@@ -99,6 +101,7 @@ public class Robot extends TimedRobot {
       System.out.println("Camera failed to instantiate");
     }
 
+    m_outCounter = 0;
   }
 
   /**
@@ -110,7 +113,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
+    m_outCounter++;
   }
 
   /**
@@ -289,6 +292,7 @@ public class Robot extends TimedRobot {
 
     Double currentElevatorPosition = this.m_elevator.getElevatorPosition();
 
+    
     switch(targetState){
       case kTravel:
       {
@@ -312,14 +316,17 @@ public class Robot extends TimedRobot {
       {
         // If the encoder value is between start and approach positions, we're above the elevator and need to be careful
         //TODO: add deadbands
-        if (currentArmPosition <= RobotMap.ArmConstants.ARM_APPROACH_POS && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS){
+        if (currentArmPosition <= (RobotMap.ArmConstants.ARM_APPROACH_POS - 50000) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS){
           // make the elevator move to a safe position
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + 20000) && currentElevatorPosition >= RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + 75000)) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - 50000)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_FLOOR_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+          if ( (m_outCounter % 100) == 0 ){
+            System.out.println("Arm[" + currentArmPosition + "] Ele[" + currentElevatorPosition + "]");
+          }
         }
         else {
           // Move the elevator and arm simultaneously to target positions
