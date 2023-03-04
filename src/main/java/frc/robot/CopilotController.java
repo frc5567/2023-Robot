@@ -28,26 +28,26 @@ public class CopilotController {
         //commented out arm code for testing elevator
         if (m_controller.getStartButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_START_POS;
-            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_START_POS;
+            coDriveInput.m_desiredState = RobotState.kTravel;
         }
         else if (m_controller.getAButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_FLOOR_POS;
-            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_FLOOR_POS;
+            coDriveInput.m_desiredState = RobotState.kFloorPickup;
 
         }
         else if (m_controller.getBButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_MID_POS;
-            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_MID_POS;
+            coDriveInput.m_desiredState = RobotState.kShelfPickup;
 
         }
         else if (m_controller.getXButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_HIGH_POS;
-            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_HIGH_POS;
+            coDriveInput.m_desiredState = RobotState.kFloorPiece;
 
         }
-        // else if (m_controller.getYButton()){
-        //     //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_APPROACH_POS;
-        // }
+        else if (m_controller.getYButton()){
+            coDriveInput.m_desiredState = RobotState.kMidPiece;
+        }
         else {
            coDriveInput.m_elevatorPos = RobotMap.NO_POS_INPUT;
            double speed = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis();

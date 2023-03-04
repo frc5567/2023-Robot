@@ -27,16 +27,16 @@ public class PilotController {
             driverInput.m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
         }
         else if (m_controller.getAButton()) {
-            driverInput.m_armPosition = RobotMap.ArmConstants.ARM_FLOOR_POS;
+            driverInput.m_desiredState = RobotState.kApproachMid;
         }
         else if (m_controller.getBButton()) {
-            driverInput.m_armPosition = RobotMap.ArmConstants.ARM_MID_POS;
+            driverInput.m_desiredState = RobotState.kApproachHigh;
         }
         else if (m_controller.getXButton()) {
-            driverInput.m_armPosition = RobotMap.ArmConstants.ARM_HIGH_POS;
+            driverInput.m_desiredState = RobotState.kHighCube;
         }
         else if (m_controller.getYButton()) {
-            driverInput.m_armPosition = RobotMap.ArmConstants.ARM_APPROACH_POS;
+            driverInput.m_desiredState = RobotState.kHighCone;
         }
         else {
             driverInput.m_armPosition = RobotMap.NO_POS_INPUT;

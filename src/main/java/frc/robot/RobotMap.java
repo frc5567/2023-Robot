@@ -23,6 +23,11 @@ public class RobotMap {
     public static final double NO_POS_INPUT = Double.NaN;
 
     /**
+     * encoder deadband used in robot.java for transitions
+     */
+    public static final double ENC_DEADBAND = 50000;
+
+    /**
      * All drivetrain constants
      */
     public static class DrivetrainConstants {
@@ -75,12 +80,12 @@ public class RobotMap {
         /**
          * Auto leveling mid drive speed
          */
-        public static final double MID_LEVEL_DRIVE_SPEED = 0.4;
+        public static final double MID_LEVEL_DRIVE_SPEED = 0.35;
 
         /**
          * Auto leveling high drive speed
          */
-        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.5;
+        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.4;
 
         /**
          * Low Gear Solenoid port on the PCM.
@@ -153,6 +158,7 @@ public class RobotMap {
         public static final double ELEVATOR_FLOOR_POS = -252000;
         public static final double ELEVATOR_MID_POS = 0;
         public static final double ELEVATOR_HIGH_POS = 561250;
+        public static final double ELEVATOR_SHELF_POS = -500000;
     }
 
     /**
@@ -175,10 +181,12 @@ public class RobotMap {
         public static final int TICKS_PER_REVOLUTION = 2048;
 
         public static final double ARM_START_POS = 0.0;
-        public static final double ARM_FLOOR_POS = 744900;
-        public static final double ARM_MID_POS = 487000;
-        public static final double ARM_HIGH_POS = 444700;
+        public static final double ARM_SHELF_POS = 160600;
         public static final double ARM_APPROACH_POS = 405000;
+        public static final double ARM_HIGH_POS = 444700;
+        public static final double ARM_MID_POS = 487000;
+        public static final double FLOOR_PLACE_POS = 692800;
+        public static final double ARM_FLOOR_POS = 731300;
     }
 
     /**
