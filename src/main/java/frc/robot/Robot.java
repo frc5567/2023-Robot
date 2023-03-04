@@ -343,8 +343,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(targetState.getArmTarget());
           m_elevator.drivePID(targetState.getElevatorTarget());
         }
-        // Check for movement completed?
-        
+
         // need to break out of case so we don't execute the next
         break;
       }
@@ -414,7 +413,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)){
+        else if (currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)){
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -432,7 +431,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if ( currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >=(RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if ( currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition >=(RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_MID_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -446,11 +445,11 @@ public class Robot extends TimedRobot {
       case kApproachMid:
       {
         m_shoulder.setShoulderState(targetState.getShoulderState());
-        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -458,18 +457,18 @@ public class Robot extends TimedRobot {
           // Move the elevator and arm simultaneously to target positions
           m_arm.armPID(targetState.getArmTarget());
           m_elevator.drivePID(targetState.getElevatorTarget());
-          }
+        }
         // need to break out of case so we don't execute the next
         break;
       }
       case kApproachHigh:
       {
         m_shoulder.setShoulderState(targetState.getShoulderState());
-        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -477,7 +476,7 @@ public class Robot extends TimedRobot {
           // Move the elevator and arm simultaneously to target positions
           m_arm.armPID(targetState.getArmTarget());
           m_elevator.drivePID(targetState.getElevatorTarget());
-          }
+        }
         // need to break out of case so we don't execute the next
         break;
       }
