@@ -414,7 +414,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)){
+        else if (currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)){
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
