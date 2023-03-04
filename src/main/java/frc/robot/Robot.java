@@ -309,7 +309,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_START_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -331,7 +331,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_FLOOR_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
           if ( (m_outCounter % 100) == 0 ){
@@ -354,7 +354,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if  (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if  (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_SHELF_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -374,7 +374,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.FLOOR_PLACE_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -393,7 +393,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_MID_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -413,7 +413,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)){
+        else if (currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)){
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -431,7 +431,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if ( currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition >=(RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if ( currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition <=(RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_MID_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -449,7 +449,7 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
@@ -468,9 +468,9 @@ public class Robot extends TimedRobot {
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
-          m_elevator.drivePID(targetState.getElevatorTarget());
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
         else {
           // Move the elevator and arm simultaneously to target positions
