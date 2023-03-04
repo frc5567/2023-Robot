@@ -371,7 +371,7 @@ public class Robot extends TimedRobot {
         if(currentArmPosition <= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS){
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
-         }
+        }
         else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.FLOOR_PLACE_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
@@ -387,13 +387,12 @@ public class Robot extends TimedRobot {
       case kMidPiece:
       {
         m_shoulder.setShoulderState(targetState.getShoulderState());
-        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
-          // make the elevator move to a safe position
-          m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
+        if(currentArmPosition <= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS){
+          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
-          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
+        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_MID_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
         else {
