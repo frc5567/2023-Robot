@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.CoDriveInput.ToggleInput;
+import frc.robot.Shoulder.ShoulderState;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -289,25 +290,31 @@ public class Robot extends TimedRobot {
     boolean movementCompleted = false;
     // we have to make sure the elevator is in a safe position to move the arm down to the floor, if the arm is currently above the elevator axis
     Double currentArmPosition = this.m_arm.getArmPosition();
-
     Double currentElevatorPosition = this.m_elevator.getElevatorPosition();
+    ShoulderState currentShoulderState = this.m_shoulder.getShoulderState();
 
+    if (((currentArmPosition > (targetState.getArmTarget() - RobotMap.ENC_DEADBAND)) && (currentArmPosition < (targetState.getArmTarget() + RobotMap.ENC_DEADBAND))) && 
+        ((currentElevatorPosition > (targetState.getElevatorTarget() - RobotMap.ENC_DEADBAND)) && (currentElevatorPosition < (targetState.getElevatorTarget() + RobotMap.ENC_DEADBAND))) &&
+        (currentShoulderState == targetState.getShoulderState())) {
+          movementCompleted = true;
+    }
     
     switch(targetState){
       case kTravel:
       {
-        if (currentArmPosition >= RobotMap.ArmConstants.ARM_HIGH_POS && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if (currentArmPosition >= RobotMap.ArmConstants.ARM_APPROACH_POS && currentElevatorPosition >= RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
-          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
+        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_START_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
         else {
           // Move the elevator and arm simultaneously to target positions
           m_arm.armPID(targetState.getArmTarget());
           m_elevator.drivePID(targetState.getElevatorTarget());
+          m_shoulder.setShoulderState(targetState.getShoulderState());
         }
         // need to break out of case so we don't execute the next
         break;
@@ -315,13 +322,13 @@ public class Robot extends TimedRobot {
       case kFloorPickup:
       {
         // If the encoder value is between start and approach positions, we're above the elevator and need to be careful
-        //TODO: add deadbands
-        if (currentArmPosition <= (RobotMap.ArmConstants.ARM_APPROACH_POS - 50000) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS){
+        m_shoulder.setShoulderState(targetState.getShoulderState());
+        if (currentArmPosition <= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS){
           // make the elevator move to a safe position
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + 75000)) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - 50000)) {
+        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_FLOOR_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
           if ( (m_outCounter % 100) == 0 ){
@@ -338,26 +345,119 @@ public class Robot extends TimedRobot {
         // need to break out of case so we don't execute the next
         break;
       }
-      case kApproachHighCone:
+      case kShelfPickup:
       {
-        // If the encoder value is between start and approach positions, we're above the elevator and need to be careful
-        if (currentArmPosition > RobotMap.ArmConstants.ARM_APPROACH_POS){
+        m_shoulder.setShoulderState(targetState.getShoulderState());
+        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else if  (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_SHELF_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else {
+          // Move the elevator and arm simultaneously to target positions
+          m_arm.armPID(targetState.getArmTarget());
+          m_elevator.drivePID(targetState.getElevatorTarget()); 
+        }
+        // need to break out of case so we don't execute the next
+        break;
+      }
+      case kFloorPiece:
+      {
+        m_shoulder.setShoulderState(targetState.getShoulderState());
+      
+        if(currentArmPosition <= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS){
+          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+         }
+        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+          m_arm.armPID(RobotMap.ArmConstants.FLOOR_PLACE_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else {
+          // Move the elevator and arm simultaneously to target positions
+          m_arm.armPID(targetState.getArmTarget());
+          m_elevator.drivePID(targetState.getElevatorTarget()); 
+        }
+        // need to break out of case so we don't execute the next
+        break;
+      }
+      case kMidPiece:
+      {
+        m_shoulder.setShoulderState(targetState.getShoulderState());
+        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
           // make the elevator move to a safe position
-          if (currentElevatorPosition >= RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
-            m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
-          }
-          else {
-            m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
-          }
+          m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else {
+         // Move the elevator and arm simultaneously to target positions
+         m_arm.armPID(targetState.getArmTarget());
+         m_elevator.drivePID(targetState.getElevatorTarget()); 
+        }
+       
+        // need to break out of case so we don't execute the next
+       break;
+      }
+      case kHighCone:
+      {
+        m_shoulder.setShoulderState(targetState.getShoulderState());
+        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)){
+          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else {
+          m_arm.armPID(targetState.getArmTarget());
+          m_elevator.drivePID(targetState.getElevatorTarget());
+        }
+      // need to break out of case so we don't execute the next
+      break;
+      }
+      case kHighCube:
+      {
+        m_shoulder.setShoulderState(targetState.getShoulderState());
+        if (currentArmPosition <= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else if ( currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >=(RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_MID_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else{
+          m_arm.armPID(targetState.getArmTarget());
+          m_elevator.drivePID(targetState.getElevatorTarget());
+        }
+        // need to break out of case so we don't execute the next
+        break;
+      }
+      case kApproachMid:
+      case kApproachHigh:
+      {
+        m_shoulder.setShoulderState(targetState.getShoulderState());
+        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+        }
+        else if (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition >= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
         else {
           // Move the elevator and arm simultaneously to target positions
           m_arm.armPID(targetState.getArmTarget());
           m_elevator.drivePID(targetState.getElevatorTarget());
-        }
-        
-        // Check for movement completed?
-
+          }
         // need to break out of case so we don't execute the next
         break;
       }

@@ -10,6 +10,7 @@ public class DriveInput {
     public boolean m_isAutoLeveling;
     public double m_armPosition;
     public double m_manualArm;
+    public RobotState m_desiredState;
 
     /**
      * Default constructor which sets zero values
@@ -21,6 +22,7 @@ public class DriveInput {
         m_manualArm = 0;
         m_gear = Gear.kLowGear;
         m_isAutoLeveling = false;
+        m_desiredState = RobotState.kUnknown;
     }
 
     /**
@@ -35,6 +37,7 @@ public class DriveInput {
         m_isAutoLeveling = false;
         m_manualArm = 0;
         m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
+        m_desiredState = RobotState.kUnknown;
     }
 
      /**
@@ -50,6 +53,7 @@ public class DriveInput {
         m_isAutoLeveling = false;
         m_manualArm = 0;
         m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
+        m_desiredState = RobotState.kUnknown;
     }
 
     /**
@@ -66,6 +70,7 @@ public class DriveInput {
         m_armPosition = armPos;
         m_isAutoLeveling = false;
         m_manualArm = 0;
+        m_desiredState = RobotState.kUnknown;
     }
 
     /**
@@ -83,5 +88,25 @@ public class DriveInput {
         m_armPosition = armPos;
         m_manualArm = manualArm;
         m_isAutoLeveling = false;
+        m_desiredState = RobotState.kUnknown;
+    }
+
+    /**
+     * Constructor that sets the speed, turn, arm position, manual arm speed, and gear
+     * @param speed
+     * @param turn
+     * @param gear
+     * @param armPos
+     * @param manualArm 
+     * @param desiredState
+     */
+    public DriveInput(double speed, double turn, Gear gear, double armPos, double manualArm, RobotState desiredState) {
+        m_speed = speed;
+        m_turnSpeed = turn;
+        m_gear = gear;
+        m_armPosition = armPos;
+        m_manualArm = manualArm;
+        m_isAutoLeveling = false;
+        m_desiredState = desiredState;
     }
 }

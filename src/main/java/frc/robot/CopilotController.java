@@ -37,17 +37,17 @@ public class CopilotController {
         }
         else if (m_controller.getBButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_MID_POS;
-            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_MID_POS;
+            coDriveInput.m_desiredState = RobotState.kShelfPickup;
 
         }
         else if (m_controller.getXButton()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_HIGH_POS;
-            coDriveInput.m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_HIGH_POS;
+            coDriveInput.m_desiredState = RobotState.kFloorPiece;
 
         }
-        // else if (m_controller.getYButton()){
-        //     //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_APPROACH_POS;
-        // }
+        else if (m_controller.getYButton()){
+            coDriveInput.m_desiredState = RobotState.kMidPiece;
+        }
         else {
            coDriveInput.m_elevatorPos = RobotMap.NO_POS_INPUT;
            double speed = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis();
