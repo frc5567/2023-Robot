@@ -7,7 +7,7 @@ public enum RobotState {
     /**
      * Default state for travelling
      */
-    kTravel ("Travel", RobotMap.ArmConstants.ARM_APPROACH_POS, RobotMap.ElevatorConstants.ELEVATOR_MID_POS),
+    kTravel ("Travel", RobotMap.ArmConstants.ARM_START_POS, RobotMap.ElevatorConstants.ELEVATOR_MID_POS),
     
     /**
      * State for doing floor pickup of gamepiece
