@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
   private Claw m_claw;
   private Shoulder m_shoulder;
   private UsbCamera m_camera;
+  private boolean m_autoStepCompleted = false;
 
   private int m_outCounter;
 
@@ -147,11 +148,24 @@ public class Robot extends TimedRobot {
     boolean isBotLevelAuton = false;
     double curPitchAuton = m_pigeon.getPitch();
     isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
-
     DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
-    //run periodic method of Auton class
-    DriveInput driveInput = m_auton.periodic(drivePos, isBotLevelAuton);
-    m_vroomVroom.arcadeDrive(driveInput.m_speed, driveInput.m_turnSpeed);
+
+    AutonInput currentInput;
+    currentInput = m_auton.periodic(m_autoStepCompleted);
+    if (currentInput.m_autonComplete == false) {
+      if (!Double.isNaN(currentInput.m_driveTarget)) {
+        m_autoStepCompleted = m_vroomVroom.driveStraight(currentInput.m_driveTarget);
+      }
+      if (!Double.isNaN(currentInput.m_turnTarget)) {
+        m_autoStepCompleted = m_vroomVroom.driveStraight(currentInput.m_turnTarget);
+      }
+      if (currentInput.m_desiredState != RobotState.kUnknown) {
+        m_autoStepCompleted = this.transitionToNewState(currentInput.m_desiredState);
+      }
+    }
+    else {
+      m_vroomVroom.arcadeDrive(0, 0);
+    }
 
     //autoLevel check and run
     if (m_auton.toRunAutoLevelOrNotToRun == true) {

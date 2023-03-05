@@ -154,7 +154,15 @@ public class RobotMap {
         /**
          * Default value of Auton path, no object auton
          */
-        public static final String DEFAULT_AUTON_PATH = "0 Object";
+        public static final String DEFAULT_AUTON_PATH = "Auto Level";
+
+        public static final String SHORT_COMMUNITY = "Short Community";
+
+        public static final String LONG_COMMUNITY = "Long Community";
+
+        public static final String AUTO_LEVEL = "Auto Level";
+
+        public static final String ONE_OBJECT = "One Object";
     }
 
     /**

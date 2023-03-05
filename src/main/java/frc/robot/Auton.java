@@ -62,16 +62,20 @@ public class Auton {
         m_currentAutonPath = autonPath;
         m_step = 1;
         //path integer assigned is based on number of objects auton has set to achieve
-        if (m_currentAutonPath == "0 Object"){
+        if (m_currentAutonPath == RobotMap.AutonConstants.AUTO_LEVEL){
             System.out.println("Setting Auton to Charging Station Path");
             m_path = m_currentAutonPath;
         }
-        else if (m_currentAutonPath == "1 Object"){
+        else if (m_currentAutonPath == RobotMap.AutonConstants.ONE_OBJECT){
             System.out.println("Setting Auton to 1 Object Path");
             m_path = m_currentAutonPath;
         }
-        else if (m_currentAutonPath == "Community Out"){
-            System.out.println("Setting Auton to Community Out Path");
+        else if (m_currentAutonPath == RobotMap.AutonConstants.SHORT_COMMUNITY){
+            System.out.println("Setting Auton to Community Out Long Path");
+            m_path = m_currentAutonPath;
+        }
+        else if (m_currentAutonPath == RobotMap.AutonConstants.LONG_COMMUNITY){
+            System.out.println("Setting Auton to Community Out Short Path");
             m_path = m_currentAutonPath;
         }
         else{
@@ -86,8 +90,9 @@ public class Auton {
      * @return DriveInput object that can control drivetrain outside of drivetrain class via position encoders
      */
     //TODO: sysout step changes should eventually become updates to some shuffleboard widget instead of console (messy, current)
-    public DriveInput periodic(DriveEncoderPos drivePos, boolean isBotLevelBack) {
-        DriveInput driveInput = new DriveInput(0, 0, Gear.kLowGear);
+    public AutonInput periodic(boolean stepCompleted) {
+        AutonInput newInput = new AutonInput(RobotState.kUnknown, 0, 0, false);
+
         if (m_autonStartOut){
             System.out.println("AUTON STARTED");
         }
@@ -96,6 +101,49 @@ public class Auton {
             m_step = 0;
         }
 
+        if (stepCompleted) {
+            m_step += 1;
+        }
+
+        switch(m_path) {
+            case RobotMap.AutonConstants.SHORT_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_driveTarget = 170;
+                        Double.isNaN(newInput.m_turnTarget);
+                        newInput.m_desiredState = RobotState.kUnknown;
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_autonComplete = true;
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.LONG_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_driveTarget = 230;
+                        Double.isNaN(newInput.m_turnTarget);
+                        newInput.m_desiredState = RobotState.kUnknown;
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_autonComplete = true;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        /**
         //auton path for 0 objects
         if (m_path == "0 Object"){
             if (m_step == 0) {
@@ -154,40 +202,22 @@ public class Auton {
         }
         else if (m_path == "1 Object") {
             //TODO: create pathing for 1 object auton
+            if (m_step == 0) {
+                m_step += 1;
+                System.out.println("Internal auton configuration error detected: non-fatal error.");
+                System.out.println("AUTON START UP CONTINUING BUT NOTED");
+            }
+            else if (m_step == 1) {
+
+            }
+
+
             System.out.println("1 Object Auton not yet created. Output messsage.");
             //end Auton, instantiate pathing step variables, alert use
             m_path = "";
             m_step = 0;
             m_autonStartOut = false;
             System.out.println("AUTON NOW ENDED");
-        }
-        else if (m_path == "Community Out") {
-            if (m_step == 0) {
-                m_step += 1;
-                System.out.println("Internal auton configuration error detected: non-fatal error.");
-                System.out.println("AUTON START UP CONTINUING BUT NOTED");
-            }
-            //FOR THE STEPS, WE WANT TO: 
-            //1. move forward out of the community
-            else if (m_step == 1) {
-                System.out.println("now on Step 1");
-                //number of tics is now good for rough testing; TODO: adjust encoder ticks to reflect 140 inches out [on real bot and on carpet]
-                if (drivePos.m_leftLeaderPos >= 33750 && drivePos.m_rightLeaderPos >= 33750) {
-                    //speed and turn are already set to 0 in driveInput
-                    m_step += 1;
-                }
-                else {
-                    driveInput.m_speed = 0.5;
-                    driveInput.m_turnSpeed = 0;
-                }
-            }
-            else if (m_step == 2) {
-                //end Auton, instantiate pathing step variables, alert use
-                m_path = "";
-                m_step = 0;
-                m_autonStartOut = false;
-                System.out.println("AUTON NOW ENDED");
-            }
         }
         else if (m_path == "2 Object") {
             //TODO: create pathing for 2 object auton
@@ -201,5 +231,7 @@ public class Auton {
 
         //return statement for DriveInput object return type for making bot move
         return driveInput;
+        */
+        return newInput;
     }
 }
