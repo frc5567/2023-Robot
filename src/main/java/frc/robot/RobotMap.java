@@ -60,7 +60,7 @@ public class RobotMap {
         /**
          * Max angle of charge station
          */
-        public static final double MAX_ANGLE = 25.0;
+        public static final double MAX_ANGLE = 45.0;
 
         /**
          * Upper end angle for robot speed when charge station between 12 and 6 deg.
@@ -75,17 +75,17 @@ public class RobotMap {
         /**
          * Auto leveling crawl drive speed
          */
-        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.3;
+        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.05;
 
         /**
          * Auto leveling mid drive speed
          */
-        public static final double MID_LEVEL_DRIVE_SPEED = 0.4;
+        public static final double MID_LEVEL_DRIVE_SPEED = 0.07;
 
         /**
          * Auto leveling high drive speed
          */
-        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.5;
+        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.07;
 
         /**
          * Low Gear Solenoid port on the PCM.
@@ -102,7 +102,7 @@ public class RobotMap {
          * Drive Straight PID constants
          */
         public final static Gains DISTANCE_GAINS = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );
-        public final static Gains TURNING_GAINS = new Gains( 2.0, 0.0,  4.0, 0.0,            200,  1.00 );
+        public final static Gains TURNING_GAINS = new Gains( 0.5, 0.0,  4.0, 0.0,            200,  0.5 );
 
         public static final double NEUTRAL_DEADBAND = 0.001;
 
@@ -115,6 +115,8 @@ public class RobotMap {
 
         public final static int PID_PRIMARY = 0;
         public final static int PID_TURN = 1;
+
+        public final static int GEAR_RATIO = 15;
 	
     }
 

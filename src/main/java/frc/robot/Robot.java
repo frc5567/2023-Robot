@@ -188,6 +188,9 @@ public class Robot extends TimedRobot {
 
       //boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
+    else if (coDriverInput.m_armPos != 0){
+      m_vroomVroom.driveStraight(coDriverInput.m_armPos);
+    }
     else {
       m_vroomVroom.arcadeDrive(driverInput);
       isBotLevel = m_vroomVroom.isLevel(curPitch);
@@ -235,7 +238,6 @@ public class Robot extends TimedRobot {
     if (coDriverInput.m_shoulderPos == ToggleInput.kToggle) {
       m_shoulder.toggleShoulderState();
     }
-
   }
 
   /** This function is called once when the robot is disabled. */

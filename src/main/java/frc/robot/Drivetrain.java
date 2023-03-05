@@ -21,8 +21,6 @@ import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 /**
  * Class encapsulates drive position, gear, and auto leveling method.
@@ -32,9 +30,6 @@ public class Drivetrain {
     private WPI_TalonFX m_rightLeader;
     private WPI_TalonFX m_leftFollower;
     private WPI_TalonFX m_rightFollower;
-    private DifferentialDrive m_drivetrain;
-    private MotorControllerGroup m_leftSide;
-    private MotorControllerGroup m_rightSide;
 
     private Pigeon2 m_pidgey;
     	
@@ -56,12 +51,8 @@ public class Drivetrain {
         m_rightLeader = new WPI_TalonFX (RobotMap.DrivetrainConstants.RIGHT_LEADER_CAN_ID);
         m_leftFollower = new WPI_TalonFX(RobotMap.DrivetrainConstants.LEFT_FOLLOWER_CAN_ID);
         m_rightFollower = new WPI_TalonFX(RobotMap.DrivetrainConstants.RIGHT_FOLLOWER_CAN_ID);
-        m_leftSide = new MotorControllerGroup(m_leftLeader, m_leftFollower);
-        m_rightSide = new MotorControllerGroup(m_rightLeader,m_rightFollower);
         
         m_solenoid = new DoubleSolenoid(RobotMap.PCM_CAN_ID, PneumaticsModuleType.CTREPCM, RobotMap.DrivetrainConstants.DOUBLE_SOLENOID_LOW_GEAR_PORT, RobotMap.DrivetrainConstants.DOUBLE_SOLENOID_HIGH_GEAR_PORT);
-
-        m_drivetrain = new DifferentialDrive(m_leftSide, m_rightSide);
 
         m_pidgey = pidgey;
 
@@ -90,6 +81,8 @@ public class Drivetrain {
         this.shiftGear(Gear.kLowGear);
 
         this.zeroSensors();
+
+        this.configPID();
     }
 
     /**
@@ -98,7 +91,8 @@ public class Drivetrain {
      * @param turn Value between -1 and 1 for turning
      */
     public void arcadeDrive(double speed, double turn) {
-        m_drivetrain.arcadeDrive(speed, turn);
+        m_leftLeader.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, -turn);
+        m_rightLeader.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, turn);
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
     }
@@ -108,8 +102,8 @@ public class Drivetrain {
      * @param driveInput 
      */
     public void arcadeDrive(DriveInput driveInput) {
-
-        m_drivetrain.arcadeDrive(driveInput.m_speed, driveInput.m_turnSpeed);
+        m_leftLeader.set(ControlMode.PercentOutput, driveInput.m_speed, DemandType.ArbitraryFeedForward, -driveInput.m_turnSpeed);
+        m_rightLeader.set(ControlMode.PercentOutput, driveInput.m_speed, DemandType.ArbitraryFeedForward, driveInput.m_turnSpeed);
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
         this.shiftGear(driveInput.m_gear);
@@ -210,8 +204,8 @@ public class Drivetrain {
      */
     public DriveEncoderPos getEncoderPositions() {
         //TODO: THESE NEGATED POS VARS DO NOT MAKE LOGIC SENSE WITH WIFFLEBOT TESTING, BUT WORK
-        double leftPos = -m_leftLeader.getSelectedSensorPosition();
-        double rightPos = -m_rightLeader.getSelectedSensorPosition();
+        double leftPos = m_leftLeader.getSelectedSensorPosition();
+        double rightPos = m_rightLeader.getSelectedSensorPosition();
         DriveEncoderPos drivePositions = new DriveEncoderPos(leftPos, rightPos);
         return drivePositions;
 
@@ -244,12 +238,17 @@ public class Drivetrain {
         boolean reachedTarget = false;
         // 6" wheels means 18.85" per rotation
         double rotations = distance / 18.85;
-        double target_sensorUnits = RobotMap.DrivetrainConstants.SENSOR_UNITS_PER_ROTATION * rotations;
+        double target_sensorUnits = (RobotMap.DrivetrainConstants.SENSOR_UNITS_PER_ROTATION * rotations) * RobotMap.DrivetrainConstants.GEAR_RATIO;
         double target_turn = 0.0; // don't turn
+
+        //System.out.println("driveStraight [" + target_sensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
+        System.out.println("output [" + m_rightLeader.getMotorOutputPercent() + "]");
         
         /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
         m_rightLeader.set(ControlMode.MotionMagic, target_sensorUnits, DemandType.AuxPID, target_turn);
         m_leftLeader.follow(m_rightLeader, FollowerType.AuxOutput1);
+        m_rightFollower.follow(m_rightLeader);
+        m_leftFollower.follow(m_leftLeader);
 
         if (m_rightLeader.getSelectedSensorVelocity() < 100) {
             reachedTarget = true;
@@ -285,6 +284,8 @@ public class Drivetrain {
 		m_rightConfig.slot0.integralZone = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kIzone;
 		m_rightConfig.slot0.closedLoopPeakOutput = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kPeakOutput;
 
+        m_rightConfig.motionCurveStrength = 4;
+
 		/** Heading Configs */
 		m_rightConfig.remoteFilter1.remoteSensorDeviceID = m_pidgey.getDeviceID();    //Pigeon Device ID
 		m_rightConfig.remoteFilter1.remoteSensorSource = RemoteSensorSource.Pigeon_Yaw; //This is for a Pigeon over CAN
@@ -297,7 +298,7 @@ public class Drivetrain {
 		 * true means talon's local output is PID0 - PID1, and other side Talon is PID0 + PID1
 		 *   This is typical when the master is the left Talon FX and using Pigeon
 		 */
-		m_rightConfig.auxPIDPolarity = false;
+		m_rightConfig.auxPIDPolarity = true;
 
 		/* FPID for Heading */
 		m_rightConfig.slot1.kF = RobotMap.DrivetrainConstants.TURNING_GAINS.kF;

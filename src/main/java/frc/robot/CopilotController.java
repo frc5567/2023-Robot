@@ -69,6 +69,13 @@ public class CopilotController {
                 coDriveInput.m_shoulderPos = ToggleInput.kToggle;
         }
 
+        if (m_controller.getBackButton()) {
+            coDriveInput.m_armPos = 30;
+        }
+        else {
+            coDriveInput.m_armPos = 0;
+        }
+
         return coDriveInput;
     }
 

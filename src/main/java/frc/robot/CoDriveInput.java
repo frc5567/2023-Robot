@@ -37,7 +37,7 @@ public class CoDriveInput {
      */
     public CoDriveInput() {
         m_elevatorPos = RobotMap.ElevatorConstants.ELEVATOR_START_POS;
-        m_armPos = RobotMap.ArmConstants.ARM_START_POS;
+        m_armPos = 0.0;
         m_manualElevator = 0;
         //TODO: might want to switch default value to closed in the future.
         m_clawPos = ToggleInput.kNoInput;
