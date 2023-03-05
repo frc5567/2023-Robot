@@ -98,6 +98,19 @@ public class RobotMap {
          */
          public static final int DOUBLE_SOLENOID_HIGH_GEAR_PORT = 4;
 
+        /**
+         * Drive Straight PID constants
+         */
+        public final static Gains DISTANCE_GAINS = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );
+        public final static Gains TURNING_GAINS = new Gains( 2.0, 0.0,  4.0, 0.0,            200,  1.00 );
+
+        public static final double NEUTRAL_DEADBAND = 0.001;
+
+        /**
+         * This is a property of the Pigeon IMU, and should not be changed.
+         */
+        public final static int PIDGEON_UNITS_PER_ROTATION = 8192;
+	
     }
 
     /**
@@ -124,6 +137,7 @@ public class RobotMap {
          * Absolute value of the deadband range for stick input
          */
         public static final double STICK_DEADBAND = 0.09;
+	
     }
 
     /**

@@ -4,24 +4,27 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 
 /**
  * Class encapsulates drive position, gear, and auto leveling method.
  */
 public class Drivetrain {
-    private String m_drivetrainName;
     private WPI_TalonFX m_leftLeader;
     private WPI_TalonFX m_rightLeader;
     private WPI_TalonFX m_leftFollower;
@@ -30,20 +33,22 @@ public class Drivetrain {
     private MotorControllerGroup m_leftSide;
     private MotorControllerGroup m_rightSide;
 
+    private Pigeon2 m_pidgey;
+    	
+    /** Config Objects for motor controllers */
+	TalonFXConfiguration m_leftConfig = new TalonFXConfiguration();
+	TalonFXConfiguration m_rightConfig = new TalonFXConfiguration();
+
     // Declaring the gear so it can be used for swicthing between high and low gear
     private Gear m_gear;
 
     // Pneumatic Controller for Gear box
     private DoubleSolenoid m_solenoid;
 
-
-
     /**
-     * Constructor for the drivetrain taking a name.
-     * @param dName The name of the drivetrain.
+     * Constructor for the drivetrain 
      */
-    public Drivetrain(String dName) {
-        m_drivetrainName = dName;
+    public Drivetrain(Pigeon2 pidgey) {
         m_leftLeader = new WPI_TalonFX(RobotMap.DrivetrainConstants.LEFT_LEADER_CAN_ID);
         m_rightLeader = new WPI_TalonFX (RobotMap.DrivetrainConstants.RIGHT_LEADER_CAN_ID);
         m_leftFollower = new WPI_TalonFX(RobotMap.DrivetrainConstants.LEFT_FOLLOWER_CAN_ID);
@@ -55,6 +60,8 @@ public class Drivetrain {
 
         m_drivetrain = new DifferentialDrive(m_leftSide, m_rightSide);
 
+        m_pidgey = pidgey;
+
         // Instantiation of the gear and setting it to unknown.
         m_gear = Gear.kUnknown;
 
@@ -64,8 +71,13 @@ public class Drivetrain {
      * Init function to set motor inversion.
      */
     public void initDrivetrain() {
+        /* Reset Configs */
+		m_pidgey.configFactoryDefault();
+        m_rightLeader.configFactoryDefault();
+        m_leftLeader.configFactoryDefault();
+        m_rightFollower.configFactoryDefault();
+        m_leftFollower.configFactoryDefault();
 
-        //TODO: THIS IS CORRECT FOR THE WIFFLEBOT, BUT HAS TO BE CHECKED ON REAL BOT
         m_leftLeader.setInverted(true);
         m_rightLeader.setInverted(false);
         m_leftFollower.setInverted(InvertType.FollowMaster);
@@ -73,6 +85,8 @@ public class Drivetrain {
 
         // Shiftgear in robot in Low Gear
         this.shiftGear(Gear.kLowGear);
+
+        this.zeroSensors();
     }
 
     /**
@@ -201,12 +215,172 @@ public class Drivetrain {
     }
 
     /**
-     * Zeros out the encoder positions of the drivetrain
+     * Zeros out the encoder positions and IMU
      */
-    public void zeroEncoders() {
+    public void zeroSensors() {
         m_leftLeader.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
         m_rightLeader.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
+		m_pidgey.setYaw(0, RobotMap.TIMEOUT_MS);
+		m_pidgey.setAccumZAngle(0, RobotMap.TIMEOUT_MS);
+    }
+	
+	/**
+     *  Zero QuadEncoders, used to reset position when initializing Motion Magic 
+     */
+	void zeroDistance(){
+        m_leftLeader.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
+        m_rightLeader.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
+	}
+	
+    /**
+     * Sets up the PID configuration for drive straight
+     */
+    public void configPID() {
 
+        /* Configure the left Talon's selected sensor as integrated sensor */
+		m_leftConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor; //Local Feedback Source
+
+		/* Configure the Remote (Left) Talon's selected sensor as a remote sensor for the right Talon */
+		m_rightConfig.remoteFilter0.remoteSensorDeviceID = m_leftLeader.getDeviceID(); //Device ID of Remote Source
+		m_rightConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.TalonFX_SelectedSensor; //Remote Source Type
+		
+		/* Now that the Left sensor can be used by the master Talon,
+		 * set up the Left (Aux) and Right (Master) distance into a single
+		 * Robot distance as the Master's Selected Sensor 0. */
+        //TalonFXInvertType _leftInvert = m_leftLeader.getInverted() ? TalonFXInvertType.Clockwise : TalonFXInvertType.CounterClockwise;
+        TalonFXInvertType _rightInvert = m_rightLeader.getInverted() ? TalonFXInvertType.Clockwise : TalonFXInvertType.CounterClockwise; 
+		setRobotDistanceConfigs(_rightInvert, m_rightConfig);
+
+		/* FPID for Distance */
+		m_rightConfig.slot0.kF = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kF;
+		m_rightConfig.slot0.kP = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kP;
+		m_rightConfig.slot0.kI = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kI;
+		m_rightConfig.slot0.kD = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kD;
+		m_rightConfig.slot0.integralZone = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kIzone;
+		m_rightConfig.slot0.closedLoopPeakOutput = RobotMap.DrivetrainConstants.DISTANCE_GAINS.kPeakOutput;
+
+		/** Heading Configs */
+		m_rightConfig.remoteFilter1.remoteSensorDeviceID = m_pidgey.getDeviceID();    //Pigeon Device ID
+		m_rightConfig.remoteFilter1.remoteSensorSource = RemoteSensorSource.Pigeon_Yaw; //This is for a Pigeon over CAN
+		m_rightConfig.auxiliaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor1; //Set as the Aux Sensor
+		m_rightConfig.auxiliaryPID.selectedFeedbackCoefficient = 3600.0 / RobotMap.DrivetrainConstants.PIDGEON_UNITS_PER_ROTATION; //Convert Yaw to tenths of a degree
+
+		/* false means talon's local output is PID0 + PID1, and other side Talon is PID0 - PID1
+		 *   This is typical when the master is the right Talon FX and using Pigeon
+		 * 
+		 * true means talon's local output is PID0 - PID1, and other side Talon is PID0 + PID1
+		 *   This is typical when the master is the left Talon FX and using Pigeon
+		 */
+		m_rightConfig.auxPIDPolarity = false;
+
+		/* FPID for Heading */
+		m_rightConfig.slot1.kF = RobotMap.DrivetrainConstants.TURNING_GAINS.kF;
+		m_rightConfig.slot1.kP = RobotMap.DrivetrainConstants.TURNING_GAINS.kP;
+		m_rightConfig.slot1.kI = RobotMap.DrivetrainConstants.TURNING_GAINS.kI;
+		m_rightConfig.slot1.kD = RobotMap.DrivetrainConstants.TURNING_GAINS.kD;
+		m_rightConfig.slot1.integralZone = RobotMap.DrivetrainConstants.TURNING_GAINS.kIzone;
+		m_rightConfig.slot1.closedLoopPeakOutput = RobotMap.DrivetrainConstants.TURNING_GAINS.kPeakOutput;
+
+
+		/* Config the neutral deadband. */
+		m_leftConfig.neutralDeadband = RobotMap.DrivetrainConstants.NEUTRAL_DEADBAND;
+		m_rightConfig.neutralDeadband = RobotMap.DrivetrainConstants.NEUTRAL_DEADBAND;
+
+
+		/**
+		 * 1ms per loop.  PID loop can be slowed down if need be.
+		 * For example,
+		 * - if sensor updates are too slow
+		 * - sensor deltas are very small per update, so derivative error never gets large enough to be useful.
+		 * - sensor movement is very slow causing the derivative error to be near zero.
+		 */
+		int closedLoopTimeMs = 1;
+		m_rightLeader.configClosedLoopPeriod(0, closedLoopTimeMs, RobotMap.TIMEOUT_MS);
+		m_rightLeader.configClosedLoopPeriod(1, closedLoopTimeMs, RobotMap.TIMEOUT_MS);
+
+		/* Motion Magic Configs */
+		m_rightConfig.motionAcceleration = 2000; //(distance units per 100 ms) per second
+		m_rightConfig.motionCruiseVelocity = 2000; //distance units per 100 ms
+
+		/* APPLY the config settings */
+		m_leftLeader.configAllSettings(m_leftConfig);
+		m_rightLeader.configAllSettings(m_rightConfig);
+
+		/* Set status frame periods to ensure we don't have stale data */
+		/* These aren't configs (they're not persistant) so we can set these after the configs.  */
+		m_rightLeader.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 20, RobotMap.TIMEOUT_MS);
+		m_rightLeader.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 20, RobotMap.TIMEOUT_MS);
+		m_rightLeader.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 20, RobotMap.TIMEOUT_MS);
+		m_rightLeader.setStatusFramePeriod(StatusFrame.Status_10_Targets, 10, RobotMap.TIMEOUT_MS);
+		m_leftLeader.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, RobotMap.TIMEOUT_MS);
+		m_pidgey.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_9_SixDeg_YPR , 5, RobotMap.TIMEOUT_MS);
     }
 
+/** 
+	 * Determines if SensorSum or SensorDiff should be used 
+	 * for combining left/right sensors into Robot Distance.  
+	 * 
+	 * Assumes Aux Position is set as Remote Sensor 0.  
+	 * 
+	 * configAllSettings must still be called on the master config
+	 * after this function modifies the config values. 
+	 * 
+	 * @param masterInvertType Invert of the Master Talon
+	 * @param masterConfig Configuration object to fill
+	 */
+    void setRobotDistanceConfigs(TalonFXInvertType masterInvertType, TalonFXConfiguration masterConfig){
+		/**
+		 * Determine if we need a Sum or Difference.
+		 * 
+		 * The auxiliary Talon FX will always be positive
+		 * in the forward direction because it's a selected sensor
+		 * over the CAN bus.
+		 * 
+		 * The master's native integrated sensor may not always be positive when forward because
+		 * sensor phase is only applied to *Selected Sensors*, not native
+		 * sensor sources.  And we need the native to be combined with the 
+		 * aux (other side's) distance into a single robot distance.
+		 */
+
+		/* THIS FUNCTION should not need to be modified. 
+		   This setup will work regardless of whether the master
+		   is on the Right or Left side since it only deals with
+		   distance magnitude.  */
+
+		/* Check if we're inverted */
+		if (masterInvertType == TalonFXInvertType.Clockwise){
+			/* 
+				If master is inverted, that means the integrated sensor
+				will be negative in the forward direction.
+
+				If master is inverted, the final sum/diff result will also be inverted.
+				This is how Talon FX corrects the sensor phase when inverting 
+				the motor direction.  This inversion applies to the *Selected Sensor*,
+				not the native value.
+
+				Will a sensor sum or difference give us a positive total magnitude?
+
+				Remember the Master is one side of your drivetrain distance and 
+				Auxiliary is the other side's distance.
+
+					Phase | Term 0   |   Term 1  | Result
+				Sum:  -1 *((-)Master + (+)Aux   )| NOT OK, will cancel each other out
+				Diff: -1 *((-)Master - (+)Aux   )| OK - This is what we want, magnitude will be correct and positive.
+				Diff: -1 *((+)Aux    - (-)Master)| NOT OK, magnitude will be correct but negative
+			*/
+
+			masterConfig.diff0Term = FeedbackDevice.IntegratedSensor; //Local Integrated Sensor
+			masterConfig.diff1Term = FeedbackDevice.RemoteSensor0;   //Aux Selected Sensor
+			masterConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.SensorDifference; //Diff0 - Diff1
+		} else {
+			/* Master is not inverted, both sides are positive so we can sum them. */
+			masterConfig.sum0Term = FeedbackDevice.RemoteSensor0;    //Aux Selected Sensor
+			masterConfig.sum1Term = FeedbackDevice.IntegratedSensor; //Local IntegratedSensor
+			masterConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.SensorSum; //Sum0 + Sum1
+		}
+
+		/* Since the Distance is the sum of the two sides, divide by 2 so the total isn't double
+		   the real-world value */
+		masterConfig.primaryPID.selectedFeedbackCoefficient = 0.5;
+	}    
 }

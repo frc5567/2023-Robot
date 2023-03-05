@@ -59,9 +59,8 @@ public class Robot extends TimedRobot {
     m_autonSelected = m_chooser.getSelected();
 
     //Instantiation of needed classes and names assigned as appropriate
-    String drivetrainName = "VroomVroom";
-    m_vroomVroom = new Drivetrain(drivetrainName);
-    
+    m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
+    m_vroomVroom = new Drivetrain(m_pigeon);    
 
     m_pilotControl = new PilotController();
     m_copilotControl = new CopilotController();
@@ -73,12 +72,9 @@ public class Robot extends TimedRobot {
 
     m_auton = new Auton();
 
-    m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
-
     m_elevator = new Elevator();
     m_arm = new Arm();
 
-    //TODO: test functionality; these will likely error out, as they currently have limited and improper functionality (motor assignment, control type, etc.)
     m_claw = new Claw();
     m_shoulder = new Shoulder();
 
@@ -130,7 +126,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_vroomVroom.brakeMode();
-    m_vroomVroom.zeroEncoders();
     m_vroomVroom.initDrivetrain();
 
     m_autonSelected = m_chooser.getSelected();
@@ -170,9 +165,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_vroomVroom.brakeMode();
-
     m_auton.m_autonStartOut = false;
-
   }
 
   /** This function is called periodically during operator control. */
