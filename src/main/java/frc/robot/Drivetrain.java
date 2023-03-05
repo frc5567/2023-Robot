@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
@@ -233,6 +236,29 @@ public class Drivetrain {
 	}
 	
     /**
+     * Drive straight forward (or backward for negative distance) a set number of inches
+     * @param distance
+     * @return
+     */
+    public boolean driveStraight(double distance) {
+        boolean reachedTarget = false;
+        // 6" wheels means 18.85" per rotation
+        double rotations = distance / 18.85;
+        double target_sensorUnits = RobotMap.DrivetrainConstants.SENSOR_UNITS_PER_ROTATION * rotations;
+        double target_turn = 0.0; // don't turn
+        
+        /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+        m_rightLeader.set(ControlMode.MotionMagic, target_sensorUnits, DemandType.AuxPID, target_turn);
+        m_leftLeader.follow(m_rightLeader, FollowerType.AuxOutput1);
+
+        if (m_rightLeader.getSelectedSensorVelocity() < 100) {
+            reachedTarget = true;
+        }
+
+        return reachedTarget;
+    }
+
+    /**
      * Sets up the PID configuration for drive straight
      */
     public void configPID() {
@@ -314,9 +340,14 @@ public class Drivetrain {
 		m_rightLeader.setStatusFramePeriod(StatusFrame.Status_10_Targets, 10, RobotMap.TIMEOUT_MS);
 		m_leftLeader.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, RobotMap.TIMEOUT_MS);
 		m_pidgey.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_9_SixDeg_YPR , 5, RobotMap.TIMEOUT_MS);
+
+        /* Determine which slot affects which PID */
+        m_rightLeader.selectProfileSlot(0, RobotMap.DrivetrainConstants.PID_PRIMARY);
+        m_rightLeader.selectProfileSlot(1, RobotMap.DrivetrainConstants.PID_TURN);
+
     }
 
-/** 
+    /** 
 	 * Determines if SensorSum or SensorDiff should be used 
 	 * for combining left/right sensors into Robot Distance.  
 	 * 

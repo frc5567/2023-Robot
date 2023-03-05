@@ -110,6 +110,11 @@ public class RobotMap {
          * This is a property of the Pigeon IMU, and should not be changed.
          */
         public final static int PIDGEON_UNITS_PER_ROTATION = 8192;
+
+        public final static int SENSOR_UNITS_PER_ROTATION = 2048;
+
+        public final static int PID_PRIMARY = 0;
+        public final static int PID_TURN = 1;
 	
     }
 
