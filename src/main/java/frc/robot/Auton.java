@@ -112,8 +112,6 @@ public class Auton {
                     case 1:
                     {
                         newInput.m_driveTarget = 170;
-                        Double.isNaN(newInput.m_turnTarget);
-                        newInput.m_desiredState = RobotState.kUnknown;
                         break;
                     }
                     case 2:
@@ -130,8 +128,6 @@ public class Auton {
                     case 1:
                     {
                         newInput.m_driveTarget = 230;
-                        Double.isNaN(newInput.m_turnTarget);
-                        newInput.m_desiredState = RobotState.kUnknown;
                         break;
                     }
                     case 2:

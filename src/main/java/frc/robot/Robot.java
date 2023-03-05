@@ -157,7 +157,8 @@ public class Robot extends TimedRobot {
         m_autoStepCompleted = m_vroomVroom.driveStraight(currentInput.m_driveTarget);
       }
       if (!Double.isNaN(currentInput.m_turnTarget)) {
-        m_autoStepCompleted = m_vroomVroom.driveStraight(currentInput.m_turnTarget);
+        //TODO: change to turn to target instead of drive straight
+        //m_autoStepCompleted = m_vroomVroom.driveStraight(currentInput.m_turnTarget);
       }
       if (currentInput.m_desiredState != RobotState.kUnknown) {
         m_autoStepCompleted = this.transitionToNewState(currentInput.m_desiredState);

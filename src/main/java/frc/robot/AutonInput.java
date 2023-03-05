@@ -6,6 +6,13 @@ public class AutonInput {
     public double m_turnTarget;
     public boolean m_autonComplete;
 
+    public AutonInput() {
+        m_desiredState = RobotState.kUnknown;
+        m_driveTarget = 0;
+        m_turnTarget = 0;
+        m_autonComplete = false;
+    }
+
     public AutonInput(RobotState desiredState, double driveTarget, double turnTarget, boolean autonComplete) {
         m_desiredState = desiredState;
         m_driveTarget = driveTarget;
