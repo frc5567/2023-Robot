@@ -67,11 +67,11 @@ public class PilotController {
     public Gear getPilotGear(){
         Gear returnGear = Gear.kUnknown;
 
-        // When x button is pressed, the robot switches to high gear.
+        // When left bumper is pressed, the robot switches to high gear.
         if(m_controller.getLeftBumper()){
             returnGear = Gear.kHighGear;
         } 
-        // When y button is pressed the robot switches to low gear. 
+        // When right bumper is pressed the robot switches to low gear. 
         else if(m_controller.getRightBumper()){
             returnGear = Gear.kLowGear; 
         }
