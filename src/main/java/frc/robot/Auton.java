@@ -92,16 +92,15 @@ public class Auton {
     //TODO: sysout step changes should eventually become updates to some shuffleboard widget instead of console (messy, current)
     public AutonInput periodic(boolean stepCompleted) {
         AutonInput newInput = new AutonInput(RobotState.kUnknown, 0, 0, false);
-
+        
         if (m_autonStartOut){
             System.out.println("AUTON STARTED");
-        }
-        else {
-            m_path = "";
-            m_step = 0;
+            System.out.println("Auton Path: " + m_path);
+            m_autonStartOut = false;
         }
 
         if (stepCompleted) {
+            System.out.println("Step completed!: " + m_step);
             m_step += 1;
         }
 
@@ -111,12 +110,14 @@ public class Auton {
                 switch(m_step) {
                     case 1:
                     {
-                        newInput.m_driveTarget = 170;
+                        newInput.m_driveTarget = 135;
+                        System.out.println("step: " + m_step);
                         break;
                     }
                     case 2:
                     {
                         newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
                         break;
                     }
                 }
@@ -127,7 +128,7 @@ public class Auton {
                 switch(m_step) {
                     case 1:
                     {
-                        newInput.m_driveTarget = 230;
+                        newInput.m_driveTarget = 195;
                         break;
                     }
                     case 2:

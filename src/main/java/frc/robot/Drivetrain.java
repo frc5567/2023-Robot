@@ -241,8 +241,8 @@ public class Drivetrain {
         double target_sensorUnits = (RobotMap.DrivetrainConstants.SENSOR_UNITS_PER_ROTATION * rotations) * RobotMap.DrivetrainConstants.GEAR_RATIO;
         double target_turn = 0.0; // don't turn
 
-        //System.out.println("driveStraight [" + target_sensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
-        System.out.println("output [" + m_rightLeader.getMotorOutputPercent() + "]");
+        System.out.println("driveStraight [" + target_sensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
+        //System.out.println("output [" + m_rightLeader.getMotorOutputPercent() + "]");
         
         /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
         m_rightLeader.set(ControlMode.MotionMagic, target_sensorUnits, DemandType.AuxPID, target_turn);
@@ -250,7 +250,7 @@ public class Drivetrain {
         m_rightFollower.follow(m_rightLeader);
         m_leftFollower.follow(m_leftLeader);
 
-        if (m_rightLeader.getSelectedSensorVelocity() < 100) {
+        if ((Math.abs(m_rightLeader.getSelectedSensorPosition() - target_sensorUnits) < RobotMap.ENC_DEADBAND) && m_rightLeader.getSelectedSensorVelocity() < 100) {
             reachedTarget = true;
         }
 
