@@ -21,8 +21,6 @@ import frc.robot.Shoulder.ShoulderState;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
   private String m_autonSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -37,6 +35,7 @@ public class Robot extends TimedRobot {
   private Claw m_claw;
   private Shoulder m_shoulder;
   private UsbCamera m_camera;
+  private boolean m_autoStepCompleted = false;
 
   private int m_outCounter;
 
@@ -50,18 +49,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //Auton shuffleboard choices updating
-    m_chooser.setDefaultOption("none", kDefaultAuto);
-    m_chooser.addOption("0 Object", kCustomAuto);
-    m_chooser.addOption("1 Object", kCustomAuto);
-    m_chooser.addOption("Community Out", kCustomAuto);
-    m_chooser.addOption("2 Object", kCustomAuto);
+    m_chooser.setDefaultOption(RobotMap.AutonConstants.SHORT_COMMUNITY, RobotMap.AutonConstants.SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.SHORT_COMMUNITY, RobotMap.AutonConstants.SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.LONG_COMMUNITY, RobotMap.AutonConstants.LONG_COMMUNITY);
     SmartDashboard.putData("Auton choices", m_chooser);
     m_autonSelected = m_chooser.getSelected();
 
+    System.out.println("Selected:" + m_autonSelected);
     //Instantiation of needed classes and names assigned as appropriate
-    String drivetrainName = "VroomVroom";
-    m_vroomVroom = new Drivetrain(drivetrainName);
-    
+    m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
+    m_vroomVroom = new Drivetrain(m_pigeon);    
 
     m_pilotControl = new PilotController();
     m_copilotControl = new CopilotController();
@@ -73,12 +70,9 @@ public class Robot extends TimedRobot {
 
     m_auton = new Auton();
 
-    m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
-
     m_elevator = new Elevator();
     m_arm = new Arm();
 
-    //TODO: test functionality; these will likely error out, as they currently have limited and improper functionality (motor assignment, control type, etc.)
     m_claw = new Claw();
     m_shoulder = new Shoulder();
 
@@ -130,10 +124,10 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_vroomVroom.brakeMode();
-    m_vroomVroom.zeroEncoders();
     m_vroomVroom.initDrivetrain();
 
     m_autonSelected = m_chooser.getSelected();
+    System.out.println("Auton selected: " + m_autonSelected);
 
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
 
@@ -152,11 +146,26 @@ public class Robot extends TimedRobot {
     boolean isBotLevelAuton = false;
     double curPitchAuton = m_pigeon.getPitch();
     isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
-
     DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
-    //run periodic method of Auton class
-    DriveInput driveInput = m_auton.periodic(drivePos, isBotLevelAuton);
-    m_vroomVroom.arcadeDrive(driveInput.m_speed, driveInput.m_turnSpeed);
+
+    AutonInput currentInput;
+    currentInput = m_auton.periodic(m_autoStepCompleted);
+    if (currentInput.m_autonComplete == false) {
+      if (!Double.isNaN(currentInput.m_driveTarget)) {
+        m_autoStepCompleted = m_vroomVroom.driveStraight(currentInput.m_driveTarget);
+      }
+      if (!Double.isNaN(currentInput.m_turnTarget)) {
+        //TODO: change to turn to target instead of drive straight
+        //m_autoStepCompleted = m_vroomVroom.driveStraight(currentInput.m_turnTarget);
+      }
+      if (currentInput.m_desiredState != RobotState.kUnknown) {
+        m_autoStepCompleted = this.transitionToNewState(currentInput.m_desiredState);
+      }
+    }
+    else {
+      m_vroomVroom.arcadeDrive(0, 0);
+      m_autoStepCompleted = false;
+    }
 
     //autoLevel check and run
     if (m_auton.toRunAutoLevelOrNotToRun == true) {
@@ -170,9 +179,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_vroomVroom.brakeMode();
-
     m_auton.m_autonStartOut = false;
-
   }
 
   /** This function is called periodically during operator control. */
@@ -242,7 +249,6 @@ public class Robot extends TimedRobot {
     if (coDriverInput.m_shoulderPos == ToggleInput.kToggle) {
       m_shoulder.toggleShoulderState();
     }
-
   }
 
   /** This function is called once when the robot is disabled. */

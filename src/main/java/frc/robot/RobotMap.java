@@ -60,7 +60,7 @@ public class RobotMap {
         /**
          * Max angle of charge station
          */
-        public static final double MAX_ANGLE = 25.0;
+        public static final double MAX_ANGLE = 45.0;
 
         /**
          * Upper end angle for robot speed when charge station between 12 and 6 deg.
@@ -75,7 +75,7 @@ public class RobotMap {
         /**
          * Auto leveling crawl drive speed
          */
-        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.3;
+        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.05;
 
         /**
          * Auto leveling mid drive speed
@@ -98,6 +98,26 @@ public class RobotMap {
          */
          public static final int DOUBLE_SOLENOID_HIGH_GEAR_PORT = 4;
 
+        /**
+         * Drive Straight PID constants
+         */
+        public final static Gains DISTANCE_GAINS = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );
+        public final static Gains TURNING_GAINS = new Gains( 0.5, 0.0,  4.0, 0.0,            200,  0.5 );
+
+        public static final double NEUTRAL_DEADBAND = 0.001;
+
+        /**
+         * This is a property of the Pigeon IMU, and should not be changed.
+         */
+        public final static int PIDGEON_UNITS_PER_ROTATION = 8192;
+
+        public final static int SENSOR_UNITS_PER_ROTATION = 2048;
+
+        public final static int PID_PRIMARY = 0;
+        public final static int PID_TURN = 1;
+
+        public final static int GEAR_RATIO = 15;
+	
     }
 
     /**
@@ -124,6 +144,7 @@ public class RobotMap {
          * Absolute value of the deadband range for stick input
          */
         public static final double STICK_DEADBAND = 0.09;
+	
     }
 
     /**
@@ -133,7 +154,15 @@ public class RobotMap {
         /**
          * Default value of Auton path, no object auton
          */
-        public static final String DEFAULT_AUTON_PATH = "0 Object";
+        public static final String DEFAULT_AUTON_PATH = "Auto Level";
+
+        public static final String SHORT_COMMUNITY = "Short Community";
+
+        public static final String LONG_COMMUNITY = "Long Community";
+
+        public static final String AUTO_LEVEL = "Auto Level";
+
+        public static final String ONE_OBJECT = "One Object";
     }
 
     /**
