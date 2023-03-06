@@ -160,9 +160,25 @@ public class RobotMap {
 
         public static final String LONG_COMMUNITY = "Long Community";
 
-        public static final String AUTO_LEVEL = "Auto Level";
+        public static final String MID_CONE_SHORT_COMMUNITY = "Mid Cone Short Community";
 
-        public static final String ONE_OBJECT = "One Object";
+        public static final String MID_CUBE_SHORT_COMMUNITY = "Mid Cube Short Community";
+
+        public static final String MID_CONE_LONG_COMMUNITY = "Mid Cone Long Community";
+
+        public static final String MID_CUBE_LONG_COMMUNITY = "Mid Cube Long Community";
+
+        public static final String HIGH_CONE_SHORT_COMMUNITY = "High Cone Short Community";
+
+        public static final String HIGH_CUBE_SHORT_COMMUNITY = "High Cube Short Community";
+
+        public static final String HIGH_CONE_LONG_COMMUNITY = "High Cone Long Community";
+
+        public static final String HIGH_CUBE_LONG_COMMUNITY = "High Cube Long Community";
+
+        public static final double SHORT_COMMUNITY_DIST = 135;
+
+        public static final double LONG_COMMUNITY_DIST = 195;
     }
 
     /**

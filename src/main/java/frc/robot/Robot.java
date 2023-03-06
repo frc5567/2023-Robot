@@ -11,6 +11,7 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Claw.ClawState;
 import frc.robot.CoDriveInput.ToggleInput;
 import frc.robot.Shoulder.ShoulderState;
 
@@ -52,6 +53,14 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption(RobotMap.AutonConstants.SHORT_COMMUNITY, RobotMap.AutonConstants.SHORT_COMMUNITY);
     m_chooser.addOption(RobotMap.AutonConstants.SHORT_COMMUNITY, RobotMap.AutonConstants.SHORT_COMMUNITY);
     m_chooser.addOption(RobotMap.AutonConstants.LONG_COMMUNITY, RobotMap.AutonConstants.LONG_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY, RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.MID_CONE_SHORT_COMMUNITY, RobotMap.AutonConstants.MID_CONE_SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.MID_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.MID_CUBE_LONG_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.MID_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.MID_CONE_LONG_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_SHORT_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY);
     SmartDashboard.putData("Auton choices", m_chooser);
     m_autonSelected = m_chooser.getSelected();
 
@@ -160,6 +169,10 @@ public class Robot extends TimedRobot {
       }
       if (currentInput.m_desiredState != RobotState.kUnknown) {
         m_autoStepCompleted = this.transitionToNewState(currentInput.m_desiredState);
+      }
+      if (currentInput.m_clawState != m_claw.getClawState()){
+        m_claw.toggleClawState();
+        m_autoStepCompleted = true;
       }
     }
     else {
@@ -306,6 +319,7 @@ public class Robot extends TimedRobot {
         ((currentElevatorPosition > (targetState.getElevatorTarget() - RobotMap.ENC_DEADBAND)) && (currentElevatorPosition < (targetState.getElevatorTarget() + RobotMap.ENC_DEADBAND))) &&
         (currentShoulderState == targetState.getShoulderState())) {
           movementCompleted = true;
+          System.out.println("Transition completed!!!!");
     }
     
     switch(targetState){
