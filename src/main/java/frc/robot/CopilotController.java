@@ -5,11 +5,16 @@ import frc.robot.Claw.ClawState;
 import frc.robot.CoDriveInput.ToggleInput;
 import frc.robot.Shoulder.ShoulderState;
 
+//import frc.robot.GamePad.GamePadControls;
+
+
 /**
  * Encapsulates the input for the copilot controller.
  */
 public class CopilotController {
     private XboxController m_controller;
+    private ShoulderState m_shoulderState;
+    private ClawState m_clawState;
 
     /**
      * Constructor that sets the port for the Xbox controller(will be gamepad eventually).
@@ -78,5 +83,42 @@ public class CopilotController {
 
         return coDriveInput;
     }
+    
+    /** 
+    //TODO: uncomment code when GamePad is created.
+     /** 
+     * Method to check  if ToggleClaw has been pressed and check the current state of the claw will then change the claw state accordingly.
+     * @return the new state of the claw.
+     
+    public ClawState getClawToggle() {
+      if( getToggleClawPressed && (m_clawState == ClawState.kOpen)) {
+          m_clawState = ClawState.kClosed;
+      }
+    else if( getToggleClawPressed && (m_clawState == ClawState.kClosed)) {
+         m_clawState = ClawState.kOpen;
+     }
+    return m_clawState;
+        
+    }
+
+    //TODO: uncomment code when GamePad is created.
+     /**
+     * 
+     * @return the new state of the shoulder.
+     
+    public ShoulderState getShoulderToggle() {
+       if(super.getRawButton(GamePadControls.Toggle_Shoulder.portNum) && (m_shoulderState == ShoulderState.kUp)) {
+          m_shoulderState = ShoulderState.kDown;
+      }
+     else if( super.getRawButton(GamePadControls.Toggle_Shoulder.portNum) && (m_shoulderState == ShoulderState.kDown)) {
+         m_shoulderState = ShoulderState.kUp;
+     }
+     return m_shoulderState;
+        
+    }
+    */
+
+
+
 
 }

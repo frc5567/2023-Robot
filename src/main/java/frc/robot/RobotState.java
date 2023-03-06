@@ -24,12 +24,12 @@ public enum RobotState {
     /**
      * State for placing gamepiece at floor level
      */
-    kFloorPiece ("Floor Game Piece", RobotMap.ArmConstants.ARM_FLOOR_POS, RobotMap.ElevatorConstants.ELEVATOR_FLOOR_POS, ShoulderState.kDown),
+    kFloorPiece ("Floor Game Piece", RobotMap.ArmConstants.FLOOR_PLACE_POS, RobotMap.ElevatorConstants.ELEVATOR_MID_POS, ShoulderState.kDown),
 
     /**
      * State for placing gamepiece at Mid level
      */
-    kMidPiece ("Mid Game Piece", RobotMap.ArmConstants.ARM_MID_POS, RobotMap.ElevatorConstants.ELEVATOR_MID_POS, ShoulderState.kDown),
+    kMidPiece ("Mid Game Piece", RobotMap.ArmConstants.ARM_MID_POS, RobotMap.ElevatorConstants.ELEVATOR_FLOOR_POS, ShoulderState.kDown),
 
     /**
      * State for placing cone at High level
