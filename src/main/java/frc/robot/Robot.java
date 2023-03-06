@@ -203,9 +203,6 @@ public class Robot extends TimedRobot {
 
       //boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
-    else if (coDriverInput.m_armPos != 0){
-      m_vroomVroom.driveStraight(coDriverInput.m_armPos);
-    }
     else {
       m_vroomVroom.arcadeDrive(driverInput);
       isBotLevel = m_vroomVroom.isLevel(curPitch);
