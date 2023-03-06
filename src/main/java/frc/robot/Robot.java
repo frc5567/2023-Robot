@@ -21,8 +21,6 @@ import frc.robot.Shoulder.ShoulderState;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
   private String m_autonSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -51,14 +49,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //Auton shuffleboard choices updating
-    m_chooser.setDefaultOption("none", kDefaultAuto);
-    m_chooser.addOption("0 Object", kCustomAuto);
-    m_chooser.addOption("1 Object", kCustomAuto);
-    m_chooser.addOption("Community Out", kCustomAuto);
-    m_chooser.addOption("2 Object", kCustomAuto);
+    m_chooser.setDefaultOption(RobotMap.AutonConstants.SHORT_COMMUNITY, RobotMap.AutonConstants.SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.SHORT_COMMUNITY, RobotMap.AutonConstants.SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.LONG_COMMUNITY, RobotMap.AutonConstants.LONG_COMMUNITY);
     SmartDashboard.putData("Auton choices", m_chooser);
     m_autonSelected = m_chooser.getSelected();
 
+    System.out.println("Selected:" + m_autonSelected);
     //Instantiation of needed classes and names assigned as appropriate
     m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
     m_vroomVroom = new Drivetrain(m_pigeon);    
@@ -130,6 +127,7 @@ public class Robot extends TimedRobot {
     m_vroomVroom.initDrivetrain();
 
     m_autonSelected = m_chooser.getSelected();
+    System.out.println("Auton selected: " + m_autonSelected);
 
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
 
@@ -166,6 +164,7 @@ public class Robot extends TimedRobot {
     }
     else {
       m_vroomVroom.arcadeDrive(0, 0);
+      m_autoStepCompleted = false;
     }
 
     //autoLevel check and run
