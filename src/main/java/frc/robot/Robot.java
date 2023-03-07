@@ -240,18 +240,12 @@ public class Robot extends TimedRobot {
     if (coDriverInput.m_desiredState != RobotState.kUnknown) {
       this.transitionToNewState(coDriverInput.m_desiredState);
     }
-    else if (driverInput.m_desiredState != RobotState.kUnknown) {
-      this.transitionToNewState(driverInput.m_desiredState);
-    }
     else {
       /**
        * elevator: inputs the values from the controllers to the manual/PID methods.
        **/
       if (coDriverInput.m_manualElevator != 0) {
         m_elevator.drive(coDriverInput.m_manualElevator);
-      }
-      else if (!Double.isNaN(coDriverInput.m_elevatorPos)) {
-        m_elevator.drivePID(coDriverInput.m_elevatorPos);
       }
       else {
         m_elevator.drive(0.0);
@@ -260,12 +254,9 @@ public class Robot extends TimedRobot {
       /**
        * arm: inputs the values from the controllers to the PID/set motor methods.
        **/
-      if (driverInput.m_manualArm != 0) {
-        m_arm.driveArm(driverInput.m_manualArm);
+      if (coDriverInput.m_manualArm != 0) {
+        m_arm.driveArm(coDriverInput.m_manualArm);
       }
-      else if (!Double.isNaN(driverInput.m_armPosition)) {
-        m_arm.armPID(driverInput.m_armPosition);
-      } 
       else {
         // No Input case
         m_arm.driveArm(0.0);
