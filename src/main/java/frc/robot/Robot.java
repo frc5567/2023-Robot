@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
   private UsbCamera m_camera;
   private boolean m_autoStepCompleted = false;
 
+  private int m_delayCounter;
   private int m_outCounter;
 
   com.ctre.phoenix.sensors.Pigeon2 m_pigeon;
@@ -86,6 +87,8 @@ public class Robot extends TimedRobot {
     m_shoulder = new Shoulder();
 
     m_vroomVroom.initDrivetrain();
+
+    m_delayCounter = 0;
 
     m_arm.init();
     m_arm.configPID();
@@ -156,7 +159,7 @@ public class Robot extends TimedRobot {
     isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
     DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
 
-    
+
     AutonInput currentInput;
     currentInput = m_auton.periodic(m_autoStepCompleted);
     if (currentInput.m_autonComplete == false) {
@@ -173,6 +176,16 @@ public class Robot extends TimedRobot {
       if ((currentInput.m_clawState != ClawState.kUnknown) && (currentInput.m_clawState != m_claw.getClawState())){
         m_claw.toggleClawState();
         m_autoStepCompleted = true;
+      }
+      if (!Double.isNaN(currentInput.m_delay)) {
+        Double cyclesToDelay = (currentInput.m_delay * 50);
+        if (m_delayCounter == cyclesToDelay.intValue()) {
+          m_autoStepCompleted = true;
+          m_delayCounter = 0;
+        }
+        else {
+          m_delayCounter++;
+        }
       }
     }
     else {

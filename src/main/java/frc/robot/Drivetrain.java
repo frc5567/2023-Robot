@@ -250,7 +250,7 @@ public class Drivetrain {
         m_rightFollower.follow(m_rightLeader);
         m_leftFollower.follow(m_leftLeader);
 
-        if ((Math.abs(m_rightLeader.getSelectedSensorPosition() - target_sensorUnits) < RobotMap.ENC_DEADBAND) && m_rightLeader.getSelectedSensorVelocity() < 100) {
+        if ((Math.abs(m_rightLeader.getSelectedSensorPosition() - target_sensorUnits) < 5000) && m_rightLeader.getSelectedSensorVelocity() < 100) {
             reachedTarget = true;
         }
 

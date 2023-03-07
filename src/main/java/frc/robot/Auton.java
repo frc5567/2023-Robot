@@ -117,7 +117,7 @@ public class Auton {
      */
     //TODO: sysout step changes should eventually become updates to some shuffleboard widget instead of console (messy, current)
     public AutonInput periodic(boolean stepCompleted) {
-        AutonInput newInput = new AutonInput(RobotState.kUnknown, 0, 0, false, ClawState.kUnknown);
+        AutonInput newInput = new AutonInput(RobotState.kUnknown, 0, 0, false, ClawState.kUnknown, Double.NaN);
         
         if (m_autonStartOut){
             System.out.println("AUTON STARTED");
@@ -339,30 +339,36 @@ public class Auton {
                     }
                     case 2:
                     {
-                        newInput.m_desiredState = RobotState.kHighCone;
+                        newInput.m_delay = 4.0;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 3:
                     {
-                        newInput.m_clawState = ClawState.kOpen;
+                        newInput.m_desiredState = RobotState.kHighCone;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 4:
                     {
-                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
-                        newInput.m_desiredState = RobotState.kTravel;
+                        newInput.m_clawState = ClawState.kOpen;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 5:
                     {
                         newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 6:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
                     {
                         newInput.m_autonComplete = true;
                         System.out.println("step: " + m_step);
