@@ -53,7 +53,10 @@ public class PilotController {
         driverInput.m_speed = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
 
         //Adjusting for a deadband to compensate for controller stick drift.
-        driverInput.m_turnSpeed = adjustForDeadband(m_controller.getLeftX());
+        Double turnInput = m_controller.getLeftX();
+        Double squaredTurnInput = turnInput * turnInput;
+        Math.copySign(squaredTurnInput, turnInput);
+        driverInput.m_turnSpeed = adjustForDeadband(squaredTurnInput);
 
         driverInput.m_gear = getPilotGear();
         driverInput.m_isAutoLeveling = this.isAutoLeveling();

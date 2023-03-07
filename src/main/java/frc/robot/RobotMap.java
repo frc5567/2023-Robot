@@ -25,7 +25,7 @@ public class RobotMap {
     /**
      * encoder deadband used in robot.java for transitions
      */
-    public static final double ENC_DEADBAND = 50000;
+    public static final double ENC_DEADBAND = 5000;
 
     /**
      * All drivetrain constants

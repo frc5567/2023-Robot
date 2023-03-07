@@ -179,12 +179,15 @@ public class Robot extends TimedRobot {
       }
       if (!Double.isNaN(currentInput.m_delay)) {
         Double cyclesToDelay = (currentInput.m_delay * 50);
-        if (m_delayCounter == cyclesToDelay.intValue()) {
+        int intCyclesToDelay = cyclesToDelay.intValue();
+        System.out.println("Cycles to delay: [" + cyclesToDelay + "] [" + intCyclesToDelay + "] [" + m_delayCounter + "]");
+        if (m_delayCounter == intCyclesToDelay) {
           m_autoStepCompleted = true;
           m_delayCounter = 0;
         }
         else {
           m_delayCounter++;
+          m_autoStepCompleted = false;
         }
       }
     }
