@@ -10,7 +10,7 @@
 
 ### CONTROLS:
 
-##### Pilot 
+##### Pilot (xbox)
 
 |System          | Control       |
 |----------------|---------------|
@@ -27,7 +27,7 @@
 | High Pos. Arm  | X Button      |
 | Approach Arm   | Y Button      |
 
-##### Copilot
+##### Copilot (gamepad)
 
 |System          | ID            |
 |----------------|---------------|
