@@ -150,13 +150,13 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be TRUE)
     //m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
-
     //isLevel variable sets for Auton, much like TeleOp
     boolean isBotLevelAuton = false;
     double curPitchAuton = m_pigeon.getPitch();
     isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
     DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
 
+    
     AutonInput currentInput;
     currentInput = m_auton.periodic(m_autoStepCompleted);
     if (currentInput.m_autonComplete == false) {
@@ -170,7 +170,7 @@ public class Robot extends TimedRobot {
       if (currentInput.m_desiredState != RobotState.kUnknown) {
         m_autoStepCompleted = this.transitionToNewState(currentInput.m_desiredState);
       }
-      if (currentInput.m_clawState != m_claw.getClawState()){
+      if ((currentInput.m_clawState != ClawState.kUnknown) && (currentInput.m_clawState != m_claw.getClawState())){
         m_claw.toggleClawState();
         m_autoStepCompleted = true;
       }

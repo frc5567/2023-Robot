@@ -190,9 +190,9 @@ public class RobotMap {
 
         public static final int PID_PRIMARY = 0;
         public static final double NEUTRAL_DEADBAND = 0.001;
-        public static final double PID_PEAK_OUTPUT = 1.0;
-        public static final int ELEVATOR_ACCELERATION = 50000;
-        public static final int ELEVATOR_CRUISE_VELOCITY = 50000;
+        public static final double PID_PEAK_OUTPUT = 0.3;
+        public static final int ELEVATOR_ACCELERATION = 500;
+        public static final int ELEVATOR_CRUISE_VELOCITY = 500;
 
         public static final Gains ELEVATOR_GAINS = new Gains(0.4, 0.0, 0.0, 0.0, 100, 1.0);
 
@@ -200,7 +200,7 @@ public class RobotMap {
         public static final int TICKS_PER_REVOLUTION = 2048;
 
         public static final double ELEVATOR_START_POS = -818000;
-        public static final double ELEVATOR_FLOOR_POS = -252000;
+        public static final double ELEVATOR_LOW_POS = -252000;
         public static final double ELEVATOR_MID_POS = 0;
         public static final double ELEVATOR_HIGH_POS = 561250;
         public static final double ELEVATOR_SHELF_POS = -500000;
