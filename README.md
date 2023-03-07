@@ -15,25 +15,32 @@
 | Drive Forward  | R. Trigger    |
 | Drive Reverse  | L. Trigger    |
 | Turn Control   | Left Stick X  |
-| Auto Leveling  | back button   |
+| Auto Leveling  | Back Button   |
 | Low Gear       | R. Bumper     |
-| High Gear      | L. bumper     |
+| High Gear      | L. Bumper     |
 | Manual Arm     | Right Stick Y |
-| Start pos Arm  | Start button  |
-| Floor pos Arm  | A button      |
-| Mid pos Arm    | B button      |
-| High pos Arm   | X button      |
-| Approach Arm   | Y button      |
+| Start Pos. Arm | Start Button  |
+| Floor Pos. Arm | A Button      |
+| Mid Pos. Arm   | B Button      |
+| High Pos. Arm  | X Button      |
+| Approach Arm   | Y Button      |
 
 ##### Copilot
 
-|System          | Control       |
+|System          | ID            |
 |----------------|---------------|
-| Arm Up Manual  | R. Trigger    |
-| Arm Down Manual| L. Trigger    |
-| Start pos Ele  | Start button  |
-| Floor pos Ele  | A button      |
-| Mid pos Ele    | B button      |
-| High pos Ele   | X button      |
-| Claw           | R. Bumper     |
-| Shoulder       | L. Bumper     |
+| Travel         | K1            |
+| Floor Pickup   | K2            |
+| Shelf Pickup   | K3            |
+| Claw Toggle    | K4            |
+| Mid Approach   | L1            |
+| Mid Place      | R1            |
+| Low Place      | L2            |
+| High Approach  | R2            |
+| Cone Place Hgh | SE            |
+| Cube Place Hgh | ST            |
+| Shoulder Togg. | K11           |
+| Elevator Up    | K12           |
+| Elevator Down  | AL            |
+| Arm Up         | AR            |
+| Arm Down       | AD            |
