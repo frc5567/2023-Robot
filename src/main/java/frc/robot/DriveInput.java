@@ -8,9 +8,6 @@ public class DriveInput {
     public double m_turnSpeed;
     public Gear m_gear;
     public boolean m_isAutoLeveling;
-    public double m_armPosition;
-    public double m_manualArm;
-    public RobotState m_desiredState;
 
     /**
      * Default constructor which sets zero values
@@ -18,11 +15,8 @@ public class DriveInput {
     public DriveInput() {
         m_speed = 0;
         m_turnSpeed = 0;
-        m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
-        m_manualArm = 0;
         m_gear = Gear.kLowGear;
         m_isAutoLeveling = false;
-        m_desiredState = RobotState.kUnknown;
     }
 
     /**
@@ -35,9 +29,6 @@ public class DriveInput {
         m_turnSpeed = turn;
         m_gear = Gear.kLowGear;
         m_isAutoLeveling = false;
-        m_manualArm = 0;
-        m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
-        m_desiredState = RobotState.kUnknown;
     }
 
      /**
@@ -51,9 +42,6 @@ public class DriveInput {
         m_turnSpeed = turn;
         m_gear = gear;
         m_isAutoLeveling = false;
-        m_manualArm = 0;
-        m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
-        m_desiredState = RobotState.kUnknown;
     }
 
     /**
@@ -67,10 +55,7 @@ public class DriveInput {
         m_speed = speed;
         m_turnSpeed = turn;
         m_gear = gear;
-        m_armPosition = armPos;
         m_isAutoLeveling = false;
-        m_manualArm = 0;
-        m_desiredState = RobotState.kUnknown;
     }
 
     /**
@@ -85,10 +70,7 @@ public class DriveInput {
         m_speed = speed;
         m_turnSpeed = turn;
         m_gear = gear;
-        m_armPosition = armPos;
-        m_manualArm = manualArm;
         m_isAutoLeveling = false;
-        m_desiredState = RobotState.kUnknown;
     }
 
     /**
@@ -104,9 +86,6 @@ public class DriveInput {
         m_speed = speed;
         m_turnSpeed = turn;
         m_gear = gear;
-        m_armPosition = armPos;
-        m_manualArm = manualArm;
         m_isAutoLeveling = false;
-        m_desiredState = desiredState;
     }
 }

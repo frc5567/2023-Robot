@@ -25,7 +25,12 @@ public class RobotMap {
     /**
      * encoder deadband used in robot.java for transitions
      */
-    public static final double ENC_DEADBAND = 50000;
+    public static final double ENC_DEADBAND = 10000;
+
+    /**
+     * encoder deadband used in drive straight
+     */
+    public static final double DRIVE_STRAIGHT_DEADBAND = 5000;
 
     /**
      * All drivetrain constants
@@ -75,17 +80,17 @@ public class RobotMap {
         /**
          * Auto leveling crawl drive speed
          */
-        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.05;
+        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.0;
 
         /**
          * Auto leveling mid drive speed
          */
-        public static final double MID_LEVEL_DRIVE_SPEED = 0.35;
+        public static final double MID_LEVEL_DRIVE_SPEED = 0.0;
 
         /**
          * Auto leveling high drive speed
          */
-        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.4;
+        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.075;
 
         /**
          * Low Gear Solenoid port on the PCM.
@@ -160,9 +165,25 @@ public class RobotMap {
 
         public static final String LONG_COMMUNITY = "Long Community";
 
-        public static final String AUTO_LEVEL = "Auto Level";
+        public static final String MID_CONE_SHORT_COMMUNITY = "Mid Cone Short Community";
 
-        public static final String ONE_OBJECT = "One Object";
+        public static final String MID_CUBE_SHORT_COMMUNITY = "Mid Cube Short Community";
+
+        public static final String MID_CONE_LONG_COMMUNITY = "Mid Cone Long Community";
+
+        public static final String MID_CUBE_LONG_COMMUNITY = "Mid Cube Long Community";
+
+        public static final String HIGH_CONE_SHORT_COMMUNITY = "High Cone Short Community";
+
+        public static final String HIGH_CUBE_SHORT_COMMUNITY = "High Cube Short Community";
+
+        public static final String HIGH_CONE_LONG_COMMUNITY = "High Cone Long Community";
+
+        public static final String HIGH_CUBE_LONG_COMMUNITY = "High Cube Long Community";
+
+        public static final double SHORT_COMMUNITY_DIST = 135;
+
+        public static final double LONG_COMMUNITY_DIST = 195;
     }
 
     /**
@@ -184,7 +205,7 @@ public class RobotMap {
         public static final int TICKS_PER_REVOLUTION = 2048;
 
         public static final double ELEVATOR_START_POS = -818000;
-        public static final double ELEVATOR_FLOOR_POS = -252000;
+        public static final double ELEVATOR_LOW_POS = -252000;
         public static final double ELEVATOR_MID_POS = 0;
         public static final double ELEVATOR_HIGH_POS = 561250;
         public static final double ELEVATOR_SHELF_POS = -500000;

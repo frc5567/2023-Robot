@@ -11,6 +11,7 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Claw.ClawState;
 import frc.robot.CoDriveInput.ToggleInput;
 import frc.robot.Shoulder.ShoulderState;
 
@@ -37,6 +38,7 @@ public class Robot extends TimedRobot {
   private UsbCamera m_camera;
   private boolean m_autoStepCompleted = false;
 
+  private int m_delayCounter;
   private int m_outCounter;
 
   com.ctre.phoenix.sensors.Pigeon2 m_pigeon;
@@ -52,6 +54,14 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption(RobotMap.AutonConstants.SHORT_COMMUNITY, RobotMap.AutonConstants.SHORT_COMMUNITY);
     m_chooser.addOption(RobotMap.AutonConstants.SHORT_COMMUNITY, RobotMap.AutonConstants.SHORT_COMMUNITY);
     m_chooser.addOption(RobotMap.AutonConstants.LONG_COMMUNITY, RobotMap.AutonConstants.LONG_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY, RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.MID_CONE_SHORT_COMMUNITY, RobotMap.AutonConstants.MID_CONE_SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.MID_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.MID_CUBE_LONG_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.MID_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.MID_CONE_LONG_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_SHORT_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY);
     SmartDashboard.putData("Auton choices", m_chooser);
     m_autonSelected = m_chooser.getSelected();
 
@@ -77,6 +87,8 @@ public class Robot extends TimedRobot {
     m_shoulder = new Shoulder();
 
     m_vroomVroom.initDrivetrain();
+
+    m_delayCounter = 0;
 
     m_arm.init();
     m_arm.configPID();
@@ -141,12 +153,12 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be TRUE)
     //m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
-
     //isLevel variable sets for Auton, much like TeleOp
     boolean isBotLevelAuton = false;
     double curPitchAuton = m_pigeon.getPitch();
     isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
     DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
+
 
     AutonInput currentInput;
     currentInput = m_auton.periodic(m_autoStepCompleted);
@@ -160,6 +172,23 @@ public class Robot extends TimedRobot {
       }
       if (currentInput.m_desiredState != RobotState.kUnknown) {
         m_autoStepCompleted = this.transitionToNewState(currentInput.m_desiredState);
+      }
+      if ((currentInput.m_clawState != ClawState.kUnknown) && (currentInput.m_clawState != m_claw.getClawState())){
+        m_claw.toggleClawState();
+        m_autoStepCompleted = true;
+      }
+      if (!Double.isNaN(currentInput.m_delay)) {
+        Double cyclesToDelay = (currentInput.m_delay * 50);
+        int intCyclesToDelay = cyclesToDelay.intValue();
+        System.out.println("Cycles to delay: [" + cyclesToDelay + "] [" + intCyclesToDelay + "] [" + m_delayCounter + "]");
+        if (m_delayCounter == intCyclesToDelay) {
+          m_autoStepCompleted = true;
+          m_delayCounter = 0;
+        }
+        else {
+          m_delayCounter++;
+          m_autoStepCompleted = false;
+        }
       }
     }
     else {
@@ -211,18 +240,12 @@ public class Robot extends TimedRobot {
     if (coDriverInput.m_desiredState != RobotState.kUnknown) {
       this.transitionToNewState(coDriverInput.m_desiredState);
     }
-    else if (driverInput.m_desiredState != RobotState.kUnknown) {
-      this.transitionToNewState(driverInput.m_desiredState);
-    }
     else {
       /**
        * elevator: inputs the values from the controllers to the manual/PID methods.
        **/
       if (coDriverInput.m_manualElevator != 0) {
         m_elevator.drive(coDriverInput.m_manualElevator);
-      }
-      else if (!Double.isNaN(coDriverInput.m_elevatorPos)) {
-        m_elevator.drivePID(coDriverInput.m_elevatorPos);
       }
       else {
         m_elevator.drive(0.0);
@@ -231,12 +254,9 @@ public class Robot extends TimedRobot {
       /**
        * arm: inputs the values from the controllers to the PID/set motor methods.
        **/
-      if (driverInput.m_manualArm != 0) {
-        m_arm.driveArm(driverInput.m_manualArm);
+      if (coDriverInput.m_manualArm != 0) {
+        m_arm.driveArm(coDriverInput.m_manualArm);
       }
-      else if (!Double.isNaN(driverInput.m_armPosition)) {
-        m_arm.armPID(driverInput.m_armPosition);
-      } 
       else {
         // No Input case
         m_arm.driveArm(0.0);
@@ -306,6 +326,7 @@ public class Robot extends TimedRobot {
         ((currentElevatorPosition > (targetState.getElevatorTarget() - RobotMap.ENC_DEADBAND)) && (currentElevatorPosition < (targetState.getElevatorTarget() + RobotMap.ENC_DEADBAND))) &&
         (currentShoulderState == targetState.getShoulderState())) {
           movementCompleted = true;
+          System.out.println("Transition completed!!!!");
     }
     
     switch(targetState){

@@ -1,5 +1,7 @@
 package frc.robot;
 
+import frc.robot.Claw.ClawState;
+
 public class Auton {
 
     //place for member variables to hold controls and robot parts passed in
@@ -62,12 +64,36 @@ public class Auton {
         m_currentAutonPath = autonPath;
         m_step = 1;
         //path integer assigned is based on number of objects auton has set to achieve
-        if (m_currentAutonPath == RobotMap.AutonConstants.AUTO_LEVEL){
-            System.out.println("Setting Auton to Charging Station Path");
+        if (m_currentAutonPath == RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY){
+            System.out.println("Setting Auton to Mid Cube short community path");
             m_path = m_currentAutonPath;
         }
-        else if (m_currentAutonPath == RobotMap.AutonConstants.ONE_OBJECT){
-            System.out.println("Setting Auton to 1 Object Path");
+        else if (m_currentAutonPath == RobotMap.AutonConstants.MID_CONE_SHORT_COMMUNITY){
+            System.out.println("Setting Auton to Mid Cone short community path");
+            m_path = m_currentAutonPath;
+        }
+        else if (m_currentAutonPath == RobotMap.AutonConstants.MID_CUBE_LONG_COMMUNITY){
+            System.out.println("Setting Auton to Mid cube long community path");
+            m_path = m_currentAutonPath;
+        }
+        else if (m_currentAutonPath == RobotMap.AutonConstants.MID_CONE_LONG_COMMUNITY){
+            System.out.println("Setting Auton to Mid cone long community path");
+            m_path = m_currentAutonPath;
+        }
+        else if (m_currentAutonPath == RobotMap.AutonConstants.HIGH_CUBE_SHORT_COMMUNITY){
+            System.out.println("Setting Auton to High Cube short community path");
+            m_path = m_currentAutonPath;
+        }
+        else if (m_currentAutonPath == RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY){
+            System.out.println("Setting Auton to High Cone short community path");
+            m_path = m_currentAutonPath;
+        }
+        else if (m_currentAutonPath == RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY){
+            System.out.println("Setting Auton to High cube long community path");
+            m_path = m_currentAutonPath;
+        }
+        else if (m_currentAutonPath == RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY){
+            System.out.println("Setting Auton to High cone long community path");
             m_path = m_currentAutonPath;
         }
         else if (m_currentAutonPath == RobotMap.AutonConstants.SHORT_COMMUNITY){
@@ -91,7 +117,7 @@ public class Auton {
      */
     //TODO: sysout step changes should eventually become updates to some shuffleboard widget instead of console (messy, current)
     public AutonInput periodic(boolean stepCompleted) {
-        AutonInput newInput = new AutonInput(RobotState.kUnknown, 0, 0, false);
+        AutonInput newInput = new AutonInput(RobotState.kUnknown, 0, 0, false, ClawState.kUnknown, Double.NaN);
         
         if (m_autonStartOut){
             System.out.println("AUTON STARTED");
@@ -105,12 +131,356 @@ public class Auton {
         }
 
         switch(m_path) {
+            case RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kMidPiece;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.MID_CONE_SHORT_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kApproachMid;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_delay = 1.0;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_desiredState = RobotState.kMidPiece;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 6:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.MID_CUBE_LONG_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kMidPiece;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.MID_CONE_LONG_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kApproachMid;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_delay = 1.0;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_desiredState = RobotState.kMidPiece;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 6:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.HIGH_CUBE_SHORT_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kHighCube;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kApproachHigh;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_delay = 1.0;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_desiredState = RobotState.kHighCone;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 6:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kHighCube;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kApproachHigh;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_delay = 1.0;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_desiredState = RobotState.kHighCone;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 6:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                }
+                break;
+            }
             case RobotMap.AutonConstants.SHORT_COMMUNITY:
             {
                 switch(m_step) {
                     case 1:
                     {
-                        newInput.m_driveTarget = 135;
+                        newInput.m_driveTarget = RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
                         System.out.println("step: " + m_step);
                         break;
                     }
@@ -128,7 +498,7 @@ public class Auton {
                 switch(m_step) {
                     case 1:
                     {
-                        newInput.m_driveTarget = 195;
+                        newInput.m_driveTarget = RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
                         break;
                     }
                     case 2:

@@ -14,7 +14,7 @@ public enum RobotState {
     /**
      * State for doing floor pickup of gamepiece
      */
-    kFloorPickup ("Floor Pickup", RobotMap.ArmConstants.ARM_FLOOR_POS, RobotMap.ElevatorConstants.ELEVATOR_FLOOR_POS, ShoulderState.kDown),
+    kFloorPickup ("Floor Pickup", RobotMap.ArmConstants.ARM_FLOOR_POS, RobotMap.ElevatorConstants.ELEVATOR_LOW_POS, ShoulderState.kDown),
 
     /**
      * State for doing shelf pickup of gamepiece
@@ -29,7 +29,7 @@ public enum RobotState {
     /**
      * State for placing gamepiece at Mid level
      */
-    kMidPiece ("Mid Game Piece", RobotMap.ArmConstants.ARM_MID_POS, RobotMap.ElevatorConstants.ELEVATOR_FLOOR_POS, ShoulderState.kDown),
+    kMidPiece ("Mid Game Piece", RobotMap.ArmConstants.ARM_MID_POS, RobotMap.ElevatorConstants.ELEVATOR_LOW_POS, ShoulderState.kDown),
 
     /**
      * State for placing cone at High level

@@ -1,8 +1,8 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 
-public class GamePad extends GenericHID {
+public class GamePad extends Joystick {
 
 
     /**
@@ -28,18 +28,18 @@ public class GamePad extends GenericHID {
         Travel(1),
         Floor_Pickup(2),
         Shelf_Pickup(3),
-        High_Cone(4),
-        High_Cube(5),
+        High_Cone(9),
+        High_Cube(10),
         Mid_Place(6),
         Low_Place(7),
         High_Approach(8),
-        Mid_Approach(9),
-        Toggle_Claw(10),
+        Mid_Approach(5),
+        Toggle_Claw(4),
         Toggle_Shoulder(11),
-        Manual_Elevator_Up(12),
-        Manual_Elevator_Down(13),
-        Manual_Arm_Up(14),
-        Manual_Arm_Down(15);
+        Manual_Elevator_Up(12);
+        //Manual_Elevator_Down(13),
+       // Manual_Arm_Up(14),
+       // Manual_Arm_Down(15);
 
         public final int portNum;
 
@@ -129,7 +129,7 @@ public class GamePad extends GenericHID {
      * @return whether the Toggle Claw button was pressed.
      */
     public boolean getToggleClawPressed() {
-        return super.getRawButton(GamePadControls.Toggle_Claw.portNum);
+        return super.getRawButtonPressed(GamePadControls.Toggle_Claw.portNum);
     }
 
     /**
@@ -137,7 +137,7 @@ public class GamePad extends GenericHID {
      * @return whether the Toggle Shoulder button was pressed.
      */
     public boolean getToggleShoulderPressed() {
-        return super.getRawButton(GamePadControls.Toggle_Shoulder.portNum);
+        return super.getRawButtonPressed(GamePadControls.Toggle_Shoulder.portNum);
     }
 
     /**
@@ -153,7 +153,7 @@ public class GamePad extends GenericHID {
      * @return whether the Elevator Down button is pressed or not 
      */
     public boolean getElevatorDownPressed() {
-        return super.getRawButton(GamePadControls.Manual_Elevator_Down.portNum);
+        return (super.getX() < -0.5);
     }
 
     /**
@@ -161,7 +161,7 @@ public class GamePad extends GenericHID {
      * @return whether the Arm Up button is pressed or not 
      */
     public boolean getArmUpPressed() {
-        return super.getRawButton(GamePadControls.Manual_Arm_Up.portNum);
+        return (super.getX() > 0.5);
     }
 
     /**
@@ -169,7 +169,7 @@ public class GamePad extends GenericHID {
      * @return whether the Arm Down button is pressed or not 
      */
     public boolean getArmDownPressed() {
-        return super.getRawButton(GamePadControls.Manual_Arm_Down.portNum);
+        return (super.getY() > 0.5);
     }
 
 

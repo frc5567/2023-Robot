@@ -12,7 +12,7 @@ import frc.robot.Shoulder.ShoulderState;
  * Encapsulates the input for the copilot controller.
  */
 public class CopilotController {
-    private XboxController m_controller;
+    private GamePad m_controller;
     private ShoulderState m_shoulderState;
     private ClawState m_clawState;
 
@@ -20,7 +20,7 @@ public class CopilotController {
      * Constructor that sets the port for the Xbox controller(will be gamepad eventually).
      */
     public CopilotController() {
-        m_controller = new XboxController(1);
+        m_controller = new GamePad(1);
     }
 
     /**
@@ -31,87 +31,63 @@ public class CopilotController {
         CoDriveInput coDriveInput = new CoDriveInput();
 
         //commented out arm code for testing elevator
-        if (m_controller.getStartButton()) {
+        if (m_controller.getTravelPressed()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_START_POS;
             coDriveInput.m_desiredState = RobotState.kTravel;
         }
-        else if (m_controller.getAButton()) {
+        else if (m_controller.getFloorPickupPressed()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_FLOOR_POS;
             coDriveInput.m_desiredState = RobotState.kFloorPickup;
 
         }
-        else if (m_controller.getBButton()) {
+        else if (m_controller.getShelfPickupPressed()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_MID_POS;
             coDriveInput.m_desiredState = RobotState.kShelfPickup;
 
         }
-        else if (m_controller.getXButton()) {
+        else if (m_controller.getLowPlacePressed()) {
             //coDriveInput.m_armPos = RobotMap.CopilotConstants.ARM_HIGH_POS;
             coDriveInput.m_desiredState = RobotState.kFloorPiece;
 
         }
-        else if (m_controller.getYButton()){
+        else if (m_controller.getMidPlacePressed()){
             coDriveInput.m_desiredState = RobotState.kMidPiece;
         }
-        else {
-           coDriveInput.m_elevatorPos = RobotMap.NO_POS_INPUT;
-           double speed = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis();
-           if (Math.abs(speed) > 0.09) {
-            coDriveInput.m_manualElevator = speed;
-           }
-           else {
-            coDriveInput.m_manualElevator = 0;
-           }   
+        else if (m_controller.getHighConePressed()){
+            coDriveInput.m_desiredState = RobotState.kHighCone;
         }
-
+        else if (m_controller.getHighCubePressed()){
+            coDriveInput.m_desiredState = RobotState.kHighCube;
+        }
+        else if (m_controller.getMidApproachPressed()){
+            coDriveInput.m_desiredState = RobotState.kApproachMid;
+        }
+        else if (m_controller.getHighApproachPressed()){
+            coDriveInput.m_desiredState = RobotState.kApproachHigh;
+        }
+        else if (m_controller.getElevatorUpPressed()){
+            coDriveInput.m_manualElevator = 0.2;
+        }
+        else if (m_controller.getElevatorDownPressed()){
+            coDriveInput.m_manualElevator = -0.2;
+        }
+        else if (m_controller.getArmUpPressed()){
+            coDriveInput.m_manualArm = 0.2;
+        }
+        else if (m_controller.getArmDownPressed()){
+            coDriveInput.m_manualArm = -0.2;
+        }
         // When the right bumper is pressed, toggles the claw state.
-        if (m_controller.getRightBumperPressed()) {
+        if (m_controller.getToggleClawPressed()) {
                 coDriveInput.m_clawPos = ToggleInput.kToggle;
         }
 
         // When the left bumper is pressed, toggles the shoulder state.
-        if (m_controller.getLeftBumperPressed()) {
+        if (m_controller.getToggleShoulderPressed()) {
                 coDriveInput.m_shoulderPos = ToggleInput.kToggle;
         }
 
         return coDriveInput;
     }
     
-    /** 
-    //TODO: uncomment code when GamePad is created.
-     /** 
-     * Method to check  if ToggleClaw has been pressed and check the current state of the claw will then change the claw state accordingly.
-     * @return the new state of the claw.
-     
-    public ClawState getClawToggle() {
-      if( getToggleClawPressed && (m_clawState == ClawState.kOpen)) {
-          m_clawState = ClawState.kClosed;
-      }
-    else if( getToggleClawPressed && (m_clawState == ClawState.kClosed)) {
-         m_clawState = ClawState.kOpen;
-     }
-    return m_clawState;
-        
-    }
-
-    //TODO: uncomment code when GamePad is created.
-     /**
-     * 
-     * @return the new state of the shoulder.
-     
-    public ShoulderState getShoulderToggle() {
-       if(super.getRawButton(GamePadControls.Toggle_Shoulder.portNum) && (m_shoulderState == ShoulderState.kUp)) {
-          m_shoulderState = ShoulderState.kDown;
-      }
-     else if( super.getRawButton(GamePadControls.Toggle_Shoulder.portNum) && (m_shoulderState == ShoulderState.kDown)) {
-         m_shoulderState = ShoulderState.kUp;
-     }
-     return m_shoulderState;
-        
-    }
-    */
-
-
-
-
 }

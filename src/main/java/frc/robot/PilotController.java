@@ -22,38 +22,14 @@ public class PilotController {
      */
     public DriveInput getDriverInput() {
         DriveInput driverInput = new DriveInput();
-
-        if (m_controller.getStartButton()) {
-            driverInput.m_armPosition = RobotMap.ArmConstants.ARM_START_POS;
-        }
-        else if (m_controller.getAButton()) {
-            driverInput.m_desiredState = RobotState.kApproachMid;
-        }
-        else if (m_controller.getBButton()) {
-            driverInput.m_desiredState = RobotState.kApproachHigh;
-        }
-        else if (m_controller.getXButton()) {
-            driverInput.m_desiredState = RobotState.kHighCube;
-        }
-        else if (m_controller.getYButton()) {
-            driverInput.m_desiredState = RobotState.kHighCone;
-        }
-        else {
-            driverInput.m_armPosition = RobotMap.NO_POS_INPUT;
-            double speed = m_controller.getRightY();
-           if (Math.abs(speed) > 0.09) {
-            driverInput.m_manualArm = speed;
-           }
-           else {
-            driverInput.m_manualArm = 0;
-           }  
-        }
-
         //arcade drive controls
         driverInput.m_speed = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
 
         //Adjusting for a deadband to compensate for controller stick drift.
-        driverInput.m_turnSpeed = adjustForDeadband(m_controller.getLeftX());
+        Double turnInput = m_controller.getLeftX();
+        Double squaredTurnInput = turnInput * turnInput;
+        squaredTurnInput = Math.copySign(squaredTurnInput, turnInput);
+        driverInput.m_turnSpeed = adjustForDeadband(squaredTurnInput);
 
         driverInput.m_gear = getPilotGear();
         driverInput.m_isAutoLeveling = this.isAutoLeveling();
@@ -82,7 +58,7 @@ public class PilotController {
      * Return input from the controller for auto leveling.
      */
     public boolean isAutoLeveling() {
-        boolean autoLeveling = m_controller.getBackButton();
+        boolean autoLeveling = m_controller.getAButton();
 
         return autoLeveling;
     }
