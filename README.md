@@ -31,18 +31,18 @@
 
 |System          | ID            |
 |----------------|---------------|
-| Travel         | K1            |
-| Floor Pickup   | K2            |
-| Shelf Pickup   | K3            |
-| Claw Toggle    | K4            |
-| Mid Approach   | L1            |
-| Mid Place      | R1            |
-| Low Place      | L2            |
-| High Approach  | R2            |
-| Cone Place Hgh | SE            |
-| Cube Place Hgh | ST            |
-| Shoulder Togg. | K11           |
-| Elevator Up    | K12           |
-| Elevator Down  | AL            |
-| Arm Up         | AR            |
-| Arm Down       | AD            |
+| Travel         | 1             |
+| Floor Pickup   | 2             |
+| Shelf Pickup   | 3             |
+| Claw Toggle    | 4             |
+| Mid Approach   | 5             |
+| Mid Place      | 6             |
+| Low Place      | 7             |
+| High Approach  | 8             |
+| Cone Place Hgh | 9             |
+| Cube Place Hgh | 10            |
+| Shoulder Togg. | 11            |
+| Elevator Up    | 12            |
+| Elevator Down  | AL (no port)  |
+| Arm Up         | AR (no port)  |
+| Arm Down       | AD (no port)  |
