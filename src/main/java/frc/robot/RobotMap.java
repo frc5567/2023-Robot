@@ -149,6 +149,11 @@ public class RobotMap {
          * Absolute value of the deadband range for stick input
          */
         public static final double STICK_DEADBAND = 0.09;
+
+        /**
+         * adjust output of turns to tone down the final output.
+         */
+        public static final double TURN_SCALER = 0.7;
 	
     }
 

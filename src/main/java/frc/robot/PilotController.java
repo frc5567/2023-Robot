@@ -29,7 +29,10 @@ public class PilotController {
         Double turnInput = m_controller.getLeftX();
         Double squaredTurnInput = turnInput * turnInput;
         squaredTurnInput = Math.copySign(squaredTurnInput, turnInput);
-        driverInput.m_turnSpeed = adjustForDeadband(squaredTurnInput);
+
+        Double scaledTurnInput = (squaredTurnInput * RobotMap.PilotControllerConstants.TURN_SCALER);
+
+        driverInput.m_turnSpeed = adjustForDeadband(scaledTurnInput);
 
         driverInput.m_gear = getPilotGear();
         driverInput.m_isAutoLeveling = this.isAutoLeveling();
