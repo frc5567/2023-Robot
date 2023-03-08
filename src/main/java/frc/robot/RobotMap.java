@@ -25,7 +25,12 @@ public class RobotMap {
     /**
      * encoder deadband used in robot.java for transitions
      */
-    public static final double ENC_DEADBAND = 5000;
+    public static final double ENC_DEADBAND = 10000;
+
+    /**
+     * encoder deadband used in drive straight
+     */
+    public static final double DRIVE_STRAIGHT_DEADBAND = 5000;
 
     /**
      * All drivetrain constants
@@ -75,17 +80,17 @@ public class RobotMap {
         /**
          * Auto leveling crawl drive speed
          */
-        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.05;
+        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.0;
 
         /**
          * Auto leveling mid drive speed
          */
-        public static final double MID_LEVEL_DRIVE_SPEED = 0.35;
+        public static final double MID_LEVEL_DRIVE_SPEED = 0.0;
 
         /**
          * Auto leveling high drive speed
          */
-        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.4;
+        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.075;
 
         /**
          * Low Gear Solenoid port on the PCM.

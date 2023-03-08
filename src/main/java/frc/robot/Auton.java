@@ -179,30 +179,36 @@ public class Auton {
                     }
                     case 2:
                     {
-                        newInput.m_desiredState = RobotState.kMidPiece;
+                        newInput.m_delay = 1.0;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 3:
                     {
-                        newInput.m_clawState = ClawState.kOpen;
+                        newInput.m_desiredState = RobotState.kMidPiece;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 4:
                     {
-                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
-                        newInput.m_desiredState = RobotState.kTravel;
+                        newInput.m_clawState = ClawState.kOpen;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 5:
                     {
                         newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 6:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SHORT_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
                     {
                         newInput.m_autonComplete = true;
                         System.out.println("step: " + m_step);
@@ -259,30 +265,36 @@ public class Auton {
                     }
                     case 2:
                     {
-                        newInput.m_desiredState = RobotState.kMidPiece;
+                        newInput.m_delay = 1.0;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 3:
                     {
-                        newInput.m_clawState = ClawState.kOpen;
+                        newInput.m_desiredState = RobotState.kMidPiece;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 4:
                     {
-                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
-                        newInput.m_desiredState = RobotState.kTravel;
+                        newInput.m_clawState = ClawState.kOpen;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 5:
                     {
                         newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 6:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
                     {
                         newInput.m_autonComplete = true;
                         System.out.println("step: " + m_step);
@@ -339,7 +351,7 @@ public class Auton {
                     }
                     case 2:
                     {
-                        newInput.m_delay = 4.0;
+                        newInput.m_delay = 1.0;
                         System.out.println("step: " + m_step);
                         break;
                     }
@@ -425,30 +437,36 @@ public class Auton {
                     }
                     case 2:
                     {
-                        newInput.m_desiredState = RobotState.kHighCone;
+                        newInput.m_delay = 1.0;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 3:
                     {
-                        newInput.m_clawState = ClawState.kOpen;
+                        newInput.m_desiredState = RobotState.kHighCone;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 4:
                     {
-                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
-                        newInput.m_desiredState = RobotState.kTravel;
+                        newInput.m_clawState = ClawState.kOpen;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 5:
                     {
                         newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 6:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.LONG_COMMUNITY_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
                     {
                         newInput.m_autonComplete = true;
                         System.out.println("step: " + m_step);

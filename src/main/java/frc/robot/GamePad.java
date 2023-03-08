@@ -28,13 +28,13 @@ public class GamePad extends Joystick {
         Travel(1),
         Floor_Pickup(2),
         Shelf_Pickup(3),
-        High_Cone(4),
-        High_Cube(5),
+        High_Cone(9),
+        High_Cube(10),
         Mid_Place(6),
         Low_Place(7),
         High_Approach(8),
-        Mid_Approach(9),
-        Toggle_Claw(10),
+        Mid_Approach(5),
+        Toggle_Claw(4),
         Toggle_Shoulder(11),
         Manual_Elevator_Up(12);
         //Manual_Elevator_Down(13),
@@ -129,7 +129,7 @@ public class GamePad extends Joystick {
      * @return whether the Toggle Claw button was pressed.
      */
     public boolean getToggleClawPressed() {
-        return super.getRawButton(GamePadControls.Toggle_Claw.portNum);
+        return super.getRawButtonPressed(GamePadControls.Toggle_Claw.portNum);
     }
 
     /**
@@ -137,7 +137,7 @@ public class GamePad extends Joystick {
      * @return whether the Toggle Shoulder button was pressed.
      */
     public boolean getToggleShoulderPressed() {
-        return super.getRawButton(GamePadControls.Toggle_Shoulder.portNum);
+        return super.getRawButtonPressed(GamePadControls.Toggle_Shoulder.portNum);
     }
 
     /**

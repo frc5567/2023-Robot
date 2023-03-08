@@ -28,7 +28,7 @@ public class PilotController {
         //Adjusting for a deadband to compensate for controller stick drift.
         Double turnInput = m_controller.getLeftX();
         Double squaredTurnInput = turnInput * turnInput;
-        Math.copySign(squaredTurnInput, turnInput);
+        squaredTurnInput = Math.copySign(squaredTurnInput, turnInput);
         driverInput.m_turnSpeed = adjustForDeadband(squaredTurnInput);
 
         driverInput.m_gear = getPilotGear();

@@ -250,7 +250,7 @@ public class Drivetrain {
         m_rightFollower.follow(m_rightLeader);
         m_leftFollower.follow(m_leftLeader);
 
-        if ((Math.abs(m_rightLeader.getSelectedSensorPosition() - target_sensorUnits) < RobotMap.ENC_DEADBAND) && m_rightLeader.getSelectedSensorVelocity() < 100) {
+        if ((Math.abs(m_rightLeader.getSelectedSensorPosition() - target_sensorUnits) < RobotMap.DRIVE_STRAIGHT_DEADBAND) && m_rightLeader.getSelectedSensorVelocity() < 100) {
             reachedTarget = true;
         }
 
@@ -326,8 +326,8 @@ public class Drivetrain {
 		m_rightLeader.configClosedLoopPeriod(1, closedLoopTimeMs, RobotMap.TIMEOUT_MS);
 
 		/* Motion Magic Configs */
-		m_rightConfig.motionAcceleration = 3000; //(distance units per 100 ms) per second
-		m_rightConfig.motionCruiseVelocity = 5000; //distance units per 100 ms
+		m_rightConfig.motionAcceleration = 4000; //(distance units per 100 ms) per second
+		m_rightConfig.motionCruiseVelocity = 9000; //distance units per 100 ms
 
 		/* APPLY the config settings */
 		m_leftLeader.configAllSettings(m_leftConfig);
