@@ -23,13 +23,20 @@ public class PilotController {
     public DriveInput getDriverInput() {
         DriveInput driverInput = new DriveInput();
         //arcade drive controls
-        driverInput.m_speed = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
-
+        if (m_controller.getBackButton()) {
+            driverInput.m_speed = -0.07; // crawl speed
+        }
+        else {
+            driverInput.m_speed = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
+        }
         //Adjusting for a deadband to compensate for controller stick drift.
         Double turnInput = m_controller.getLeftX();
         Double squaredTurnInput = turnInput * turnInput;
         squaredTurnInput = Math.copySign(squaredTurnInput, turnInput);
-        driverInput.m_turnSpeed = adjustForDeadband(squaredTurnInput);
+
+        Double scaledTurnInput = (squaredTurnInput * RobotMap.PilotControllerConstants.TURN_SCALER);
+
+        driverInput.m_turnSpeed = adjustForDeadband(scaledTurnInput);
 
         driverInput.m_gear = getPilotGear();
         driverInput.m_isAutoLeveling = this.isAutoLeveling();
