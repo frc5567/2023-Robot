@@ -107,6 +107,20 @@ public class Drivetrain {
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
         this.shiftGear(driveInput.m_gear);
+
+        //used to see if motor is overheating during competition
+        System.out.print("Speed [" + driveInput.m_speed + "] LT [" + -driveInput.m_turnSpeed + "] RT[" + driveInput.m_turnSpeed + "]");
+        double outputLL = m_leftLeader.getMotorOutputPercent();
+        double outputRL = m_rightLeader.getMotorOutputPercent();
+        double outputLF = m_leftFollower.getMotorOutputPercent();
+        double outputRF = m_rightFollower.getMotorOutputPercent();
+        System.out.print("Output LL [" + outputLL + "] RL [" + outputRL + "] LF [" + outputLF + "] RF [" + outputRF + "]");
+        double tempLL = m_leftLeader.getTemperature();
+        double tempRL = m_rightLeader.getTemperature();
+        double tempLF = m_leftFollower.getTemperature();
+        double tempRF = m_rightFollower.getTemperature();
+        System.out.println("Temp LL [" + tempLL + "] RL [" + tempRL + "] LF [" + tempLF + "] RF [" + tempRF + "]");
+
     }
 
     /**
