@@ -157,7 +157,6 @@ public class Robot extends TimedRobot {
     boolean isBotLevelAuton = false;
     double curPitchAuton = m_pigeon.getPitch();
     isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
-    DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
 
 
     AutonInput currentInput;

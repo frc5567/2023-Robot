@@ -94,7 +94,6 @@ public class RobotMap {
 
         /**
          * Low Gear Solenoid port on the PCM.
-         * TODO: Find Ports that low gear and high gear connect to.
          */
         public static final int DOUBLE_SOLENOID_LOW_GEAR_PORT = 5;
 
@@ -218,7 +217,6 @@ public class RobotMap {
 
     /**
      * Encapsulates constants for the arm class.
-     * TODO: double check all constants and TEST
      */
     public static class ArmConstants {
 
@@ -252,7 +250,6 @@ public class RobotMap {
 
     /**
      * Encapsulates the constants for the claw class
-     * TODO: Check ports
      */
     public static class ClawConstants {
         public static final int DOUBLESOLENOID_OPEN_PORT = 2;
@@ -261,7 +258,6 @@ public class RobotMap {
 
     /**
      * Encapsulates the constants for the shoulder class
-     * TODO: Check ports
      */
     public static class ShoulderConstants {
         public static final int DOUBLESOLENOID_UP_PORT = 0;

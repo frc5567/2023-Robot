@@ -4,7 +4,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Robot Shuffleboard class created for user input for the variety of classes needing it.
@@ -19,8 +19,8 @@ public class RobotShuffleboard {
     private GenericEntry m_autonRunningEntry;
     private GenericEntry m_autonStateEntry;
     private GenericEntry m_autonStepEntry;
-    private GenericEntry m_xOffsetEntry;
-    private GenericEntry m_areaOfScreenEntry;
+    //private GenericEntry m_xOffsetEntry;
+    //private GenericEntry m_areaOfScreenEntry;
 
     /**
      * Main constructor for Shuffleboard class; creates tabs for Shuffleboard, though we should only need DriverTab
@@ -85,11 +85,11 @@ public class RobotShuffleboard {
                                     .withWidget(BuiltInWidgets.kTextView)
                                     .getEntry();
         //Limelight widgets                         
-        m_xOffsetEntry = m_driverTab.add("x Angle Offset", 0.0)
-                                    .withWidget(BuiltInWidgets.kTextView)
-                                    .getEntry();
-        m_areaOfScreenEntry = m_driverTab.add("Area of Screen", 0.0)
-                                    .withWidget(BuiltInWidgets.kTextView)
-                                    .getEntry();
+        // m_xOffsetEntry = m_driverTab.add("x Angle Offset", 0.0)
+        //                             .withWidget(BuiltInWidgets.kTextView)
+        //                             .getEntry();
+        // m_areaOfScreenEntry = m_driverTab.add("Area of Screen", 0.0)
+        //                             .withWidget(BuiltInWidgets.kTextView)
+        //                             .getEntry();
     }
 }

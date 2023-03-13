@@ -1,20 +1,12 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Claw.ClawState;
 import frc.robot.CoDriveInput.ToggleInput;
-import frc.robot.Shoulder.ShoulderState;
-
-//import frc.robot.GamePad.GamePadControls;
-
 
 /**
  * Encapsulates the input for the copilot controller.
  */
 public class CopilotController {
     private GamePad m_controller;
-    private ShoulderState m_shoulderState;
-    private ClawState m_clawState;
 
     /**
      * Constructor that sets the port for the Xbox controller(will be gamepad eventually).
