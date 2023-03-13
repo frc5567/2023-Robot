@@ -90,7 +90,7 @@ public class RobotMap {
         /**
          * Auto leveling high drive speed
          */
-        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.075;
+        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.08;
 
         /**
          * Low Gear Solenoid port on the PCM.
@@ -225,8 +225,8 @@ public class RobotMap {
         public static final int PID_PRIMARY = 0;
         public static final double NEUTRAL_DEADBAND = 0.001;
         public static final double PID_PEAK_OUTPUT = 1.0;
-        public static final int ARM_ACCELERATION = 15000;
-        public static final int ARM_CRUISE_VELOCITY = 15000;
+        public static final int ARM_ACCELERATION = 25000;
+        public static final int ARM_CRUISE_VELOCITY = 35000;
 
         public static final Gains ARM_GAINS = new Gains(0.4, 0.0, 0.0, 0.0, 100, 1.0);
 
