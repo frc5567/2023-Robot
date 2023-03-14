@@ -1,5 +1,5 @@
 package frc.robot;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.*;
 
@@ -90,7 +90,7 @@ public class Elevator {
         double position = m_elevator.getSelectedSensorPosition();
 
         m_elevator.set(ControlMode.MotionMagic, target);
-        //System.out.println("Go to [" + target + "] Vater Position: [" + position + "]");
+        System.out.println("Go to [" + target + "] Vater Position: [" + position + "]");
     }
 
     /**
@@ -100,7 +100,7 @@ public class Elevator {
     public void drive(double speed) {
         m_elevator.set(speed);
         double enc = m_elevator.getSelectedSensorPosition(RobotMap.ElevatorConstants.PID_PRIMARY);
-        //System.out.println("Vater [" + speed + "][" + enc + "]");
+        System.out.println("Vater [" + speed + "][" + enc + "]");
     }
 
     /**

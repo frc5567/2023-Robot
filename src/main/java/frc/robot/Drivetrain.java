@@ -217,7 +217,6 @@ public class Drivetrain {
      * @return DriveEncoderPos 
      */
     public DriveEncoderPos getEncoderPositions() {
-        //TODO: THESE NEGATED POS VARS DO NOT MAKE LOGIC SENSE WITH WIFFLEBOT TESTING, BUT WORK
         double leftPos = m_leftLeader.getSelectedSensorPosition();
         double rightPos = m_rightLeader.getSelectedSensorPosition();
         DriveEncoderPos drivePositions = new DriveEncoderPos(leftPos, rightPos);

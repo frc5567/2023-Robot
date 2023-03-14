@@ -59,7 +59,6 @@ public class Claw {
     public void setClawState(ClawState clawValue) {
         if (clawValue == ClawState.kOpen) {
             m_currentClawState = ClawState.kOpen;
-            //TODO: kForward and kReverse might be reversed; test.
             m_clawSol.set(Value.kForward);
             System.out.println("Valid Claw State: open");
         }

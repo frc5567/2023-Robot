@@ -157,7 +157,6 @@ public class Robot extends TimedRobot {
     boolean isBotLevelAuton = false;
     double curPitchAuton = m_pigeon.getPitch();
     isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
-    DriveEncoderPos drivePos = m_vroomVroom.getEncoderPositions();
 
 
     AutonInput currentInput;
@@ -438,11 +437,11 @@ public class Robot extends TimedRobot {
         m_shoulder.setShoulderState(targetState.getShoulderState());
         if (currentArmPosition <= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
-          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_HIGH_POS);
         }
         else if (currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)){
           m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
-          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_HIGH_POS);
         }
         else {
           m_arm.armPID(targetState.getArmTarget());
@@ -456,11 +455,11 @@ public class Robot extends TimedRobot {
         m_shoulder.setShoulderState(targetState.getShoulderState());
         if (currentArmPosition <= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
-          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_HIGH_POS);
         }
         else if ( currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition <=(RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
           m_arm.armPID(RobotMap.ArmConstants.ARM_MID_POS);
-          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+          m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_HIGH_POS);
         }
         else{
           m_arm.armPID(targetState.getArmTarget());

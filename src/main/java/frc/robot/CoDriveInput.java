@@ -35,7 +35,6 @@ public class CoDriveInput {
     public CoDriveInput() {
         m_manualElevator = 0;
         m_manualArm = 0;
-        //TODO: might want to switch default value to closed in the future.
         m_clawPos = ToggleInput.kNoInput;
         m_shoulderPos = ToggleInput.kNoInput;
         m_desiredState = RobotState.kUnknown;
