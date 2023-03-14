@@ -270,8 +270,35 @@ public class Drivetrain {
         return reachedTarget;
     }
 
+        /**
+     * Drive straight forward (or backward for negative distance) a set number of inches
+     * @param angle Target angle to turn to - 0 is straight ahead at start, left is negative, right is positive
+     * @return
+     */
+    public boolean turnToAngle(double angle) {
+        boolean reachedTarget = false;
+        // 6" wheels means 18.85" per rotation
+        
+        double target_turn = angle; // don't turn
+        double target_sensorUnits = getEncoderPositions().m_rightLeaderPos;
+
+        System.out.println("driveStraight [" + target_sensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
+        
+        /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+        m_rightLeader.set(ControlMode.MotionMagic, target_sensorUnits, DemandType.AuxPID, target_turn);
+        m_leftLeader.follow(m_rightLeader, FollowerType.AuxOutput1);
+        m_rightFollower.follow(m_rightLeader);
+        m_leftFollower.follow(m_leftLeader);
+
+        if ((Math.abs(this.m_pidgey.getYaw()) < RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND) && m_rightLeader.getSelectedSensorVelocity() < 100) {
+            reachedTarget = true;
+        }
+
+        return reachedTarget;
+    }
+
     /**
-     * Sets up the PID configuration for drive straight
+     * Sets up the PID configuration for drive straight (or turn)
      */
     public void configPID() {
 

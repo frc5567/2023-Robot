@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
     m_pilotControl = new PilotController();
     m_copilotControl = new CopilotController();
 
-    m_shuffleName = new RobotShuffleboard();
+    m_shuffleName = new RobotShuffleboard(m_chooser);
     m_shuffleName.init();
 
     m_limelight = new Limelight();
@@ -121,6 +121,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     m_outCounter++;
+    m_autonSelected = m_chooser.getSelected();
   }
 
   /**
@@ -138,12 +139,8 @@ public class Robot extends TimedRobot {
     m_vroomVroom.brakeMode();
     m_vroomVroom.initDrivetrain();
 
-    m_autonSelected = m_chooser.getSelected();
     System.out.println("Auton selected: " + m_autonSelected);
 
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-
-    //m_shuffleName.setAutonPath();
     m_auton.init();
     m_auton.selectPath(m_autonSelected);
   }
@@ -151,12 +148,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be TRUE)
-    //m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
-    //isLevel variable sets for Auton, much like TeleOp
-    boolean isBotLevelAuton = false;
     double curPitchAuton = m_pigeon.getPitch();
-    isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
+    boolean isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
 
 
     AutonInput currentInput;
