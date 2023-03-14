@@ -56,10 +56,10 @@ public class CopilotController {
             coDriveInput.m_manualElevator = -0.2;
         }
         else if (m_controller.getArmUpPressed()) {
-            coDriveInput.m_manualArm = 0.2;
+            coDriveInput.m_manualArm = 0.5;
         }
         else if (m_controller.getArmDownPressed()) {
-            coDriveInput.m_manualArm = -0.2;
+            coDriveInput.m_manualArm = -0.5;
         }
         
         // When the right bumper is pressed, toggles the claw state.
