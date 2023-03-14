@@ -107,6 +107,20 @@ public class Drivetrain {
         m_leftFollower.follow(m_leftLeader);
         m_rightFollower.follow(m_rightLeader);
         this.shiftGear(driveInput.m_gear);
+
+        //used to see if motor is overheating during competition
+        System.out.print("Speed [" + driveInput.m_speed + "] LT [" + -driveInput.m_turnSpeed + "] RT[" + driveInput.m_turnSpeed + "]");
+        double outputLL = m_leftLeader.getMotorOutputPercent();
+        double outputRL = m_rightLeader.getMotorOutputPercent();
+        double outputLF = m_leftFollower.getMotorOutputPercent();
+        double outputRF = m_rightFollower.getMotorOutputPercent();
+        System.out.print("Output LL [" + outputLL + "] RL [" + outputRL + "] LF [" + outputLF + "] RF [" + outputRF + "]");
+        double tempLL = m_leftLeader.getTemperature();
+        double tempRL = m_rightLeader.getTemperature();
+        double tempLF = m_leftFollower.getTemperature();
+        double tempRF = m_rightFollower.getTemperature();
+        System.out.println("Temp LL [" + tempLL + "] RL [" + tempRL + "] LF [" + tempLF + "] RF [" + tempRF + "]");
+
     }
 
     /**
@@ -203,7 +217,6 @@ public class Drivetrain {
      * @return DriveEncoderPos 
      */
     public DriveEncoderPos getEncoderPositions() {
-        //TODO: THESE NEGATED POS VARS DO NOT MAKE LOGIC SENSE WITH WIFFLEBOT TESTING, BUT WORK
         double leftPos = m_leftLeader.getSelectedSensorPosition();
         double rightPos = m_rightLeader.getSelectedSensorPosition();
         DriveEncoderPos drivePositions = new DriveEncoderPos(leftPos, rightPos);
@@ -250,7 +263,7 @@ public class Drivetrain {
         m_rightFollower.follow(m_rightLeader);
         m_leftFollower.follow(m_leftLeader);
 
-        if ((Math.abs(m_rightLeader.getSelectedSensorPosition() - target_sensorUnits) < RobotMap.ENC_DEADBAND) && m_rightLeader.getSelectedSensorVelocity() < 100) {
+        if ((Math.abs(m_rightLeader.getSelectedSensorPosition() - target_sensorUnits) < RobotMap.DRIVE_STRAIGHT_DEADBAND) && m_rightLeader.getSelectedSensorVelocity() < 100) {
             reachedTarget = true;
         }
 
@@ -326,8 +339,8 @@ public class Drivetrain {
 		m_rightLeader.configClosedLoopPeriod(1, closedLoopTimeMs, RobotMap.TIMEOUT_MS);
 
 		/* Motion Magic Configs */
-		m_rightConfig.motionAcceleration = 2000; //(distance units per 100 ms) per second
-		m_rightConfig.motionCruiseVelocity = 2000; //distance units per 100 ms
+		m_rightConfig.motionAcceleration = 4000; //(distance units per 100 ms) per second
+		m_rightConfig.motionCruiseVelocity = 9000; //distance units per 100 ms
 
 		/* APPLY the config settings */
 		m_leftLeader.configAllSettings(m_leftConfig);

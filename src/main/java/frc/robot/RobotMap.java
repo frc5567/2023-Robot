@@ -25,7 +25,12 @@ public class RobotMap {
     /**
      * encoder deadband used in robot.java for transitions
      */
-    public static final double ENC_DEADBAND = 50000;
+    public static final double ENC_DEADBAND = 10000;
+
+    /**
+     * encoder deadband used in drive straight
+     */
+    public static final double DRIVE_STRAIGHT_DEADBAND = 5000;
 
     /**
      * All drivetrain constants
@@ -75,21 +80,20 @@ public class RobotMap {
         /**
          * Auto leveling crawl drive speed
          */
-        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.05;
+        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.0;
 
         /**
          * Auto leveling mid drive speed
          */
-        public static final double MID_LEVEL_DRIVE_SPEED = 0.35;
+        public static final double MID_LEVEL_DRIVE_SPEED = 0.0;
 
         /**
          * Auto leveling high drive speed
          */
-        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.4;
+        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.08;
 
         /**
          * Low Gear Solenoid port on the PCM.
-         * TODO: Find Ports that low gear and high gear connect to.
          */
         public static final int DOUBLE_SOLENOID_LOW_GEAR_PORT = 5;
 
@@ -144,6 +148,11 @@ public class RobotMap {
          * Absolute value of the deadband range for stick input
          */
         public static final double STICK_DEADBAND = 0.09;
+
+        /**
+         * adjust output of turns to tone down the final output.
+         */
+        public static final double TURN_SCALER = 0.7;
 	
     }
 
@@ -160,9 +169,25 @@ public class RobotMap {
 
         public static final String LONG_COMMUNITY = "Long Community";
 
-        public static final String AUTO_LEVEL = "Auto Level";
+        public static final String MID_CONE_SHORT_COMMUNITY = "Mid Cone Short Community";
 
-        public static final String ONE_OBJECT = "One Object";
+        public static final String MID_CUBE_SHORT_COMMUNITY = "Mid Cube Short Community";
+
+        public static final String MID_CONE_LONG_COMMUNITY = "Mid Cone Long Community";
+
+        public static final String MID_CUBE_LONG_COMMUNITY = "Mid Cube Long Community";
+
+        public static final String HIGH_CONE_SHORT_COMMUNITY = "High Cone Short Community";
+
+        public static final String HIGH_CUBE_SHORT_COMMUNITY = "High Cube Short Community";
+
+        public static final String HIGH_CONE_LONG_COMMUNITY = "High Cone Long Community";
+
+        public static final String HIGH_CUBE_LONG_COMMUNITY = "High Cube Long Community";
+
+        public static final double SHORT_COMMUNITY_DIST = 135;
+
+        public static final double LONG_COMMUNITY_DIST = 195;
     }
 
     /**
@@ -184,7 +209,7 @@ public class RobotMap {
         public static final int TICKS_PER_REVOLUTION = 2048;
 
         public static final double ELEVATOR_START_POS = -818000;
-        public static final double ELEVATOR_FLOOR_POS = -252000;
+        public static final double ELEVATOR_LOW_POS = -252000;
         public static final double ELEVATOR_MID_POS = 0;
         public static final double ELEVATOR_HIGH_POS = 561250;
         public static final double ELEVATOR_SHELF_POS = -500000;
@@ -192,7 +217,6 @@ public class RobotMap {
 
     /**
      * Encapsulates constants for the arm class.
-     * TODO: double check all constants and TEST
      */
     public static class ArmConstants {
 
@@ -201,8 +225,8 @@ public class RobotMap {
         public static final int PID_PRIMARY = 0;
         public static final double NEUTRAL_DEADBAND = 0.001;
         public static final double PID_PEAK_OUTPUT = 1.0;
-        public static final int ARM_ACCELERATION = 15000;
-        public static final int ARM_CRUISE_VELOCITY = 15000;
+        public static final int ARM_ACCELERATION = 25000;
+        public static final int ARM_CRUISE_VELOCITY = 35000;
 
         public static final Gains ARM_GAINS = new Gains(0.4, 0.0, 0.0, 0.0, 100, 1.0);
 
@@ -215,7 +239,7 @@ public class RobotMap {
         public static final double ARM_HIGH_POS = 444700;
         public static final double ARM_MID_POS = 487000;
         public static final double FLOOR_PLACE_POS = 692800;
-        public static final double ARM_FLOOR_POS = 731300;
+        public static final double ARM_FLOOR_POS = 768000;
     }
 
     /**
@@ -226,7 +250,6 @@ public class RobotMap {
 
     /**
      * Encapsulates the constants for the claw class
-     * TODO: Check ports
      */
     public static class ClawConstants {
         public static final int DOUBLESOLENOID_OPEN_PORT = 2;
@@ -235,7 +258,6 @@ public class RobotMap {
 
     /**
      * Encapsulates the constants for the shoulder class
-     * TODO: Check ports
      */
     public static class ShoulderConstants {
         public static final int DOUBLESOLENOID_UP_PORT = 0;
