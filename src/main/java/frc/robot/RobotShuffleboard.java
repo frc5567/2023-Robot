@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
  * Robot Shuffleboard class created for user input for the variety of classes needing it.
@@ -21,12 +22,14 @@ public class RobotShuffleboard {
     private GenericEntry m_autonStepEntry;
     //private GenericEntry m_xOffsetEntry;
     //private GenericEntry m_areaOfScreenEntry;
+    private SendableChooser<String> m_chooser;
 
     /**
      * Main constructor for Shuffleboard class; creates tabs for Shuffleboard, though we should only need DriverTab
      */
-    public RobotShuffleboard() {
+    public RobotShuffleboard(SendableChooser<String> chooser) {
         m_driverTab = Shuffleboard.getTab("[Driver Tab]");
+        m_chooser = chooser;
     }
 
     /**
@@ -91,5 +94,8 @@ public class RobotShuffleboard {
         // m_areaOfScreenEntry = m_driverTab.add("Area of Screen", 0.0)
         //                             .withWidget(BuiltInWidgets.kTextView)
         //                             .getEntry();
+
+        // Add AutonSelection chooser
+        m_driverTab.add(m_chooser);
     }
 }

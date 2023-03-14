@@ -121,6 +121,11 @@ public class RobotMap {
         public final static int PID_TURN = 1;
 
         public final static int GEAR_RATIO = 15;
+
+        /**
+         * DEADBAND for the turnToAngle.
+         */
+        public static final double DRIVE_ANGLE_DEADBAND = 0.2;
 	
     }
 
@@ -153,7 +158,6 @@ public class RobotMap {
          * adjust output of turns to tone down the final output.
          */
         public static final double TURN_SCALER = 0.7;
-	
     }
 
     /**
