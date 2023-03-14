@@ -126,6 +126,16 @@ public class RobotMap {
          * DEADBAND for the turnToAngle.
          */
         public static final double DRIVE_ANGLE_DEADBAND = 0.2;
+
+        /**
+         * This is a counter end constant for measuring number of cycles (20 ms) in order for stable autolevel completion
+         */
+        public static final int AUTOLEVEL_COUNTER = 50;
+
+        //TODO: tune and test these as well
+        public static final double ONE_CYCLE_ANGLE_DEADBAND = 0.1;
+
+        public static final double TWO_CYCLE_ANGLE_DEADBAND = 0.3;
 	
     }
 

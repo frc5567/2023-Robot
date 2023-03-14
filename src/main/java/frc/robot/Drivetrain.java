@@ -32,6 +32,8 @@ public class Drivetrain {
     private WPI_TalonFX m_rightFollower;
 
     private Pigeon2 m_pidgey;
+
+    private double[] m_angleDeltas;
     	
     /** Config Objects for motor controllers */
 	TalonFXConfiguration m_leftConfig = new TalonFXConfiguration();
@@ -58,6 +60,8 @@ public class Drivetrain {
         m_solenoid = new DoubleSolenoid(RobotMap.PCM_CAN_ID, PneumaticsModuleType.CTREPCM, RobotMap.DrivetrainConstants.DOUBLE_SOLENOID_LOW_GEAR_PORT, RobotMap.DrivetrainConstants.DOUBLE_SOLENOID_HIGH_GEAR_PORT);
 
         m_pidgey = pidgey;
+
+        m_angleDeltas = new double[2];
 
         // Instantiation of the gear and setting it to unknown.
         m_gear = Gear.kUnknown;
@@ -139,7 +143,7 @@ public class Drivetrain {
 
         //level bot set to no speed
         if (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) {
-            if (m_levelCounter < 50) {
+            if (m_levelCounter < RobotMap.DrivetrainConstants.AUTOLEVEL_COUNTER) {
                 m_levelCounter++;
             }
             else {
@@ -164,9 +168,22 @@ public class Drivetrain {
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.UPPER_MID_RANGE_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_ANGLE)){
             //speed is negated: in Pigeon, actual robot ends are opposite, pitch now reflects that
             double speed = Math.copySign(RobotMap.DrivetrainConstants.HIGH_LEVEL_DRIVE_SPEED, (-currentPitch));
+
+            for (int i = 0; i < 2; i++) {
+                if (i == 0 && (Math.abs(currentPitch) < (m_angleDeltas[i] - RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND))) {
+                    speed = 0.0;
+                }
+                else if (i == 1 && (Math.abs(currentPitch) < (m_angleDeltas[i] - RobotMap.DrivetrainConstants.TWO_CYCLE_ANGLE_DEADBAND))) {
+                    speed = 0.0;
+                    m_angleDeltas[i] = m_angleDeltas[i-1];
+                    m_angleDeltas[i-1] = currentPitch;
+                }
+            }
             arcadeDrive(speed, 0);
             m_levelCounter = 0;
         }
+        
+        System.out.print("Current pitch: [" + currentPitch + "]");
         return level;
     }
 
