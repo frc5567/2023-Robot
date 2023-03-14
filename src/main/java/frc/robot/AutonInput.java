@@ -2,6 +2,9 @@ package frc.robot;
 
 import frc.robot.Claw.ClawState;
 
+/**
+ * Auton input to grab passed states and other related variables needed for Auton functionality
+ */
 public class AutonInput {
     public RobotState m_desiredState;
     public double m_driveTarget;
@@ -11,6 +14,9 @@ public class AutonInput {
     public double m_delay;
     public boolean m_autoLevel;
 
+    /**
+     * The default constructor.
+     */
     public AutonInput() {
         m_desiredState = RobotState.kUnknown;
         m_driveTarget = 0;
@@ -21,6 +27,16 @@ public class AutonInput {
         m_autoLevel = false;
     }
 
+    /**
+     * The main constructor, at least with parameters.
+     * @param desiredState this is the passed in desired state to transition to; this one is dedicated for Jessica
+     * @param driveTarget the target in inches to drive to; this one is dedicated for Emma
+     * @param turnTarget the target angle to turn to; this one is dedicated for BrayBae
+     * @param autonComplete a boolean for denoting when the actual auton path is complete; this one is dedicated for Chris
+     * @param clawState the current state of the Claw; this one is dedicated for Curt
+     * @param delay the delay counter in cycles; this one is dedicated for Erik
+     * @param autoLevelIn the boolean for denoting whether the autoLevel is ; this one is dedicated for Jacen
+     */
     public AutonInput(RobotState desiredState, double driveTarget, double turnTarget, boolean autonComplete, ClawState clawState, double delay, boolean autoLevelIn) {
         m_desiredState = desiredState;
         m_driveTarget = driveTarget;

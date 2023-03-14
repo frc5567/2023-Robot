@@ -29,7 +29,7 @@ public class Arm {
 
     /**
      * Intitializtion method for the Arm class
-     * Sets default configuration on the motor controller, sets motor inversion (false), sets neutral mode (Brake), zeros encoders.
+     * Sets default configuration on the motor controller, sets motor inversion (false), sets neutral mode (Brake).
      */
     public void init() {
         m_arm.configFactoryDefault();
@@ -81,7 +81,7 @@ public class Arm {
 	}
 
     /**
-     * Use motion magic to figure out how far the arm needs to move based on the target.
+     * Use motion magic to figure out and set how far the arm needs to move based on the target.
      * @param target
      */
     public void armPID(double target) {
@@ -89,7 +89,7 @@ public class Arm {
     }
 
     /**
-     * manual drive method for the arm. Takes input from the controller.
+     * Manual drive method for the arm. Takes input from the controller.
      * @param speed
      */
     public void driveArm(double speed) {
@@ -97,7 +97,7 @@ public class Arm {
     }
 
     /**
-     * sets arm to coast mode (used when disabled)
+     * Sets arm to coast mode (mostly used when disabled)
      */
     public void coastMode() {
 		m_arm.setNeutralMode(NeutralMode.Coast);

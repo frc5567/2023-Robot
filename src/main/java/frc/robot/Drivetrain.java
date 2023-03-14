@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 /**
- * Class encapsulates drive position, gear, and auto leveling method.
+ * Class encapsulates methods pertaining to Drivetrain functionality
  */
 public class Drivetrain {
     private WPI_TalonFX m_leftLeader;
@@ -49,7 +49,8 @@ public class Drivetrain {
     private int m_levelCounter;
 
     /**
-     * Constructor for the drivetrain 
+     * Main constructor for the drivetrain class
+     * @param pidgey IMU pigeon instance
      */
     public Drivetrain(Pigeon2 pidgey) {
         m_leftLeader = new WPI_TalonFX(RobotMap.DrivetrainConstants.LEFT_LEADER_CAN_ID);
@@ -70,7 +71,7 @@ public class Drivetrain {
     }
 
     /**
-     * Init function to set motor inversion.
+     * Init function to intialize the Drivetrain in its entirety
      */
     public void initDrivetrain() {
         /* Reset Configs */
@@ -108,8 +109,8 @@ public class Drivetrain {
     }
 
     /**
-     * Method that makes the drivetrain move forward/backwards and turn.
-     * @param driveInput 
+     * Method that makes the drivetrain move forward/backwards and turn and allows for shifting gears.
+     * @param driveInput the Pilot DriveInput object
      */
     public void arcadeDrive(DriveInput driveInput) {
         m_leftLeader.set(ControlMode.PercentOutput, driveInput.m_speed, DemandType.ArbitraryFeedForward, -driveInput.m_turnSpeed);
@@ -136,7 +137,7 @@ public class Drivetrain {
     /**
      * Decides what direction to drive and with how much power based on the pitch while on the charging station.
      * @param currentPitch the angle of pitch that the robot is currently experiencing
-     * @return true if level, false if not
+     * @return true if level and stabilized, false if not
      */
     public boolean autoLevel(double currentPitch) {
         boolean level = false;
@@ -188,7 +189,7 @@ public class Drivetrain {
     }
 
     /**
-     * Boolean method to check whether thes bot is level at a given time.
+     * Boolean method to check whether the bot is level at a given time.
      * @param currentPitch the angle of pitch that the robot is currently experiencing
      * @return true if bot is within "level" range, false otherwise
      */
@@ -202,7 +203,7 @@ public class Drivetrain {
     }
 
     /**
-     * Applies brake mode on drive train motor controllers. 
+     * Applies brake mode on Drivetrain motor controllers. 
      */
     public void brakeMode() {
         m_leftLeader.setNeutralMode(NeutralMode.Brake);
@@ -212,7 +213,7 @@ public class Drivetrain {
     }
 
     /**
-     * Applies coast mode on drive train motor controllers. 
+     * Applies coast mode on Drivetrain motor controllers. 
      */
     public void coastMode() {
         m_leftLeader.setNeutralMode(NeutralMode.Coast);
@@ -223,7 +224,7 @@ public class Drivetrain {
 
      /** 
      * shiftGear is the way we change between high and low gear (Gear.kLowGear and Gear.kHighGear)
-     * @param gear
+     * @param gear the desired gear to be used
      */
     public void shiftGear(Gear gear){
         // Compare the incoming parameter to the current state and determine if it is already set to that gear. 
@@ -234,7 +235,7 @@ public class Drivetrain {
         m_gear = gear; 
 
         // Solenoid causes the gear to shift. kForward(Plunger Out) and KReverse (Plunger In) are both in WPILib. 
-        // Together they change the Penumatics.
+        // Together they change the pneumatics.
         if(m_gear == Gear.kLowGear){
             m_solenoid.set(Value.kForward);
         }
@@ -246,14 +247,13 @@ public class Drivetrain {
 
     /**
      * Gets encoder positions of the drivetrain
-     * @return DriveEncoderPos 
+     * @return the updated encoder positions
      */
     public DriveEncoderPos getEncoderPositions() {
         double leftPos = m_leftLeader.getSelectedSensorPosition();
         double rightPos = m_rightLeader.getSelectedSensorPosition();
         DriveEncoderPos drivePositions = new DriveEncoderPos(leftPos, rightPos);
         return drivePositions;
-
     }
 
     /**
@@ -267,17 +267,17 @@ public class Drivetrain {
     }
 	
 	/**
-     *  Zero QuadEncoders, used to reset position when initializing Motion Magic 
+     *  Method used to zero integrated sensors and reset their positions when initializing Motion Magic
      */
-	void zeroDistance(){
+	public void zeroDistance(){
         m_leftLeader.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
         m_rightLeader.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
 	}
 	
     /**
      * Drive straight forward (or backward for negative distance) a set number of inches
-     * @param distance
-     * @return
+     * @param distance a double passed for setting what magnitude of distance the robot must travel in inches
+     * @return a boolean designating whether the target has been reached
      */
     public boolean driveStraight(double distance) {
         boolean reachedTarget = false;
@@ -302,10 +302,10 @@ public class Drivetrain {
         return reachedTarget;
     }
 
-        /**
-     * Drive straight forward (or backward for negative distance) a set number of inches
+    /**
+     * Method for turning to a target angle relative to robot starting position
      * @param angle Target angle to turn to - 0 is straight ahead at start, left is negative, right is positive
-     * @return
+     * @return a boolean designating whether the target has been reached
      */
     public boolean turnToAngle(double angle) {
         boolean reachedTarget = false;

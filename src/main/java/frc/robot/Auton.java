@@ -2,6 +2,9 @@ package frc.robot;
 
 import frc.robot.Claw.ClawState;
 
+/**
+ * Class that encapsulates the entirety of Autonomous mode code
+ */
 public class Auton {
 
     //place for member variables to hold controls and robot parts passed in
@@ -16,33 +19,29 @@ public class Auton {
     boolean m_autonStartOut = false;
     //boolean for running out of class method, set to false by default
     boolean run = false;
-    //boolean for autoLeveling function implementation
-    boolean toRunAutoLevelOrNotToRun = false;
 
     /**
-     * Constructor method of the Auton class with passed in robot classes
-     * @param shuffleboard passes in the shuffleboard communcations and allows updating of that console during Auton
+     * Main constructor method of the Auton class
      */
     public Auton() {
-        //configure member variables to starting instances of robot systems
-        //ex: m_robotShuffleboard = shuffleboard; where shuffleboard is a RobotShuffleboard parameter taken in
+        //place to configure member variables to starting instances of robot systems
+
         //sets auton initial step to step 0
         m_step = 0;
     }
 
     /**
-     * Method that runs initally at start of every Auton mode, sets Auton path.
+     * Method that runs initally at start of every Auton mode, currently sets Auton path.
      * Takes no parameters and returns nothing.
      */
     public void init() {
-        //initializes elements of robot for the Auton specifically
-        //m_currentAutonPath = m_robotShuffleboard.getAutonPath();
+        //initializes elements of robot for the Auton specifically, starting flag waved
         m_step = 0;
         m_autonStartOut = true;
     }
 
     /**
-     * Method that checks running state (not path) of auton
+     * Boolean method that checks running state (not path) of auton
      * @return whether auton is running via start flag and path assignment verification
      */
     public boolean isRunning() {
@@ -55,12 +54,12 @@ public class Auton {
     }
 
     /**
-     * Method for actually selecting Auton path from shuffleboard and set console to reflect that
+     * Method for actually grabbing selection and setting Auton path from shuffleboard; sends message to console to reflect that
      */
     public void selectPath(String autonPath) {
         m_currentAutonPath = autonPath;
         m_step = 1;
-        //path integer assigned is based on number of objects auton has set to achieve
+
         if (m_currentAutonPath == RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY){
             System.out.println("Setting Auton to Mid Cube short community path");
             m_path = m_currentAutonPath;
@@ -111,10 +110,9 @@ public class Auton {
     }
 
     /**
-     * Method that contains entirety of Auton code and what to do in steps, also updates steps to shuffleboard and bot
-     * @param drivePos is a DriveEncoderPos object that is passed in to periodically grab the current position
-     * @param isBotLevelBack is a boolean input for passed in from Robot to see if the bot is level; mostly for charging station
-     * @return DriveInput object that can control drivetrain outside of drivetrain class via position encoders
+     * Method that contains entirety of Auton pathing, state stuctures, and what to do in steps; also updates steps to shuffleboard and bot
+     * @param stepCompleted is a boolean that is passed in from Robot denoted when a step action is completed
+     * @return newInput object that can control drivetrain outside of drivetrain class via position encoders
      */
     public AutonInput periodic(boolean stepCompleted) {
         AutonInput newInput = new AutonInput(RobotState.kUnknown, 0, 0, false, ClawState.kUnknown, Double.NaN, false);

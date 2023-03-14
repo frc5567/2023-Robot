@@ -68,11 +68,14 @@ public class Claw {
             System.out.println("Valid Claw State: closed");
         }
         else {
-            //Somebody passed in kUnknown
-            //System.out.println("Invalid Claw State");
+            //This means somebody passed in kUnknown
+            System.out.println("Invalid Claw State");
         }
     }
 
+    /**
+     * Method that actually switches between the claw states (open and close)
+     */
     public void toggleClawState() {
         if (m_currentClawState == ClawState.kOpen) {
             this.setClawState(ClawState.kClosed);
@@ -82,6 +85,10 @@ public class Claw {
         }
     }
 
+    /**
+     * Method for returning the current claw state
+     * @return the current claw state
+     */
     public ClawState getClawState() {
         return m_currentClawState;
     }

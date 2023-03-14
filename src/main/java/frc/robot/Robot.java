@@ -196,12 +196,6 @@ public class Robot extends TimedRobot {
       m_autoStepCompleted = false;
     }
 
-    //TODO: test then delete
-    //autoLevel check and run
-    /** if (m_auton.toRunAutoLevelOrNotToRun == true) {
-      m_vroomVroom.autoLevel(curPitchAuton);
-    } */
-
     m_shuffleName.periodic(isBotLevelAuton, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
   }
 
