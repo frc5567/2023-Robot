@@ -43,6 +43,9 @@ public class Drivetrain {
     // Pneumatic Controller for Gear box
     private DoubleSolenoid m_solenoid;
 
+    //Counter for Autolevel auton
+    private int m_levelCounter;
+
     /**
      * Constructor for the drivetrain 
      */
@@ -59,6 +62,7 @@ public class Drivetrain {
         // Instantiation of the gear and setting it to unknown.
         m_gear = Gear.kUnknown;
 
+        m_levelCounter = 0;
     }
 
     /**
@@ -76,6 +80,8 @@ public class Drivetrain {
         m_rightLeader.setInverted(false);
         m_leftFollower.setInverted(InvertType.FollowMaster);
         m_rightFollower.setInverted(InvertType.FollowMaster);
+
+        m_levelCounter = 0;
 
         // Shiftgear in robot in Low Gear
         this.shiftGear(Gear.kLowGear);
@@ -133,24 +139,33 @@ public class Drivetrain {
 
         //level bot set to no speed
         if (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) {
-            level = true;
+            if (m_levelCounter < 50) {
+                m_levelCounter++;
+            }
+            else {
+                level = true;
+                m_levelCounter = 0;
+            }
             arcadeDrive(0, 0);
         }
         //crawl speed for bot angle within 6 - 2 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.UPPER_LOW_RANGE_ANGLE)) {
             double speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (-currentPitch));
             arcadeDrive(speed, 0);
+            m_levelCounter = 0;
         }
         //mid speed for bot angle within 12 - 6 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.UPPER_LOW_RANGE_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.UPPER_MID_RANGE_ANGLE)) {
             double speed = Math.copySign(RobotMap.DrivetrainConstants.MID_LEVEL_DRIVE_SPEED, (-currentPitch));
             arcadeDrive(speed, 0);
+            m_levelCounter = 0;
         }
         //high speed for bot angle within 17 - 12 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.UPPER_MID_RANGE_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_ANGLE)){
             //speed is negated: in Pigeon, actual robot ends are opposite, pitch now reflects that
             double speed = Math.copySign(RobotMap.DrivetrainConstants.HIGH_LEVEL_DRIVE_SPEED, (-currentPitch));
             arcadeDrive(speed, 0);
+            m_levelCounter = 0;
         }
         return level;
     }

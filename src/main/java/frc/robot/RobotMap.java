@@ -185,9 +185,18 @@ public class RobotMap {
 
         public static final String HIGH_CUBE_LONG_COMMUNITY = "High Cube Long Community";
 
+        public static final String HIGH_CHARGING_COMMUNITY = "High Charging Community";
+
+        //TODO: these have to be tested, false distances
         public static final double SHORT_COMMUNITY_DIST = 135;
 
         public static final double LONG_COMMUNITY_DIST = 195;
+
+        //TODO: test and tune these for true values
+        public static final double FIRST_CHARGING_DIST = 96.75;
+
+        public static final double SECOND_CHARGING_DIST = 50;
+
     }
 
     /**

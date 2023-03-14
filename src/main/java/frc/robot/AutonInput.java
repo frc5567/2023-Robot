@@ -9,6 +9,7 @@ public class AutonInput {
     public boolean m_autonComplete;
     public ClawState m_clawState;
     public double m_delay;
+    public boolean m_autoLevel;
 
     public AutonInput() {
         m_desiredState = RobotState.kUnknown;
@@ -17,14 +18,16 @@ public class AutonInput {
         m_autonComplete = false;
         m_clawState = ClawState.kUnknown;
         m_delay = Double.NaN;
+        m_autoLevel = false;
     }
 
-    public AutonInput(RobotState desiredState, double driveTarget, double turnTarget, boolean autonComplete, ClawState clawState, double delay) {
+    public AutonInput(RobotState desiredState, double driveTarget, double turnTarget, boolean autonComplete, ClawState clawState, double delay, boolean autoLevelIn) {
         m_desiredState = desiredState;
         m_driveTarget = driveTarget;
         m_turnTarget = turnTarget;
         m_autonComplete = autonComplete;
         m_clawState = clawState;
         m_delay = delay;
+        m_autoLevel = autoLevelIn;
     }
 }

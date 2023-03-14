@@ -101,6 +101,10 @@ public class Auton {
             System.out.println("Setting Auton to Community Out Short Path");
             m_path = m_currentAutonPath;
         }
+        else if (m_currentAutonPath == RobotMap.AutonConstants.HIGH_CHARGING_COMMUNITY){
+            System.out.println("Setting Auton to High Charging Path");
+            m_path = m_currentAutonPath;
+        }
         else{
             System.out.println("No path selected. Please restart auton mode and choose one.");
         }
@@ -113,7 +117,7 @@ public class Auton {
      * @return DriveInput object that can control drivetrain outside of drivetrain class via position encoders
      */
     public AutonInput periodic(boolean stepCompleted) {
-        AutonInput newInput = new AutonInput(RobotState.kUnknown, 0, 0, false, ClawState.kUnknown, Double.NaN);
+        AutonInput newInput = new AutonInput(RobotState.kUnknown, 0, 0, false, ClawState.kUnknown, Double.NaN, false);
         
         if (m_autonStartOut){
             System.out.println("AUTON STARTED");
@@ -500,6 +504,74 @@ public class Auton {
                     case 2:
                     {
                         newInput.m_autonComplete = true;
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.HIGH_CHARGING_COMMUNITY:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kApproachHigh;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_delay = 1.0;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_desiredState = RobotState.kHighCone;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.FIRST_CHARGING_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 6:
+                    {
+                        //case for if travel completion logic skips dist step from 5
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.FIRST_CHARGING_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.SECOND_CHARGING_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 8:
+                    {
+                        newInput.m_driveTarget = RobotMap.AutonConstants.SECOND_CHARGING_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 9:
+                    {
+                        newInput.m_autoLevel = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 10:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
                         break;
                     }
                 }
