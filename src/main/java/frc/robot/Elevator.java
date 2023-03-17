@@ -100,7 +100,9 @@ public class Elevator {
     public void drive(double speed) {
         m_elevator.set(speed);
         double enc = m_elevator.getSelectedSensorPosition(RobotMap.ElevatorConstants.PID_PRIMARY);
-        System.out.println("Vater [" + speed + "][" + enc + "]");
+        if (speed != 0) {
+            System.out.println("Vater [" + speed + "][" + enc + "]");
+        }
     }
 
     /**

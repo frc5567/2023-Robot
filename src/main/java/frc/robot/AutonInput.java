@@ -19,8 +19,8 @@ public class AutonInput {
      */
     public AutonInput() {
         m_desiredState = RobotState.kUnknown;
-        m_driveTarget = 0;
-        m_turnTarget = 0;
+        m_driveTarget = Double.NaN;
+        m_turnTarget = Double.NaN;
         m_autonComplete = false;
         m_clawState = ClawState.kUnknown;
         m_delay = Double.NaN;

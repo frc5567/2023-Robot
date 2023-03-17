@@ -180,7 +180,7 @@ public class Robot extends TimedRobot {
       if (!Double.isNaN(currentInput.m_delay)) {
         Double cyclesToDelay = (currentInput.m_delay * 50);
         int intCyclesToDelay = cyclesToDelay.intValue();
-        System.out.println("Cycles to delay: [" + cyclesToDelay + "] [" + intCyclesToDelay + "] [" + m_delayCounter + "]");
+        //System.out.println("Cycles to delay: [" + cyclesToDelay + "] [" + intCyclesToDelay + "] [" + m_delayCounter + "]");
         if (m_delayCounter == intCyclesToDelay) {
           m_autoStepCompleted = true;
           m_delayCounter = 0;

@@ -80,17 +80,17 @@ public class RobotMap {
         /**
          * Auto leveling crawl drive speed
          */
-        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.0;
+        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.065;
 
         /**
          * Auto leveling mid drive speed
          */
-        public static final double MID_LEVEL_DRIVE_SPEED = 0.0;
+        public static final double MID_LEVEL_DRIVE_SPEED = 0.075;
 
         /**
          * Auto leveling high drive speed
          */
-        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.08;
+        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.09;
 
         /**
          * Low Gear Solenoid port on the PCM.
@@ -135,7 +135,9 @@ public class RobotMap {
         //TODO: tune and test these as well
         public static final double ONE_CYCLE_ANGLE_DEADBAND = 0.1;
 
-        public static final double TWO_CYCLE_ANGLE_DEADBAND = 0.3;
+        public static final double TWO_CYCLE_ANGLE_DEADBAND = 0.2;
+
+        public static final int BALANCE_CYCLE_COUNT = 20;
 	
     }
 
@@ -209,7 +211,9 @@ public class RobotMap {
         //TODO: test and tune these for true values
         public static final double FIRST_CHARGING_DIST = 96.75;
 
-        public static final double SECOND_CHARGING_DIST = 50;
+        public static final double SECOND_CHARGING_DIST = 140;
+
+        public static final double THIRD_CHARGING_DIST = 90.0;
 
     }
 

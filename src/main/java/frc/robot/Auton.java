@@ -512,61 +512,50 @@ public class Auton {
                 switch(m_step) {
                     case 1:
                     {
-                        newInput.m_desiredState = RobotState.kApproachHigh;
+                        newInput.m_desiredState = RobotState.kHighCube;
                         System.out.println("step: " + m_step);
                         break;
                     }
                     case 2:
                     {
-                        newInput.m_delay = 1.0;
-                        System.out.println("step: " + m_step);
-                        break;
-                    }
-                    case 3:
-                    {
-                        newInput.m_desiredState = RobotState.kHighCone;
-                        System.out.println("step: " + m_step);
-                        break;
-                    }
-                    case 4:
-                    {
                         newInput.m_clawState = ClawState.kOpen;
                         System.out.println("step: " + m_step);
                         break;
                     }
-                    case 5:
+                    case 3:
                     {
                         newInput.m_driveTarget = -RobotMap.AutonConstants.FIRST_CHARGING_DIST;
                         newInput.m_desiredState = RobotState.kTravel;
                         System.out.println("step: " + m_step);
                         break;
                     }
-                    case 6:
+                    case 4:
                     {
                         //case for if travel completion logic skips dist step from 5
                         newInput.m_driveTarget = -RobotMap.AutonConstants.FIRST_CHARGING_DIST;
                         System.out.println("step: " + m_step);
                         break;
                     }
-                    case 7:
+                    case 5:
                     {
                         newInput.m_driveTarget = -RobotMap.AutonConstants.SECOND_CHARGING_DIST;
                         System.out.println("step: " + m_step);
                         break;
                     }
-                    case 8:
+                    case 6:
                     {
-                        newInput.m_driveTarget = RobotMap.AutonConstants.SECOND_CHARGING_DIST;
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.THIRD_CHARGING_DIST;
                         System.out.println("step: " + m_step);
                         break;
                     }
-                    case 9:
+                    case 7:
                     {
+                        newInput.m_driveTarget = Double.NaN;
                         newInput.m_autoLevel = true;
                         System.out.println("step: " + m_step);
                         break;
                     }
-                    case 10:
+                    case 8:
                     {
                         newInput.m_autonComplete = true;
                         System.out.println("step: " + m_step);

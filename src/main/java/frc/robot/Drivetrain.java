@@ -48,6 +48,8 @@ public class Drivetrain {
     //Counter for Autolevel auton
     private int m_levelCounter;
 
+    private int m_outputCounter;
+
     /**
      * Main constructor for the drivetrain class
      * @param pidgey IMU pigeon instance
@@ -62,12 +64,13 @@ public class Drivetrain {
 
         m_pidgey = pidgey;
 
-        m_angleDeltas = new double[2];
+        m_angleDeltas = new double[RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT];
 
         // Instantiation of the gear and setting it to unknown.
         m_gear = Gear.kUnknown;
 
         m_levelCounter = 0;
+        m_outputCounter = 0;
     }
 
     /**
@@ -119,19 +122,20 @@ public class Drivetrain {
         m_rightFollower.follow(m_rightLeader);
         this.shiftGear(driveInput.m_gear);
 
-        //used to see if motor is overheating during competition
-        System.out.print("Speed [" + driveInput.m_speed + "] LT [" + -driveInput.m_turnSpeed + "] RT[" + driveInput.m_turnSpeed + "]");
-        double outputLL = m_leftLeader.getMotorOutputPercent();
-        double outputRL = m_rightLeader.getMotorOutputPercent();
-        double outputLF = m_leftFollower.getMotorOutputPercent();
-        double outputRF = m_rightFollower.getMotorOutputPercent();
-        System.out.print("Output LL [" + outputLL + "] RL [" + outputRL + "] LF [" + outputLF + "] RF [" + outputRF + "]");
-        double tempLL = m_leftLeader.getTemperature();
-        double tempRL = m_rightLeader.getTemperature();
-        double tempLF = m_leftFollower.getTemperature();
-        double tempRF = m_rightFollower.getTemperature();
-        System.out.println("Temp LL [" + tempLL + "] RL [" + tempRL + "] LF [" + tempLF + "] RF [" + tempRF + "]");
-
+        if ((m_outputCounter++) % 100 == 0) {
+            //used to see if motor is overheating during competition
+            System.out.print("Speed [" + driveInput.m_speed + "] LT [" + -driveInput.m_turnSpeed + "] RT[" + driveInput.m_turnSpeed + "]");
+            double outputLL = m_leftLeader.getMotorOutputPercent();
+            double outputRL = m_rightLeader.getMotorOutputPercent();
+            double outputLF = m_leftFollower.getMotorOutputPercent();
+            double outputRF = m_rightFollower.getMotorOutputPercent();
+            System.out.print("Output LL [" + outputLL + "] RL [" + outputRL + "] LF [" + outputLF + "] RF [" + outputRF + "]");
+            double tempLL = m_leftLeader.getTemperature();
+            double tempRL = m_rightLeader.getTemperature();
+            double tempLF = m_leftFollower.getTemperature();
+            double tempRF = m_rightFollower.getTemperature();
+            System.out.println("Temp LL [" + tempLL + "] RL [" + tempRL + "] LF [" + tempLF + "] RF [" + tempRF + "]");
+        }
     }
 
     /**
@@ -141,6 +145,8 @@ public class Drivetrain {
      */
     public boolean autoLevel(double currentPitch) {
         boolean level = false;
+        String didthething = "";
+        double speed = 0.0;
 
         //level bot set to no speed
         if (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) {
@@ -155,36 +161,78 @@ public class Drivetrain {
         }
         //crawl speed for bot angle within 6 - 2 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.UPPER_LOW_RANGE_ANGLE)) {
-            double speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (-currentPitch));
+            //speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (-currentPitch));
+            speed = 0.0;
+
+            if (Math.abs(currentPitch) > RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND) {
+                int count = 0;
+                for (int i = 0; i < RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT; i++) {
+                    double deadband = (RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND * (i+1));
+                    if (Math.abs(currentPitch) < (m_angleDeltas[i] - deadband)) {
+                        count++;
+                    }
+                }
+                if (count > (RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT * 0.66)) {
+                    //speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (currentPitch));
+                    speed = 0.0;
+                    didthething = "yass";
+                }
+            }
+
             arcadeDrive(speed, 0);
             m_levelCounter = 0;
-        }
+        }        
         //mid speed for bot angle within 12 - 6 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.UPPER_LOW_RANGE_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.UPPER_MID_RANGE_ANGLE)) {
-            double speed = Math.copySign(RobotMap.DrivetrainConstants.MID_LEVEL_DRIVE_SPEED, (-currentPitch));
+            speed = Math.copySign(RobotMap.DrivetrainConstants.MID_LEVEL_DRIVE_SPEED, (-currentPitch));
+
+            if (Math.abs(currentPitch) > RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND) {
+                int count = 0;
+                for (int i = 0; i < RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT; i++) {
+                    double deadband = (RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND * (i+1));
+                    if (Math.abs(currentPitch) < (m_angleDeltas[i] - deadband)) {
+                        count++;
+                    }
+                }
+                if (count > (RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT * 0.66)) {
+                    speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (currentPitch));
+                    didthething = "yass";
+                }
+            }
             arcadeDrive(speed, 0);
             m_levelCounter = 0;
         }
         //high speed for bot angle within 17 - 12 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.UPPER_MID_RANGE_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_ANGLE)){
             //speed is negated: in Pigeon, actual robot ends are opposite, pitch now reflects that
-            double speed = Math.copySign(RobotMap.DrivetrainConstants.HIGH_LEVEL_DRIVE_SPEED, (-currentPitch));
+            speed = Math.copySign(RobotMap.DrivetrainConstants.HIGH_LEVEL_DRIVE_SPEED, (-currentPitch));
 
-            for (int i = 0; i < 2; i++) {
-                if (i == 0 && (Math.abs(currentPitch) < (m_angleDeltas[i] - RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND))) {
-                    speed = 0.0;
+            if (Math.abs(currentPitch) > RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND) {
+                int count = 0;
+                for (int i = 0; i < RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT; i++) {
+                    double deadband = (RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND * (i+1));
+                    if (Math.abs(currentPitch) < (m_angleDeltas[i] - deadband)) {
+                        count++;
+                    }
                 }
-                else if (i == 1 && (Math.abs(currentPitch) < (m_angleDeltas[i] - RobotMap.DrivetrainConstants.TWO_CYCLE_ANGLE_DEADBAND))) {
-                    speed = 0.0;
-                    m_angleDeltas[i] = m_angleDeltas[i-1];
-                    m_angleDeltas[i-1] = currentPitch;
+                if (count > (RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT * 0.66)) {
+                    speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (currentPitch));
+                    didthething = "yass";
                 }
             }
             arcadeDrive(speed, 0);
             m_levelCounter = 0;
         }
+
+        for (int i = (RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT - 1); i > 0; i--) {
+            m_angleDeltas[i] = m_angleDeltas[i-1];            
+        }
+
+        m_angleDeltas[0] = Math.abs(currentPitch); 
         
-        System.out.print("Current pitch: [" + currentPitch + "]");
+        m_angleDeltas[1] = m_angleDeltas[0];
+        m_angleDeltas[0] = Math.abs(currentPitch);        
+        System.out.println("OutputCount [" + m_outputCounter++ + "] Current pitch: [" + currentPitch + "] speed [" + speed + "] didthething [" + didthething + "]");
         return level;
     }
 
@@ -398,8 +446,8 @@ public class Drivetrain {
 		m_rightLeader.configClosedLoopPeriod(1, closedLoopTimeMs, RobotMap.TIMEOUT_MS);
 
 		/* Motion Magic Configs */
-		m_rightConfig.motionAcceleration = 4000; //(distance units per 100 ms) per second
-		m_rightConfig.motionCruiseVelocity = 9000; //distance units per 100 ms
+		m_rightConfig.motionAcceleration = 5000; //(distance units per 100 ms) per second
+		m_rightConfig.motionCruiseVelocity = 8000; //distance units per 100 ms
 
 		/* APPLY the config settings */
 		m_leftLeader.configAllSettings(m_leftConfig);

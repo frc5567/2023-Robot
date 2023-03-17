@@ -27,7 +27,7 @@ public class PilotController {
             driverInput.m_speed = -0.07; // crawl speed
         }
         else {
-            driverInput.m_speed = (m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
+            driverInput.m_speed = adjustForDeadband(m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
         }
         //Adjusting for a deadband to compensate for controller stick drift.
         Double turnInput = m_controller.getLeftX();
