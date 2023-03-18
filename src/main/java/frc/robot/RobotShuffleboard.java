@@ -20,8 +20,8 @@ public class RobotShuffleboard {
     private GenericEntry m_autonRunningEntry;
     private GenericEntry m_autonStateEntry;
     private GenericEntry m_autonStepEntry;
-    //private GenericEntry m_xOffsetEntry;
-    //private GenericEntry m_areaOfScreenEntry;
+    private GenericEntry m_xOffsetEntry;
+    private GenericEntry m_areaOfScreenEntry;
     private SendableChooser<String> m_chooser;
 
     /**
@@ -64,8 +64,9 @@ public class RobotShuffleboard {
         //SmartDashboard.putNumber("x Angle Offset", xOffset);
         //SmartDashboard.putNumber("Area of Screen", areaOfScreen);
         //TODO: EXIST ERROR; add back and test these elements when we actually have them (currently erroring due to existance failure)
-        //m_xOffsetEntry.setDouble(xOffset);
-        //m_areaOfScreenEntry.setDouble(areaOfScreen);
+        m_xOffsetEntry.setDouble(xOffset);
+        
+        m_areaOfScreenEntry.setDouble(areaOfScreen);
     }
 
     /**
@@ -88,12 +89,12 @@ public class RobotShuffleboard {
                                     .withWidget(BuiltInWidgets.kTextView)
                                     .getEntry();
         //Limelight widgets                         
-        // m_xOffsetEntry = m_driverTab.add("x Angle Offset", 0.0)
-        //                             .withWidget(BuiltInWidgets.kTextView)
-        //                             .getEntry();
-        // m_areaOfScreenEntry = m_driverTab.add("Area of Screen", 0.0)
-        //                             .withWidget(BuiltInWidgets.kTextView)
-        //                             .getEntry();
+        m_xOffsetEntry = m_driverTab.add("x Angle Offset", 0.0)
+                                    .withWidget(BuiltInWidgets.kTextView)
+                                    .getEntry();
+        m_areaOfScreenEntry = m_driverTab.add("Area of Screen", 0.0)
+                                    .withWidget(BuiltInWidgets.kTextView)
+                                    .getEntry();
 
         // Add AutonSelection chooser
         m_driverTab.add(m_chooser);

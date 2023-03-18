@@ -60,12 +60,12 @@ public class Shoulder {
         if (shoulderState == ShoulderState.kDown) {
             m_currentShoulderState = ShoulderState.kDown;
             m_shoulderSol.set(Value.kReverse);
-            System.out.println("valid Shoulder State: down");
+            //System.out.println("valid Shoulder State: down");
         }
         else if (shoulderState == ShoulderState.kUp){
             m_currentShoulderState = ShoulderState.kUp;
             m_shoulderSol.set(Value.kForward);
-            System.out.println("valid Shoulder State: up");
+            //System.out.println("valid Shoulder State: up");
         }
         else {
             //System.out.println("Invalid Shoulder State");

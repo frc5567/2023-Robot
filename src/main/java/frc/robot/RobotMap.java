@@ -125,7 +125,7 @@ public class RobotMap {
         /**
          * DEADBAND for the turnToAngle.
          */
-        public static final double DRIVE_ANGLE_DEADBAND = 0.2;
+        public static final double DRIVE_ANGLE_DEADBAND = 0.8;
 
         /**
          * This is a counter end constant for measuring number of cycles (20 ms) in order for stable autolevel completion
@@ -137,7 +137,7 @@ public class RobotMap {
 
         public static final double TWO_CYCLE_ANGLE_DEADBAND = 0.2;
 
-        public static final int BALANCE_CYCLE_COUNT = 20;
+        public static final int BALANCE_CYCLE_COUNT = 15;
 	
     }
 
@@ -201,12 +201,16 @@ public class RobotMap {
 
         public static final String HIGH_CUBE_LONG_COMMUNITY = "High Cube Long Community";
 
-        public static final String HIGH_CHARGING_COMMUNITY = "High Charging Community";
+        public static final String HIGH_CUBE_COMMUNITY_BALANCE = "High Cube Community Balance";
+
+        public static final String HIGH_CUBE_BALANCE = "High Cube Balance";
+
+        public static final String HIGH_CONE_BALANCE = "High Cone Balance";
 
         //TODO: these have to be tested, false distances
         public static final double SHORT_COMMUNITY_DIST = 135;
 
-        public static final double LONG_COMMUNITY_DIST = 195;
+        public static final double LONG_COMMUNITY_DIST = 170;
 
         //TODO: test and tune these for true values
         public static final double FIRST_CHARGING_DIST = 96.75;
@@ -214,6 +218,10 @@ public class RobotMap {
         public static final double SECOND_CHARGING_DIST = 140;
 
         public static final double THIRD_CHARGING_DIST = 90.0;
+
+        public static final double NO_EXIT_DIST = 78.0;
+
+        public static final double TARGET_ANGLE = 180;
 
     }
 
@@ -239,7 +247,7 @@ public class RobotMap {
         public static final double ELEVATOR_LOW_POS = -252000;
         public static final double ELEVATOR_MID_POS = 0;
         public static final double ELEVATOR_HIGH_POS = 561250;
-        public static final double ELEVATOR_SHELF_POS = -500000;
+        public static final double ELEVATOR_SHELF_POS = -695000;
     }
 
     /**
@@ -252,8 +260,9 @@ public class RobotMap {
         public static final int PID_PRIMARY = 0;
         public static final double NEUTRAL_DEADBAND = 0.001;
         public static final double PID_PEAK_OUTPUT = 1.0;
-        public static final int ARM_ACCELERATION = 25000;
-        public static final int ARM_CRUISE_VELOCITY = 35000;
+
+        public static final int ARM_ACCELERATION = 35000;
+        public static final int ARM_CRUISE_VELOCITY = 45000;
 
         public static final Gains ARM_GAINS = new Gains(0.4, 0.0, 0.0, 0.0, 100, 1.0);
 
@@ -261,11 +270,11 @@ public class RobotMap {
         public static final int TICKS_PER_REVOLUTION = 2048;
 
         public static final double ARM_START_POS = 0.0;
-        public static final double ARM_SHELF_POS = 160600;
         public static final double ARM_APPROACH_POS = 405000;
         public static final double ARM_HIGH_POS = 444700;
         public static final double ARM_MID_POS = 487000;
         public static final double FLOOR_PLACE_POS = 692800;
+        public static final double ARM_SHELF_POS = 688000;
         public static final double ARM_FLOOR_POS = 768000;
     }
 

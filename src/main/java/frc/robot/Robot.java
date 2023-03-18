@@ -62,11 +62,12 @@ public class Robot extends TimedRobot {
     m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY);
     m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY);
     m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CHARGING_COMMUNITY, RobotMap.AutonConstants.HIGH_CHARGING_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_COMMUNITY_BALANCE, RobotMap.AutonConstants.HIGH_CUBE_COMMUNITY_BALANCE);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_BALANCE, RobotMap.AutonConstants.HIGH_CUBE_BALANCE);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_BALANCE, RobotMap.AutonConstants.HIGH_CONE_BALANCE);
     SmartDashboard.putData("Auton choices", m_chooser);
     m_autonSelected = m_chooser.getSelected();
 
-    System.out.println("Selected:" + m_autonSelected);
     //Instantiation of needed classes and names assigned as appropriate
     m_pigeon = new Pigeon2(RobotMap.PIGEON_CAN_ID);
     m_vroomVroom = new Drivetrain(m_pigeon);    
@@ -164,8 +165,7 @@ public class Robot extends TimedRobot {
       }
 
       if (!Double.isNaN(currentInput.m_turnTarget)) {
-        //TODO: change to turn to target instead of drive straight
-        //m_autoStepCompleted = m_vroomVroom.driveStraight(currentInput.m_turnTarget);
+        m_autoStepCompleted = m_vroomVroom.turnToAngle(currentInput.m_turnTarget);
       }
 
       if (currentInput.m_desiredState != RobotState.kUnknown) {
@@ -227,9 +227,14 @@ public class Robot extends TimedRobot {
       //boolean isBotLevel = m_vroomVroom.isLevel(curPitch);
     }
     else {
-      m_vroomVroom.arcadeDrive(driverInput);
-      isBotLevel = m_vroomVroom.isLevel(curPitch);
-      m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
+      if (!Double.isNaN(driverInput.m_angle)) {
+        m_vroomVroom.turnToAngle(driverInput.m_angle);
+      }
+      else {
+        m_vroomVroom.arcadeDrive(driverInput);
+        isBotLevel = m_vroomVroom.isLevel(curPitch);
+        m_shuffleName.periodic(isBotLevel, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());
+      }
     }
     
     if (coDriverInput.m_desiredState != RobotState.kUnknown) {
@@ -321,7 +326,7 @@ public class Robot extends TimedRobot {
         ((currentElevatorPosition > (targetState.getElevatorTarget() - RobotMap.ENC_DEADBAND)) && (currentElevatorPosition < (targetState.getElevatorTarget() + RobotMap.ENC_DEADBAND))) &&
         (currentShoulderState == targetState.getShoulderState())) {
           movementCompleted = true;
-          System.out.println("Transition completed!!!!");
+          //System.out.println("Transition completed!!!!");
     }
     
     switch(targetState){
@@ -371,19 +376,24 @@ public class Robot extends TimedRobot {
       }
       case kShelfPickup:
       {
+        // If the encoder value is between start and approach positions, we're above the elevator and need to be careful
         m_shoulder.setShoulderState(targetState.getShoulderState());
-        if (currentArmPosition >= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS) {
-          m_arm.armPID(RobotMap.ArmConstants.ARM_HIGH_POS);
+        if (currentArmPosition <= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition < RobotMap.ElevatorConstants.ELEVATOR_MID_POS){
+          // make the elevator move to a safe position
+          m_arm.armPID(RobotMap.ArmConstants.ARM_APPROACH_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
         }
-        else if  (currentArmPosition >= (RobotMap.ArmConstants.ARM_APPROACH_POS - RobotMap.ENC_DEADBAND) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
-          m_arm.armPID(RobotMap.ArmConstants.ARM_SHELF_POS);
+        else if ((currentArmPosition <= (RobotMap.ArmConstants.ARM_HIGH_POS + RobotMap.ENC_DEADBAND)) && currentElevatorPosition <= (RobotMap.ElevatorConstants.ELEVATOR_MID_POS - RobotMap.ENC_DEADBAND)) {
+          m_arm.armPID(RobotMap.ArmConstants.ARM_FLOOR_POS);
           m_elevator.drivePID(RobotMap.ElevatorConstants.ELEVATOR_MID_POS);
+          if ( (m_outCounter % 100) == 0 ){
+            System.out.println("Arm[" + currentArmPosition + "] Ele[" + currentElevatorPosition + "]");
+          }
         }
         else {
           // Move the elevator and arm simultaneously to target positions
           m_arm.armPID(targetState.getArmTarget());
-          m_elevator.drivePID(targetState.getElevatorTarget()); 
+          m_elevator.drivePID(targetState.getElevatorTarget());
         }
         // need to break out of case so we don't execute the next
         break;

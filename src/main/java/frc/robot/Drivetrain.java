@@ -232,7 +232,7 @@ public class Drivetrain {
         
         m_angleDeltas[1] = m_angleDeltas[0];
         m_angleDeltas[0] = Math.abs(currentPitch);        
-        System.out.println("OutputCount [" + m_outputCounter++ + "] Current pitch: [" + currentPitch + "] speed [" + speed + "] didthething [" + didthething + "]");
+        //System.out.println("OutputCount [" + m_outputCounter++ + "] Current pitch: [" + currentPitch + "] speed [" + speed + "] didthething [" + didthething + "]");
         return level;
     }
 
@@ -334,9 +334,11 @@ public class Drivetrain {
         double target_sensorUnits = (RobotMap.DrivetrainConstants.SENSOR_UNITS_PER_ROTATION * rotations) * RobotMap.DrivetrainConstants.GEAR_RATIO;
         double target_turn = 0.0; // don't turn
 
-        System.out.println("driveStraight [" + target_sensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
-        //System.out.println("output [" + m_rightLeader.getMotorOutputPercent() + "]");
-        
+        if((m_outputCounter % 100) == 0) {
+            System.out.println("driveStraight [" + target_sensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
+            System.out.println("output [" + m_rightLeader.getMotorOutputPercent() + "] velocity [" + m_rightLeader.getSelectedSensorVelocity() + "]");
+        }
+
         /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
         m_rightLeader.set(ControlMode.MotionMagic, target_sensorUnits, DemandType.AuxPID, target_turn);
         m_leftLeader.follow(m_rightLeader, FollowerType.AuxOutput1);
@@ -358,19 +360,72 @@ public class Drivetrain {
     public boolean turnToAngle(double angle) {
         boolean reachedTarget = false;
         // 6" wheels means 18.85" per rotation
-        
-        double target_turn = angle; // don't turn
-        double target_sensorUnits = getEncoderPositions().m_rightLeaderPos;
+        double currentYaw = this.m_pidgey.getYaw();
+        double target_turn = angle;
+        //double current_RLsensorUnits = getEncoderPositions().m_rightLeaderPos;
+        //double current_LLsensorUnits = getEncoderPositions().m_leftLeaderPos;
 
-        System.out.println("driveStraight [" + target_sensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
-        
-        /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
-        m_rightLeader.set(ControlMode.MotionMagic, target_sensorUnits, DemandType.AuxPID, target_turn);
-        m_leftLeader.follow(m_rightLeader, FollowerType.AuxOutput1);
-        m_rightFollower.follow(m_rightLeader);
-        m_leftFollower.follow(m_leftLeader);
+        //System.out.println("turmToAngle RL[" + current_RLsensorUnits + "] LL[" + current_LLsensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
+        //System.out.println("Current Yaw [" + currentYaw + "] Target Turn [" + target_turn + "]");
 
-        if ((Math.abs(this.m_pidgey.getYaw()) < RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND) && m_rightLeader.getSelectedSensorVelocity() < 100) {
+        if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 10))) {
+            /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+            m_rightLeader.set(ControlMode.PercentOutput, 0.3);
+            m_leftLeader.set(ControlMode.PercentOutput, -0.3);
+            m_rightFollower.follow(m_rightLeader);
+            m_leftFollower.follow(m_leftLeader);
+        }
+        else if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 5))) {
+            /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+            m_rightLeader.set(ControlMode.PercentOutput, 0.1);
+            m_leftLeader.set(ControlMode.PercentOutput, -0.1);
+            m_rightFollower.follow(m_rightLeader);
+            m_leftFollower.follow(m_leftLeader);
+        }
+        else if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 3))) {
+            /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+            m_rightLeader.set(ControlMode.PercentOutput, 0.04);
+            m_leftLeader.set(ControlMode.PercentOutput, -0.04);
+            m_rightFollower.follow(m_rightLeader);
+            m_leftFollower.follow(m_leftLeader);
+        }
+        else if (target_turn < (currentYaw - (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND))) {
+            /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+            m_rightLeader.set(ControlMode.PercentOutput, 0.03);
+            m_leftLeader.set(ControlMode.PercentOutput, -0.03);
+            m_rightFollower.follow(m_rightLeader);
+            m_leftFollower.follow(m_leftLeader);
+        }        
+        else if (target_turn > (currentYaw + (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 10))) {
+            /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+            m_rightLeader.set(ControlMode.PercentOutput, -0.3);
+            m_leftLeader.set(ControlMode.PercentOutput, 0.3);
+            m_rightFollower.follow(m_rightLeader);
+            m_leftFollower.follow(m_leftLeader);    
+        }
+        else if (target_turn > (currentYaw + RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 5)) {
+            /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+            m_rightLeader.set(ControlMode.PercentOutput, -0.);
+            m_leftLeader.set(ControlMode.PercentOutput, 0.1);
+            m_rightFollower.follow(m_rightLeader);
+            m_leftFollower.follow(m_leftLeader);    
+        }  
+        else if (target_turn > (currentYaw + RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 3)) {
+            /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+            m_rightLeader.set(ControlMode.PercentOutput, -0.04);
+            m_leftLeader.set(ControlMode.PercentOutput, 0.04);
+            m_rightFollower.follow(m_rightLeader);
+            m_leftFollower.follow(m_leftLeader);    
+        }
+        else if (target_turn > (currentYaw + RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND)) {
+            /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+            m_rightLeader.set(ControlMode.PercentOutput, -0.03);
+            m_leftLeader.set(ControlMode.PercentOutput, 0.03);
+            m_rightFollower.follow(m_rightLeader);
+            m_leftFollower.follow(m_leftLeader);    
+        }
+
+        if ((Math.abs(this.m_pidgey.getYaw()) < (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 2)) && m_rightLeader.getSelectedSensorVelocity() < 100) {
             reachedTarget = true;
         }
 

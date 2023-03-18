@@ -90,7 +90,7 @@ public class Elevator {
         double position = m_elevator.getSelectedSensorPosition();
 
         m_elevator.set(ControlMode.MotionMagic, target);
-        System.out.println("Go to [" + target + "] Vater Position: [" + position + "]");
+        //System.out.println("Go to [" + target + "] Vater Position: [" + position + "]");
     }
 
     /**
@@ -99,10 +99,10 @@ public class Elevator {
      */
     public void drive(double speed) {
         m_elevator.set(speed);
-        double enc = m_elevator.getSelectedSensorPosition(RobotMap.ElevatorConstants.PID_PRIMARY);
-        if (speed != 0) {
-            System.out.println("Vater [" + speed + "][" + enc + "]");
-        }
+        //double enc = m_elevator.getSelectedSensorPosition(RobotMap.ElevatorConstants.PID_PRIMARY);
+        //if (speed != 0) {
+            //System.out.println("Vater [" + speed + "][" + enc + "]");
+        //}
     }
 
     /**
