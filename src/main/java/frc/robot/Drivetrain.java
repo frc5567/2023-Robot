@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 /**
- * Class encapsulates drive position, gear, and auto leveling method.
+ * Class encapsulates methods pertaining to Drivetrain functionality
  */
 public class Drivetrain {
     private WPI_TalonFX m_leftLeader;
@@ -32,6 +32,8 @@ public class Drivetrain {
     private WPI_TalonFX m_rightFollower;
 
     private Pigeon2 m_pidgey;
+
+    private double[] m_angleDeltas;
     	
     /** Config Objects for motor controllers */
 	TalonFXConfiguration m_leftConfig = new TalonFXConfiguration();
@@ -43,8 +45,14 @@ public class Drivetrain {
     // Pneumatic Controller for Gear box
     private DoubleSolenoid m_solenoid;
 
+    //Counter for Autolevel auton
+    private int m_levelCounter;
+
+    private int m_outputCounter;
+
     /**
-     * Constructor for the drivetrain 
+     * Main constructor for the drivetrain class
+     * @param pidgey IMU pigeon instance
      */
     public Drivetrain(Pigeon2 pidgey) {
         m_leftLeader = new WPI_TalonFX(RobotMap.DrivetrainConstants.LEFT_LEADER_CAN_ID);
@@ -56,13 +64,17 @@ public class Drivetrain {
 
         m_pidgey = pidgey;
 
+        m_angleDeltas = new double[RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT];
+
         // Instantiation of the gear and setting it to unknown.
         m_gear = Gear.kUnknown;
 
+        m_levelCounter = 0;
+        m_outputCounter = 0;
     }
 
     /**
-     * Init function to set motor inversion.
+     * Init function to intialize the Drivetrain in its entirety
      */
     public void initDrivetrain() {
         /* Reset Configs */
@@ -76,6 +88,8 @@ public class Drivetrain {
         m_rightLeader.setInverted(false);
         m_leftFollower.setInverted(InvertType.FollowMaster);
         m_rightFollower.setInverted(InvertType.FollowMaster);
+
+        m_levelCounter = 0;
 
         // Shiftgear in robot in Low Gear
         this.shiftGear(Gear.kLowGear);
@@ -98,8 +112,8 @@ public class Drivetrain {
     }
 
     /**
-     * Method that makes the drivetrain move forward/backwards and turn.
-     * @param driveInput 
+     * Method that makes the drivetrain move forward/backwards and turn and allows for shifting gears.
+     * @param driveInput the Pilot DriveInput object
      */
     public void arcadeDrive(DriveInput driveInput) {
         m_leftLeader.set(ControlMode.PercentOutput, driveInput.m_speed, DemandType.ArbitraryFeedForward, -driveInput.m_turnSpeed);
@@ -108,55 +122,122 @@ public class Drivetrain {
         m_rightFollower.follow(m_rightLeader);
         this.shiftGear(driveInput.m_gear);
 
-        //used to see if motor is overheating during competition
-        System.out.print("Speed [" + driveInput.m_speed + "] LT [" + -driveInput.m_turnSpeed + "] RT[" + driveInput.m_turnSpeed + "]");
-        double outputLL = m_leftLeader.getMotorOutputPercent();
-        double outputRL = m_rightLeader.getMotorOutputPercent();
-        double outputLF = m_leftFollower.getMotorOutputPercent();
-        double outputRF = m_rightFollower.getMotorOutputPercent();
-        System.out.print("Output LL [" + outputLL + "] RL [" + outputRL + "] LF [" + outputLF + "] RF [" + outputRF + "]");
-        double tempLL = m_leftLeader.getTemperature();
-        double tempRL = m_rightLeader.getTemperature();
-        double tempLF = m_leftFollower.getTemperature();
-        double tempRF = m_rightFollower.getTemperature();
-        System.out.println("Temp LL [" + tempLL + "] RL [" + tempRL + "] LF [" + tempLF + "] RF [" + tempRF + "]");
-
+        if ((m_outputCounter++) % 100 == 0) {
+            //used to see if motor is overheating during competition
+            System.out.print("Speed [" + driveInput.m_speed + "] LT [" + -driveInput.m_turnSpeed + "] RT[" + driveInput.m_turnSpeed + "]");
+            double outputLL = m_leftLeader.getMotorOutputPercent();
+            double outputRL = m_rightLeader.getMotorOutputPercent();
+            double outputLF = m_leftFollower.getMotorOutputPercent();
+            double outputRF = m_rightFollower.getMotorOutputPercent();
+            System.out.print("Output LL [" + outputLL + "] RL [" + outputRL + "] LF [" + outputLF + "] RF [" + outputRF + "]");
+            double tempLL = m_leftLeader.getTemperature();
+            double tempRL = m_rightLeader.getTemperature();
+            double tempLF = m_leftFollower.getTemperature();
+            double tempRF = m_rightFollower.getTemperature();
+            System.out.println("Temp LL [" + tempLL + "] RL [" + tempRL + "] LF [" + tempLF + "] RF [" + tempRF + "]");
+        }
     }
 
     /**
      * Decides what direction to drive and with how much power based on the pitch while on the charging station.
      * @param currentPitch the angle of pitch that the robot is currently experiencing
-     * @return true if level, false if not
+     * @return true if level and stabilized, false if not
      */
     public boolean autoLevel(double currentPitch) {
         boolean level = false;
+        String didthething = "";
+        double speed = 0.0;
 
         //level bot set to no speed
         if (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) {
-            level = true;
+            if (m_levelCounter < RobotMap.DrivetrainConstants.AUTOLEVEL_COUNTER) {
+                m_levelCounter++;
+            }
+            else {
+                level = true;
+                m_levelCounter = 0;
+            }
             arcadeDrive(0, 0);
         }
         //crawl speed for bot angle within 6 - 2 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.MAX_LEVEL_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.UPPER_LOW_RANGE_ANGLE)) {
-            double speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (-currentPitch));
+            //speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (-currentPitch));
+            speed = 0.0;
+
+            if (Math.abs(currentPitch) > RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND) {
+                int count = 0;
+                for (int i = 0; i < RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT; i++) {
+                    double deadband = (RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND * (i+1));
+                    if (Math.abs(currentPitch) < (m_angleDeltas[i] - deadband)) {
+                        count++;
+                    }
+                }
+                if (count > (RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT * 0.66)) {
+                    //speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (currentPitch));
+                    speed = 0.0;
+                    didthething = "yass";
+                }
+            }
+
             arcadeDrive(speed, 0);
-        }
+            m_levelCounter = 0;
+        }        
         //mid speed for bot angle within 12 - 6 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.UPPER_LOW_RANGE_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.UPPER_MID_RANGE_ANGLE)) {
-            double speed = Math.copySign(RobotMap.DrivetrainConstants.MID_LEVEL_DRIVE_SPEED, (-currentPitch));
+            speed = Math.copySign(RobotMap.DrivetrainConstants.MID_LEVEL_DRIVE_SPEED, (-currentPitch));
+
+            if (Math.abs(currentPitch) > RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND) {
+                int count = 0;
+                for (int i = 0; i < RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT; i++) {
+                    double deadband = (RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND * (i+1));
+                    if (Math.abs(currentPitch) < (m_angleDeltas[i] - deadband)) {
+                        count++;
+                    }
+                }
+                if (count > (RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT * 0.66)) {
+                    speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (currentPitch));
+                    didthething = "yass";
+                }
+            }
             arcadeDrive(speed, 0);
+            m_levelCounter = 0;
         }
         //high speed for bot angle within 17 - 12 degrees
         else if ((Math.abs(currentPitch) > RobotMap.DrivetrainConstants.UPPER_MID_RANGE_ANGLE) && (Math.abs(currentPitch) <= RobotMap.DrivetrainConstants.MAX_ANGLE)){
             //speed is negated: in Pigeon, actual robot ends are opposite, pitch now reflects that
-            double speed = Math.copySign(RobotMap.DrivetrainConstants.HIGH_LEVEL_DRIVE_SPEED, (-currentPitch));
+            speed = Math.copySign(RobotMap.DrivetrainConstants.HIGH_LEVEL_DRIVE_SPEED, (-currentPitch));
+
+            if (Math.abs(currentPitch) > RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND) {
+                int count = 0;
+                for (int i = 0; i < RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT; i++) {
+                    double deadband = (RobotMap.DrivetrainConstants.ONE_CYCLE_ANGLE_DEADBAND * (i+1));
+                    if (Math.abs(currentPitch) < (m_angleDeltas[i] - deadband)) {
+                        count++;
+                    }
+                }
+                if (count > (RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT * 0.66)) {
+                    speed = Math.copySign(RobotMap.DrivetrainConstants.CRAWL_LEVEL_DRIVE_SPEED, (currentPitch));
+                    didthething = "yass";
+                }
+            }
             arcadeDrive(speed, 0);
+            m_levelCounter = 0;
         }
+
+        for (int i = (RobotMap.DrivetrainConstants.BALANCE_CYCLE_COUNT - 1); i > 0; i--) {
+            m_angleDeltas[i] = m_angleDeltas[i-1];            
+        }
+
+        m_angleDeltas[0] = Math.abs(currentPitch); 
+        
+        m_angleDeltas[1] = m_angleDeltas[0];
+        m_angleDeltas[0] = Math.abs(currentPitch);        
+        System.out.println("OutputCount [" + m_outputCounter++ + "] Current pitch: [" + currentPitch + "] speed [" + speed + "] didthething [" + didthething + "]");
         return level;
     }
 
     /**
-     * Boolean method to check whether thes bot is level at a given time.
+     * Boolean method to check whether the bot is level at a given time.
      * @param currentPitch the angle of pitch that the robot is currently experiencing
      * @return true if bot is within "level" range, false otherwise
      */
@@ -170,7 +251,7 @@ public class Drivetrain {
     }
 
     /**
-     * Applies brake mode on drive train motor controllers. 
+     * Applies brake mode on Drivetrain motor controllers. 
      */
     public void brakeMode() {
         m_leftLeader.setNeutralMode(NeutralMode.Brake);
@@ -180,7 +261,7 @@ public class Drivetrain {
     }
 
     /**
-     * Applies coast mode on drive train motor controllers. 
+     * Applies coast mode on Drivetrain motor controllers. 
      */
     public void coastMode() {
         m_leftLeader.setNeutralMode(NeutralMode.Coast);
@@ -191,7 +272,7 @@ public class Drivetrain {
 
      /** 
      * shiftGear is the way we change between high and low gear (Gear.kLowGear and Gear.kHighGear)
-     * @param gear
+     * @param gear the desired gear to be used
      */
     public void shiftGear(Gear gear){
         // Compare the incoming parameter to the current state and determine if it is already set to that gear. 
@@ -202,7 +283,7 @@ public class Drivetrain {
         m_gear = gear; 
 
         // Solenoid causes the gear to shift. kForward(Plunger Out) and KReverse (Plunger In) are both in WPILib. 
-        // Together they change the Penumatics.
+        // Together they change the pneumatics.
         if(m_gear == Gear.kLowGear){
             m_solenoid.set(Value.kForward);
         }
@@ -214,14 +295,13 @@ public class Drivetrain {
 
     /**
      * Gets encoder positions of the drivetrain
-     * @return DriveEncoderPos 
+     * @return the updated encoder positions
      */
     public DriveEncoderPos getEncoderPositions() {
         double leftPos = m_leftLeader.getSelectedSensorPosition();
         double rightPos = m_rightLeader.getSelectedSensorPosition();
         DriveEncoderPos drivePositions = new DriveEncoderPos(leftPos, rightPos);
         return drivePositions;
-
     }
 
     /**
@@ -235,17 +315,17 @@ public class Drivetrain {
     }
 	
 	/**
-     *  Zero QuadEncoders, used to reset position when initializing Motion Magic 
+     *  Method used to zero integrated sensors and reset their positions when initializing Motion Magic
      */
-	void zeroDistance(){
+	public void zeroDistance(){
         m_leftLeader.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
         m_rightLeader.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
 	}
 	
     /**
      * Drive straight forward (or backward for negative distance) a set number of inches
-     * @param distance
-     * @return
+     * @param distance a double passed for setting what magnitude of distance the robot must travel in inches
+     * @return a boolean designating whether the target has been reached
      */
     public boolean driveStraight(double distance) {
         boolean reachedTarget = false;
@@ -271,7 +351,34 @@ public class Drivetrain {
     }
 
     /**
-     * Sets up the PID configuration for drive straight
+     * Method for turning to a target angle relative to robot starting position
+     * @param angle Target angle to turn to - 0 is straight ahead at start, left is negative, right is positive
+     * @return a boolean designating whether the target has been reached
+     */
+    public boolean turnToAngle(double angle) {
+        boolean reachedTarget = false;
+        // 6" wheels means 18.85" per rotation
+        
+        double target_turn = angle; // don't turn
+        double target_sensorUnits = getEncoderPositions().m_rightLeaderPos;
+
+        System.out.println("driveStraight [" + target_sensorUnits + "] Current Position [" + getEncoderPositions().m_rightLeaderPos + "]");
+        
+        /* Configured for MotionMagic on Quad Encoders' Sum and Auxiliary PID on Pigeon */
+        m_rightLeader.set(ControlMode.MotionMagic, target_sensorUnits, DemandType.AuxPID, target_turn);
+        m_leftLeader.follow(m_rightLeader, FollowerType.AuxOutput1);
+        m_rightFollower.follow(m_rightLeader);
+        m_leftFollower.follow(m_leftLeader);
+
+        if ((Math.abs(this.m_pidgey.getYaw()) < RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND) && m_rightLeader.getSelectedSensorVelocity() < 100) {
+            reachedTarget = true;
+        }
+
+        return reachedTarget;
+    }
+
+    /**
+     * Sets up the PID configuration for drive straight (or turn)
      */
     public void configPID() {
 
@@ -339,8 +446,8 @@ public class Drivetrain {
 		m_rightLeader.configClosedLoopPeriod(1, closedLoopTimeMs, RobotMap.TIMEOUT_MS);
 
 		/* Motion Magic Configs */
-		m_rightConfig.motionAcceleration = 4000; //(distance units per 100 ms) per second
-		m_rightConfig.motionCruiseVelocity = 9000; //distance units per 100 ms
+		m_rightConfig.motionAcceleration = 5000; //(distance units per 100 ms) per second
+		m_rightConfig.motionCruiseVelocity = 8000; //distance units per 100 ms
 
 		/* APPLY the config settings */
 		m_leftLeader.configAllSettings(m_leftConfig);

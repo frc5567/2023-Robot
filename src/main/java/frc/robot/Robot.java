@@ -62,6 +62,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY);
     m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY);
     m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CHARGING_COMMUNITY, RobotMap.AutonConstants.HIGH_CHARGING_COMMUNITY);
     SmartDashboard.putData("Auton choices", m_chooser);
     m_autonSelected = m_chooser.getSelected();
 
@@ -73,7 +74,7 @@ public class Robot extends TimedRobot {
     m_pilotControl = new PilotController();
     m_copilotControl = new CopilotController();
 
-    m_shuffleName = new RobotShuffleboard();
+    m_shuffleName = new RobotShuffleboard(m_chooser);
     m_shuffleName.init();
 
     m_limelight = new Limelight();
@@ -121,6 +122,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     m_outCounter++;
+    m_autonSelected = m_chooser.getSelected();
   }
 
   /**
@@ -138,12 +140,8 @@ public class Robot extends TimedRobot {
     m_vroomVroom.brakeMode();
     m_vroomVroom.initDrivetrain();
 
-    m_autonSelected = m_chooser.getSelected();
     System.out.println("Auton selected: " + m_autonSelected);
 
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-
-    //m_shuffleName.setAutonPath();
     m_auton.init();
     m_auton.selectPath(m_autonSelected);
   }
@@ -151,12 +149,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    //publisher widget method to push boolean value of autonRunning status (SHOULD, here, always be TRUE)
-    //m_shuffleName.setWhetherAutonRunning(m_auton.isRunning());
-    //isLevel variable sets for Auton, much like TeleOp
-    boolean isBotLevelAuton = false;
     double curPitchAuton = m_pigeon.getPitch();
-    isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
+    boolean isBotLevelAuton = m_vroomVroom.isLevel(curPitchAuton);
 
 
     AutonInput currentInput;
@@ -165,21 +159,28 @@ public class Robot extends TimedRobot {
       if (!Double.isNaN(currentInput.m_driveTarget)) {
         m_autoStepCompleted = m_vroomVroom.driveStraight(currentInput.m_driveTarget);
       }
+      else if (currentInput.m_autoLevel == true) {
+        m_autoStepCompleted = m_vroomVroom.autoLevel(curPitchAuton);
+      }
+
       if (!Double.isNaN(currentInput.m_turnTarget)) {
         //TODO: change to turn to target instead of drive straight
         //m_autoStepCompleted = m_vroomVroom.driveStraight(currentInput.m_turnTarget);
       }
+
       if (currentInput.m_desiredState != RobotState.kUnknown) {
         m_autoStepCompleted = this.transitionToNewState(currentInput.m_desiredState);
       }
+
       if ((currentInput.m_clawState != ClawState.kUnknown) && (currentInput.m_clawState != m_claw.getClawState())){
         m_claw.toggleClawState();
         m_autoStepCompleted = true;
       }
+
       if (!Double.isNaN(currentInput.m_delay)) {
         Double cyclesToDelay = (currentInput.m_delay * 50);
         int intCyclesToDelay = cyclesToDelay.intValue();
-        System.out.println("Cycles to delay: [" + cyclesToDelay + "] [" + intCyclesToDelay + "] [" + m_delayCounter + "]");
+        //System.out.println("Cycles to delay: [" + cyclesToDelay + "] [" + intCyclesToDelay + "] [" + m_delayCounter + "]");
         if (m_delayCounter == intCyclesToDelay) {
           m_autoStepCompleted = true;
           m_delayCounter = 0;
@@ -193,11 +194,6 @@ public class Robot extends TimedRobot {
     else {
       m_vroomVroom.arcadeDrive(0, 0);
       m_autoStepCompleted = false;
-    }
-
-    //autoLevel check and run
-    if (m_auton.toRunAutoLevelOrNotToRun == true) {
-      m_vroomVroom.autoLevel(curPitchAuton);
     }
 
     m_shuffleName.periodic(isBotLevelAuton, m_auton.isRunning(), m_autonSelected, m_auton.m_step, m_limelight.xOffset(), m_limelight.areaOfScreen());

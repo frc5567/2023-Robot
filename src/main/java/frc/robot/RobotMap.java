@@ -80,17 +80,17 @@ public class RobotMap {
         /**
          * Auto leveling crawl drive speed
          */
-        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.0;
+        public static final double CRAWL_LEVEL_DRIVE_SPEED = 0.065;
 
         /**
          * Auto leveling mid drive speed
          */
-        public static final double MID_LEVEL_DRIVE_SPEED = 0.0;
+        public static final double MID_LEVEL_DRIVE_SPEED = 0.075;
 
         /**
          * Auto leveling high drive speed
          */
-        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.08;
+        public static final double HIGH_LEVEL_DRIVE_SPEED = 0.09;
 
         /**
          * Low Gear Solenoid port on the PCM.
@@ -121,6 +121,23 @@ public class RobotMap {
         public final static int PID_TURN = 1;
 
         public final static int GEAR_RATIO = 15;
+
+        /**
+         * DEADBAND for the turnToAngle.
+         */
+        public static final double DRIVE_ANGLE_DEADBAND = 0.2;
+
+        /**
+         * This is a counter end constant for measuring number of cycles (20 ms) in order for stable autolevel completion
+         */
+        public static final int AUTOLEVEL_COUNTER = 50;
+
+        //TODO: tune and test these as well
+        public static final double ONE_CYCLE_ANGLE_DEADBAND = 0.1;
+
+        public static final double TWO_CYCLE_ANGLE_DEADBAND = 0.2;
+
+        public static final int BALANCE_CYCLE_COUNT = 20;
 	
     }
 
@@ -153,7 +170,6 @@ public class RobotMap {
          * adjust output of turns to tone down the final output.
          */
         public static final double TURN_SCALER = 0.7;
-	
     }
 
     /**
@@ -185,9 +201,20 @@ public class RobotMap {
 
         public static final String HIGH_CUBE_LONG_COMMUNITY = "High Cube Long Community";
 
+        public static final String HIGH_CHARGING_COMMUNITY = "High Charging Community";
+
+        //TODO: these have to be tested, false distances
         public static final double SHORT_COMMUNITY_DIST = 135;
 
         public static final double LONG_COMMUNITY_DIST = 195;
+
+        //TODO: test and tune these for true values
+        public static final double FIRST_CHARGING_DIST = 96.75;
+
+        public static final double SECOND_CHARGING_DIST = 140;
+
+        public static final double THIRD_CHARGING_DIST = 90.0;
+
     }
 
     /**
