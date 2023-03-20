@@ -23,7 +23,7 @@ public class Arm {
     /**
      * Method used to reset the encoder on the arm to 0.
      */
-    private void zeroEncoders() {
+    public void zeroEncoders() {
         m_arm.getSensorCollection().setIntegratedSensorPosition(0, RobotMap.TIMEOUT_MS);
     }
 

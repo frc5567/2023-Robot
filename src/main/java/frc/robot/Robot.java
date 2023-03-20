@@ -8,6 +8,7 @@ import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -40,6 +41,9 @@ public class Robot extends TimedRobot {
 
   private int m_delayCounter;
   private int m_outCounter;
+
+  private DigitalInput m_armSwitch;
+  private DigitalInput m_elevatorSwitch;
 
   com.ctre.phoenix.sensors.Pigeon2 m_pigeon;
 
@@ -99,6 +103,12 @@ public class Robot extends TimedRobot {
 
     m_shoulder.init();
     m_claw.init();
+
+    //elevator
+    m_elevatorSwitch = new DigitalInput(8);
+
+    //arm
+    m_armSwitch = new DigitalInput(9);
 
     try {
       m_camera = CameraServer.startAutomaticCapture();
@@ -271,6 +281,17 @@ public class Robot extends TimedRobot {
     if (coDriverInput.m_shoulderPos == ToggleInput.kToggle) {
       m_shoulder.toggleShoulderState();
     }
+
+    if (m_armSwitch.get()) {
+      m_arm.zeroEncoders();
+      //System.out.println("ARM SWITCH zero encoders");
+    }
+
+    if (m_elevatorSwitch.get()) {
+      m_elevator.zeroEncoders();
+      //System.out.println("ELEVATOR SWITCH zero encoders");
+    }
+
   }
 
   /** This function is called once when the robot is disabled. */

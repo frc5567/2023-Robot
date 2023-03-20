@@ -20,7 +20,7 @@ public class Elevator {
     /**
      * Resets the encoder postition to zero.
      */
-    private void zeroEncoders() {
+    public void zeroEncoders() {
         m_elevator.setSelectedSensorPosition(0.0, RobotMap.ElevatorConstants.PID_PRIMARY, RobotMap.TIMEOUT_MS);
     }
     
