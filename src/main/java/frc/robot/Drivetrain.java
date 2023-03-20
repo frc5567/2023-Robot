@@ -424,8 +424,15 @@ public class Drivetrain {
             m_rightFollower.follow(m_rightLeader);
             m_leftFollower.follow(m_leftLeader);    
         }
+        else {
+            m_rightLeader.set(ControlMode.PercentOutput, 0.0);
+            m_leftLeader.set(ControlMode.PercentOutput, 0.0);
+            m_rightFollower.follow(m_rightLeader);
+            m_leftFollower.follow(m_leftLeader); 
+        }
 
         if ((Math.abs(this.m_pidgey.getYaw()) < (RobotMap.DrivetrainConstants.DRIVE_ANGLE_DEADBAND * 2)) && m_rightLeader.getSelectedSensorVelocity() < 100) {
+            System.out.println("TurnToAngle completed!!!!!!!!");
             reachedTarget = true;
         }
 

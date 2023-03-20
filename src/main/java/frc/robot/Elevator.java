@@ -30,9 +30,9 @@ public class Elevator {
      */
     public void init() {
         // Sets the inversion status of the elevator to false.
-        m_elevator.configFactoryDefault();
-        m_elevator.setInverted(true);
-        m_elevator.setSensorPhase(true);
+        m_elevator.configFactoryDefault(); 
+        m_elevator.setInverted(false);
+        m_elevator.setSensorPhase(false);
         m_elevator.setNeutralMode(NeutralMode.Brake);
     }
 
