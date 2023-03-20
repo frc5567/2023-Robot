@@ -19,11 +19,11 @@ public class AutonInput {
      */
     public AutonInput() {
         m_desiredState = RobotState.kUnknown;
-        m_driveTarget = Double.NaN;
-        m_turnTarget = Double.NaN;
+        m_driveTarget = RobotMap.NO_INPUT;
+        m_turnTarget = RobotMap.NO_INPUT;
         m_autonComplete = false;
         m_clawState = ClawState.kUnknown;
-        m_delay = Double.NaN;
+        m_delay = RobotMap.NO_INPUT;
         m_autoLevel = false;
     }
 }

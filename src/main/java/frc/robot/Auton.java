@@ -570,7 +570,7 @@ public class Auton {
                     }
                     case 7:
                     {
-                        newInput.m_driveTarget = Double.NaN;
+                        newInput.m_driveTarget = RobotMap.NO_INPUT;
                         newInput.m_autoLevel = true;
                         System.out.println("step: " + m_step);
                         break;
@@ -615,7 +615,7 @@ public class Auton {
                     }
                     case 5:
                     {
-                        newInput.m_driveTarget = Double.NaN;
+                        newInput.m_driveTarget = RobotMap.NO_INPUT;
                         newInput.m_autoLevel = true;
                         System.out.println("step: " + m_step);
                         break;
@@ -672,7 +672,7 @@ public class Auton {
                     }
                     case 7:
                     {
-                        newInput.m_driveTarget = Double.NaN;
+                        newInput.m_driveTarget = RobotMap.NO_INPUT;
                         newInput.m_autoLevel = true;
                         System.out.println("step: " + m_step);
                         break;

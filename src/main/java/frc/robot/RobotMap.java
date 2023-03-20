@@ -18,9 +18,9 @@ public class RobotMap {
     public static final int PCM_CAN_ID = 1;
     
     /**
-     * Constant for setting arm and elevator to 0 if there is not input value.
+     * Constant for setting variables to 0 if there is not input value.
      */
-    public static final double NO_POS_INPUT = Double.NaN;
+    public static final double NO_INPUT = Double.NaN;
 
     /**
      * encoder deadband used in robot.java for transitions
@@ -100,12 +100,16 @@ public class RobotMap {
         /** 
          * High gear Solenoid port on PCM.
          */
-         public static final int DOUBLE_SOLENOID_HIGH_GEAR_PORT = 4;
+        public static final int DOUBLE_SOLENOID_HIGH_GEAR_PORT = 4;
 
         /**
          * Drive Straight PID constants
          */
         public final static Gains DISTANCE_GAINS = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );
+        
+        /**
+         * Turn to Angle PID constants
+         */
         public final static Gains TURNING_GAINS = new Gains( 0.5, 0.0,  4.0, 0.0,            200,  0.5 );
 
         public static final double NEUTRAL_DEADBAND = 0.001;
@@ -208,9 +212,9 @@ public class RobotMap {
         public static final String HIGH_CONE_BALANCE = "High Cone Balance";
 
         //TODO: these have to be tested, false distances
-        public static final double SHORT_COMMUNITY_DIST = 135;
+        public static final double SHORT_COMMUNITY_DIST = 85;
 
-        public static final double LONG_COMMUNITY_DIST = 170;
+        public static final double LONG_COMMUNITY_DIST = 140;
 
         //TODO: test and tune these for true values
         public static final double FIRST_CHARGING_DIST = 96.75;
@@ -243,7 +247,6 @@ public class RobotMap {
         public static final double DRUM_CIRCUMFERENCE = 8.1875;
         public static final int TICKS_PER_REVOLUTION = 2048;
 
-        public static final double ELEVATOR_START_POS = -818000;
         public static final double ELEVATOR_LOW_POS = -252000;
         public static final double ELEVATOR_MID_POS = 0;
         public static final double ELEVATOR_HIGH_POS = 561250;
