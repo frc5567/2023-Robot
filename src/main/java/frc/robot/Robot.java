@@ -163,9 +163,11 @@ public class Robot extends TimedRobot {
       else if (currentInput.m_autoLevel == true) {
         m_autoStepCompleted = m_vroomVroom.autoLevel(curPitchAuton);
       }
-
-      if (!Double.isNaN(currentInput.m_turnTarget)) {
+      else if (!Double.isNaN(currentInput.m_turnTarget)) {
         m_autoStepCompleted = m_vroomVroom.turnToAngle(currentInput.m_turnTarget);
+      }
+      else{
+        m_vroomVroom.arcadeDrive(0.0, 0.0);
       }
 
       if (currentInput.m_desiredState != RobotState.kUnknown) {
