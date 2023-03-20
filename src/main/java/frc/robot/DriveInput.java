@@ -8,6 +8,7 @@ public class DriveInput {
     public double m_turnSpeed;
     public Gear m_gear;
     public boolean m_isAutoLeveling;
+    public double m_angle;
 
     /**
      * Default constructor which sets default values
@@ -17,5 +18,6 @@ public class DriveInput {
         m_turnSpeed = 0;
         m_gear = Gear.kLowGear;
         m_isAutoLeveling = false;
+        m_angle = Double.NaN;
     }
 }

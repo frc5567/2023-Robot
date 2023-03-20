@@ -60,16 +60,16 @@ public class Claw {
         if (clawValue == ClawState.kOpen) {
             m_currentClawState = ClawState.kOpen;
             m_clawSol.set(Value.kForward);
-            System.out.println("Valid Claw State: open");
+            //System.out.println("Valid Claw State: open");
         }
         else if (clawValue == ClawState.kClosed) {
             m_currentClawState = ClawState.kClosed;
             m_clawSol.set(Value.kReverse);
-            System.out.println("Valid Claw State: closed");
+            //System.out.println("Valid Claw State: closed");
         }
         else {
             //This means somebody passed in kUnknown
-            System.out.println("Invalid Claw State");
+            //System.out.println("Invalid Claw State");
         }
     }
 

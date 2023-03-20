@@ -19,7 +19,7 @@ public enum RobotState {
     /**
      * State for doing shelf pickup of gamepiece
      */
-    kShelfPickup ("Shelf Pickup", RobotMap.ArmConstants.ARM_SHELF_POS, RobotMap.ElevatorConstants.ELEVATOR_SHELF_POS, ShoulderState.kUp),
+    kShelfPickup ("Shelf Pickup", RobotMap.ArmConstants.ARM_SHELF_POS, RobotMap.ElevatorConstants.ELEVATOR_SHELF_POS, ShoulderState.kDown),
 
     /**
      * State for placing gamepiece at floor level

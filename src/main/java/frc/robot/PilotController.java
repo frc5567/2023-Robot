@@ -29,6 +29,11 @@ public class PilotController {
         else {
             driverInput.m_speed = adjustForDeadband(m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis());
         }
+
+        if (m_controller.getXButton()) {
+            driverInput.m_angle = 180;
+        }
+
         //Adjusting for a deadband to compensate for controller stick drift.
         Double turnInput = m_controller.getLeftX();
         Double squaredTurnInput = turnInput * turnInput;

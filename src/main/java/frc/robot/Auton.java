@@ -100,8 +100,16 @@ public class Auton {
             System.out.println("Setting Auton to Community Out Short Path");
             m_path = m_currentAutonPath;
         }
-        else if (m_currentAutonPath == RobotMap.AutonConstants.HIGH_CHARGING_COMMUNITY){
-            System.out.println("Setting Auton to High Charging Path");
+        else if (m_currentAutonPath == RobotMap.AutonConstants.HIGH_CUBE_COMMUNITY_BALANCE){
+            System.out.println("Setting Auton to High Cube Community Balance Path");
+            m_path = m_currentAutonPath;
+        }
+        else if (m_currentAutonPath == RobotMap.AutonConstants.HIGH_CUBE_BALANCE){
+            System.out.println("Setting Auton to High Cube Balance Path");
+            m_path = m_currentAutonPath;
+        }
+        else if (m_currentAutonPath == RobotMap.AutonConstants.HIGH_CONE_BALANCE){
+            System.out.println("Setting Auton to High Cone Balance Path");
             m_path = m_currentAutonPath;
         }
         else{
@@ -115,7 +123,7 @@ public class Auton {
      * @return newInput object that can control drivetrain outside of drivetrain class via position encoders
      */
     public AutonInput periodic(boolean stepCompleted) {
-        AutonInput newInput = new AutonInput(RobotState.kUnknown, 0, 0, false, ClawState.kUnknown, Double.NaN, false);
+        AutonInput newInput = new AutonInput();
         
         if (m_autonStartOut){
             System.out.println("AUTON STARTED");
@@ -415,7 +423,19 @@ public class Auton {
                         System.out.println("step: " + m_step);
                         break;
                     }
-                    case 5:
+                    case 5: 
+                    {
+                        newInput.m_turnTarget = RobotMap.AutonConstants.TARGET_ANGLE;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 6:
+                    {
+                        newInput.m_desiredState = RobotState.kFloorPickup;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
                     {
                         newInput.m_autonComplete = true;
                         System.out.println("step: " + m_step);
@@ -507,7 +527,7 @@ public class Auton {
                 }
                 break;
             }
-            case RobotMap.AutonConstants.HIGH_CHARGING_COMMUNITY:
+            case RobotMap.AutonConstants.HIGH_CUBE_COMMUNITY_BALANCE:
             {
                 switch(m_step) {
                     case 1:
@@ -545,6 +565,108 @@ public class Auton {
                     case 6:
                     {
                         newInput.m_driveTarget = -RobotMap.AutonConstants.THIRD_CHARGING_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 7:
+                    {
+                        newInput.m_driveTarget = Double.NaN;
+                        newInput.m_autoLevel = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 8:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.HIGH_CUBE_BALANCE:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kHighCube;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.NO_EXIT_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        //case for if travel completion logic skips dist step from 5
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.NO_EXIT_DIST;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_driveTarget = Double.NaN;
+                        newInput.m_autoLevel = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 6:
+                    {
+                        newInput.m_autonComplete = true;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                }
+                break;
+            }
+            case RobotMap.AutonConstants.HIGH_CONE_BALANCE:
+            {
+                switch(m_step) {
+                    case 1:
+                    {
+                        newInput.m_desiredState = RobotState.kApproachHigh;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 2:
+                    {
+                        newInput.m_delay = 1.0;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 3:
+                    {
+                        newInput.m_desiredState = RobotState.kHighCone;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 4:
+                    {
+                        newInput.m_clawState = ClawState.kOpen;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 5:
+                    {
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.NO_EXIT_DIST;
+                        newInput.m_desiredState = RobotState.kTravel;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 6:
+                    {
+                        //case for if travel completion logic skips dist step from 5
+                        newInput.m_driveTarget = -RobotMap.AutonConstants.NO_EXIT_DIST;
                         System.out.println("step: " + m_step);
                         break;
                     }
