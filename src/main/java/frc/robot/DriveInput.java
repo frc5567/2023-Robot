@@ -18,6 +18,6 @@ public class DriveInput {
         m_turnSpeed = 0;
         m_gear = Gear.kLowGear;
         m_isAutoLeveling = false;
-        m_angle = Double.NaN;
+        m_angle = RobotMap.NO_INPUT;
     }
 }
