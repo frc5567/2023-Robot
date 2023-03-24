@@ -508,8 +508,8 @@ public class Drivetrain {
 		m_rightLeader.configClosedLoopPeriod(1, closedLoopTimeMs, RobotMap.TIMEOUT_MS);
 
 		/* Motion Magic Configs */
-		m_rightConfig.motionAcceleration = 7000; //(distance units per 100 ms) per second
-		m_rightConfig.motionCruiseVelocity = 10000; //distance units per 100 ms
+		m_rightConfig.motionAcceleration = 9000; //(distance units per 100 ms) per second
+		m_rightConfig.motionCruiseVelocity = 12000; //distance units per 100 ms
 
 		/* APPLY the config settings */
 		m_leftLeader.configAllSettings(m_leftConfig);

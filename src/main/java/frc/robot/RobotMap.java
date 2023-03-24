@@ -105,7 +105,7 @@ public class RobotMap {
         /**
          * Drive Straight PID constants
          */
-        public final static Gains DISTANCE_GAINS = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );
+        public final static Gains DISTANCE_GAINS = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.70 );
         
         /**
          * Turn to Angle PID constants
@@ -277,7 +277,7 @@ public class RobotMap {
         public static final double ARM_HIGH_POS = 444700;
         public static final double ARM_MID_POS = 487000;
         public static final double FLOOR_PLACE_POS = 692800;
-        public static final double ARM_SHELF_POS = 688000;
+        public static final double ARM_SHELF_POS = 707000;
         public static final double ARM_FLOOR_POS = 768000;
     }
 

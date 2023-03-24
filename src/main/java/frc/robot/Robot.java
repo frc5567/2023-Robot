@@ -55,20 +55,20 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //Auton shuffleboard choices updating
-    m_chooser.setDefaultOption(RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.SHORT_COMMUNITY, RobotMap.AutonConstants.SHORT_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.LONG_COMMUNITY, RobotMap.AutonConstants.LONG_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY, RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.MID_CONE_SHORT_COMMUNITY, RobotMap.AutonConstants.MID_CONE_SHORT_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.MID_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.MID_CUBE_LONG_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.MID_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.MID_CONE_LONG_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_SHORT_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_SHORT_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY);
-    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY);
+    m_chooser.setDefaultOption(RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY);
     m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_COMMUNITY_BALANCE, RobotMap.AutonConstants.HIGH_CUBE_COMMUNITY_BALANCE);
     m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_BALANCE, RobotMap.AutonConstants.HIGH_CUBE_BALANCE);
-    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_BALANCE, RobotMap.AutonConstants.HIGH_CONE_BALANCE);
+    m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_LONG_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.SHORT_COMMUNITY, RobotMap.AutonConstants.SHORT_COMMUNITY);
+    m_chooser.addOption(RobotMap.AutonConstants.LONG_COMMUNITY, RobotMap.AutonConstants.LONG_COMMUNITY);
+    //m_chooser.addOption(RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY, RobotMap.AutonConstants.MID_CUBE_SHORT_COMMUNITY);
+    //m_chooser.addOption(RobotMap.AutonConstants.MID_CONE_SHORT_COMMUNITY, RobotMap.AutonConstants.MID_CONE_SHORT_COMMUNITY);
+    //m_chooser.addOption(RobotMap.AutonConstants.MID_CUBE_LONG_COMMUNITY, RobotMap.AutonConstants.MID_CUBE_LONG_COMMUNITY);
+    //m_chooser.addOption(RobotMap.AutonConstants.MID_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.MID_CONE_LONG_COMMUNITY);
+    //m_chooser.addOption(RobotMap.AutonConstants.HIGH_CUBE_SHORT_COMMUNITY, RobotMap.AutonConstants.HIGH_CUBE_SHORT_COMMUNITY);
+    //m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_SHORT_COMMUNITY);
+    //m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY, RobotMap.AutonConstants.HIGH_CONE_LONG_COMMUNITY);
+    //m_chooser.addOption(RobotMap.AutonConstants.HIGH_CONE_BALANCE, RobotMap.AutonConstants.HIGH_CONE_BALANCE);
     SmartDashboard.putData("Auton choices", m_chooser);
     m_autonSelected = m_chooser.getSelected();
 
