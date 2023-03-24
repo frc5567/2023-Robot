@@ -484,7 +484,19 @@ public class Auton {
                         System.out.println("step: " + m_step);
                         break;
                     }
-                    case 7:
+                    case 7: 
+                    {
+                        newInput.m_turnTarget = RobotMap.AutonConstants.TARGET_ANGLE;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 8:
+                    {
+                        newInput.m_desiredState = RobotState.kFloorPickup;
+                        System.out.println("step: " + m_step);
+                        break;
+                    }
+                    case 9:
                     {
                         newInput.m_autonComplete = true;
                         System.out.println("step: " + m_step);
