@@ -288,7 +288,7 @@ public class Robot extends TimedRobot {
     }
 
     if (m_elevatorSwitch.get()) {
-      m_elevator.zeroEncoders();
+      //m_elevator.zeroEncoders();
       //System.out.println("ELEVATOR SWITCH zero encoders");
     }
 
