@@ -105,7 +105,7 @@ public class RobotMap {
         /**
          * Drive Straight PID constants
          */
-        public final static Gains DISTANCE_GAINS = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );
+        public final static Gains DISTANCE_GAINS = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.70 );
         
         /**
          * Turn to Angle PID constants
@@ -214,12 +214,12 @@ public class RobotMap {
         //TODO: these have to be tested, false distances
         public static final double SHORT_COMMUNITY_DIST = 85;
 
-        public static final double LONG_COMMUNITY_DIST = 140;
+        public static final double LONG_COMMUNITY_DIST = 145;
 
         //TODO: test and tune these for true values
         public static final double FIRST_CHARGING_DIST = 96.75;
 
-        public static final double SECOND_CHARGING_DIST = 140;
+        public static final double SECOND_CHARGING_DIST = 155;
 
         public static final double THIRD_CHARGING_DIST = 90.0;
 
@@ -277,7 +277,7 @@ public class RobotMap {
         public static final double ARM_HIGH_POS = 444700;
         public static final double ARM_MID_POS = 487000;
         public static final double FLOOR_PLACE_POS = 692800;
-        public static final double ARM_SHELF_POS = 688000;
+        public static final double ARM_SHELF_POS = 707000;
         public static final double ARM_FLOOR_POS = 768000;
     }
 

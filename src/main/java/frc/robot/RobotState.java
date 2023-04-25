@@ -49,7 +49,7 @@ public enum RobotState {
     /**
      * State for approaching cone at High level
      */
-    kApproachHigh ("Approach High", RobotMap.ArmConstants.ARM_APPROACH_POS, RobotMap.ElevatorConstants.ELEVATOR_HIGH_POS, ShoulderState.kDown),
+    kApproachHigh ("Approach High", RobotMap.ArmConstants.ARM_APPROACH_POS, RobotMap.ElevatorConstants.ELEVATOR_HIGH_POS, ShoulderState.kUnknown),
 
     /**
      * Unknown State -- should generally not be used for actual positioning. No driver input case.
